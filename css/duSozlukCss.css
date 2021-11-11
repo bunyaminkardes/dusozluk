@@ -1,0 +1,991 @@
+@charset "UTF-8";
+*
+{
+	box-sizing: border-box;
+	outline: none;
+	margin:0;
+	padding:0;
+}
+html
+{
+
+}
+body
+{
+	background-color: var(--arkaplanrenk);
+}
+:root
+{
+	--temarengi: #f2058f;
+	--loginrenk: black;
+	--temarengidivler:#eeeeee;
+	--arkaplanrenk:#eeeeee;
+	--temayazitipi: 'Source Sans Pro', sans-serif;
+	--navbar:#282A35;
+	--baslikrenkleri :#282A35;
+	--konumesajrenkleri :#282A35;
+}
+#ajaxlivesearch
+{
+	background-color: var(--temarengidivler);
+	width: 90%;
+	min-height: 150px;
+	border-style: solid;
+	border-width: 1px;
+	border-top-width: 0px;
+	border-radius: 5px 5px 0px 0px;
+	position: absolute;
+	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top vermeliyiz. */
+	display: none;
+	z-index: 999999;
+}
+/* ------------------------------------------- index.php başlangıç ------------------------------------------ */
+.index-content-div
+{
+	width: 100%;
+	float:left;
+}
+/* ------------------------------------------- index.php bitiş ------------------------------------------ */
+/* ------------------------------------------- masterpage.php başlangıç ------------------------------------------ */
+.header
+{
+	width: 100%;
+	height: 50px;
+}
+.header-yesilbar
+{
+	width:100%;
+	height: 4px;
+	background-color: var(--temarengi);
+}
+.header-logo
+{
+	width: 150px;
+	height: 100%;
+	display:block;
+	margin:0 auto;
+	margin-top: -10px;
+}
+.header-logoalt
+{
+
+	width: 30%;
+	height: 100%;
+}
+.header-aramakutusu
+{
+	width: 90%;
+	padding-top:10px;
+	height: 100%;
+	display: block;
+	margin: 0 auto;
+	position: relative;
+}
+.header-aramakutusu2
+{
+	width:90%;
+	height: 30px;
+	border-color:var(--temarengi);
+	border-radius: 3px;
+	border-width: 0.5px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	display: inline-block;
+	float: left;
+}
+.header-aramabutonu
+{
+	width:27px;
+	height: 30px;
+	display: inline-block;
+	background-image: url("/resimler/logo2.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	border:none;
+	background-color: var(--temarengi);
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 9px;
+	float: left;
+}
+.header-girisvekayitol
+{
+	width: 90%;
+	height: 100%;
+	display: block;
+	margin: 0 auto;
+	padding-top:10px;
+}
+
+.header-girisvekayitol ul
+{	
+	list-style-type: none;
+	text-align: center;
+	padding-left: 0;
+}
+.header-girisvekayitol ul li
+{
+	display: inline;
+
+}
+.header-girisvekayitol ul li a
+{
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	font-weight: lighter;
+	text-decoration: none;
+	display: inline-block;
+	padding-left:10px;
+	color:var(--loginrenk);
+}
+.header-girisvekayitol ul li a:hover
+{
+	text-decoration:underline;
+}
+.header-navbar
+{
+	width: 100%;
+	height: 50px;	
+
+}
+
+.yanbar
+{
+	width: 100%;
+	position:relative;
+	float: right;
+	padding-top: 30px;
+}
+.yanbar-gundem
+{
+	width: 100%;
+	background-color: var(--temarengidivler);
+	float:right;
+	/*overflow-y:scroll;*/
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.yanbar-gundem-baslik
+{
+	width: 100%;
+	height: 50px;
+	float:left;
+}
+.yanbar-gundem-konular
+{
+	width: 100%;
+	display: inline-block;
+	margin-top:10px;
+	padding-left:5px;
+}
+.yanbar-butonlar
+{
+	width:33.3%;
+	white-space: nowrap;
+	background-color:var(--navbar);
+	border:none;
+	color:white;
+	float: left;
+}
+.yanbar-butonlar:hover
+{
+	background-color: var(--temarengi);
+}
+#yanbar-kategori
+{
+	position: absolute;
+	top:80px;
+	width: 100%;
+	height: 200px;
+	background-color:var(--navbar);
+	z-index: 9999999;
+	display: none;
+}
+.yanbar-kategoriler
+{
+	width: 100%;
+	display:block;
+	border:none;
+	background-color:var(--navbar);
+	margin:0 auto;
+	line-height: 50px;
+	color:white; 
+	text-decoration: none;
+	text-align: center;
+}
+.yanbar-kategoriler:hover
+{
+	color:white;
+	background-color: var(--temarengi);
+}
+#mobilkategori
+{
+	position: absolute;
+	width: 250px;
+	right: 0;
+	background-color:var(--navbar);
+	display: none;
+	z-index: 9999999;
+}
+#mobilkategori ul
+{
+	padding:0;
+	margin:0;
+}
+#mobilkategori ul li
+{
+	list-style-type: none;
+}
+#mobilkategori ul li a
+{
+	font-family: var(--temayazitipi);
+	display: block;
+	margin:0 auto;
+	text-decoration: none;
+	color:white;
+	text-align: center;
+	line-height: 50px;
+}
+#mobilkategori ul li:hover
+{
+	background-color: var(--temarengi);
+}
+.yanbar-gundem-konular-mesajsayaci
+{
+	text-decoration: none;
+	color:var(--temarengi);
+	display: inline-block;
+	float: right;
+	width: 10%;
+	text-align: center;
+}
+.yanbar-gundem-konular-mesajsayaci:hover
+{
+	color:var(--temarengi);
+}
+.yanbar-gundem-konular ul
+{
+	width: 90%;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+.yanbar-gundem-konular ul li
+{
+	
+}
+.yanbar-gundem-konular ul li a
+{
+	line-height: 30px;
+	display: block;
+	text-decoration: none;
+	color:#6c6c6c;
+	word-wrap: break-word;
+	font-family: var(--temayazitipi);
+	font-size:14px;
+}
+.yanbar-gundem-konular ul:hover
+{
+	background-color: lightgrey;
+}
+#main-mesajekle-div
+{
+	width:100%;
+	height: 200px;
+	float: left;
+	display:none;
+	margin-top:20px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#main-mesajekle-baslik
+{
+	font-family: var(--temayazitipi);
+	font-size:20px;
+	line-height: 40px;
+	text-align: center;
+}
+#main-mesajekle-form
+{
+	width: 90%;
+	margin:auto;
+	height: 50%;
+}
+#main-mesajekle
+{
+	width: 100%;
+	height: 100%;
+	resize:none; /* textarea'lar icin bir ozellik resize, tutup genisletmeyi onluyor. */
+}
+.main-maincont
+{
+	width: 100%;
+	padding-top: 30px;
+}
+.main-footer-kapsayicisi
+{
+	width: 100%;
+	float: left;
+}
+.main-footer
+{
+	width:100%;
+	height: 65px;
+	float: left;
+	border-style: solid;
+	border-width: 1px;
+	border-bottom: none;
+	border-left:none;
+	border-right: none;
+	margin-top:20px;
+	text-align: center;
+}
+.main-footer ul
+{
+	list-style-type: none;
+	padding:0;
+	margin:0;
+}
+.main-footer ul li
+{
+    display: inline;
+}
+.main-footer ul li a
+{
+	text-decoration: none;
+	color:#6c6c6c;
+	padding:1.2%;
+	display: inline-block;
+}
+.main-footer ul li a:hover
+{
+	text-decoration: underline;
+}
+#main-reklam-yazisi
+{
+	font-family: var(--temayazitipi);
+	font-weight: bold;
+	font-size:30px;
+	line-height: 120px;
+	text-align: center;
+}
+#adminpanelegit
+{
+	width: 100px;
+	height: 40px;
+	background-color: var(--navbar);
+	position: fixed;
+	bottom: 0;
+	left:0;
+	z-index: 99999;
+}
+#adminpanelegit:hover
+{
+	background-color: var(--temarengi);
+}
+#adminpanelegit a
+{
+	font-family:var(--temayazitipi);
+	color: white;
+	text-align: center;
+	display: block;
+	text-decoration: none;
+	line-height: 40px;
+}
+.sagbar
+{
+	width: 100%;
+	margin-top: 30px;
+}
+.sagbar-yazilar
+{
+	display:block;
+	text-align: left;
+	color:#282A35;
+	padding-top: 5px;
+	font-family: var(--temayazitipi);
+	font-size: 14px;
+	text-decoration: none;
+	padding-left:3px;
+	padding-right: 3px;
+	margin-top:5px;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.sagbar-yazilar:hover
+{
+	text-decoration: none;
+	color:#282A35;
+	background-color: lightgrey;
+}
+.sagbar-yazilar-baslik
+{
+	text-align: center;
+	padding-top: 15px;
+}
+.sagbar-div
+{
+	width: 100%;
+	margin-top:20px;
+	background-color: var(--temarengidivler);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	word-wrap:break-word;
+
+}
+/* ------------------------------------------- masterpage.php bitiş ------------------------------------------- */
+
+
+/* ------------------------------------------- giris.php, kayitol.php başlangıç ------------------------------------------- */
+.giris
+{
+	width:100%;
+	float: left;
+	display: block;
+
+}
+.giris-div
+{
+	width: 300px;
+	height: 550px;
+	position: relative;
+	display: block;
+	margin:0 auto;
+	margin-top:30px;
+}
+#kullaniciadi
+{
+	width: 100%;
+	height: 40px;
+	border-style: solid;
+	border-width: 1px;
+}
+#sifre
+{
+	width: 100%;
+	height: 40px;
+	border-style: solid;
+	border-width: 1px;
+}
+#mail
+{
+	width: 100%;
+	height: 40px;
+	border-style: solid;
+	border-width: 1px;
+}
+#buton
+{
+	width: 100%;
+	height: 40px;
+	background-color: var(--temarengi);
+	border:none;
+	margin-top:60px;
+	color:white;
+}
+#buton:hover
+{
+	background-color: #ff30a5;
+}
+#giris-yazilar
+{
+	font-family: var(--temayazitipi);
+	font-size:24px;
+	font-weight: bold;
+}
+#giris-yazilar-1
+{
+	padding-top:20px;
+	font-family: var(--temayazitipi);
+	font-size:14px;
+	font-weight: lighter;
+}
+.hatadiv
+{
+	width: 100%;
+	position: absolute;
+	margin-top:20px;
+}
+#hatamesaj
+{
+	font-size:16px;
+	font-family: var(--temayazitipi);
+	font-weight: lighter;
+	text-align: center;
+	line-height: 20px;
+	color:red;
+	display:none;
+}
+#hatamesaj2
+{
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	font-weight: lighter;
+	text-align: center;
+	line-height: 20px;
+	color:red;
+	display:none;
+}
+#dogrulamamesaji
+{
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	font-weight: lighter;
+	text-align: center;
+	line-height: 20px;
+	color:black;
+	display:none;
+}
+.kayitol
+{
+	width:40%;
+	height: 400px;
+	float: left;
+}
+#sozlesme
+{
+	margin-top:15px;
+}
+#sozlesme a
+{
+	padding-left:5px;
+}
+/* ------------------------------------------- giriş.php,kayitol.php bitiş ------------------------------------------- */
+
+/* ------------------------------------------- konuac.php başlangıç ------------------------------------------- */
+#konuac
+{
+	width:100%;
+	height: 400px;
+	float: left;
+	margin-top:50px;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+/* ------------------------------------------- konuac.php bitiş ------------------------------------------- */
+
+
+
+
+/* ------------------------------------------- konular-content.php başlangıç ------------------------------------------- */
+#konu /*konular-content.php içerisinde yer alıyor bu. konuyu açan kişiye ait otomatik oluşturulan div bu. bunu da inline hale getirebiliriz aslında.*/
+{
+	width:100%;
+	min-height: 200px;
+	position: relative;
+	float: left;
+	padding-top:15px;
+	background-color: var(--temarengidivler);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#konular-konu-sil
+{
+	float:right;
+	margin-right: 10px;
+	width: 100px;
+	height: 30px;
+	border:0;
+	background-color: #f2058f;
+}
+#konular-konu-sil a
+{
+	color:white;
+	text-decoration: none;
+	font-size:16px;
+}
+#konular-mesaj-sil
+{
+	float:right;
+	width: 100px;
+	height: 30px;
+	border:0;
+	background-color: #f2058f;
+	margin-right: 10px;
+	margin-bottom:10px;
+}
+#konular-mesaj-sil a
+{
+	color:white;
+	text-decoration: none;
+	font-size:16px;
+}
+#konular-yazar-baslik
+{
+	font-family:var(--temayazitipi);
+	font-weight:bold;
+	font-size:22px; 
+	color:var(--konumesajrenkleri);
+	text-align:left;
+	word-wrap:break-word;
+	padding-left:5px;
+}
+#konular-yazar-mesaj
+{
+	word-wrap:break-word;
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	white-space: pre-wrap;
+	padding-left:5px;
+	padding-right: 5px;
+	color:var(--konumesajrenkleri);
+}
+#konular-yazar-kimlik
+{
+	width:100%;
+	height: 20px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	float:right;
+}
+#konular-yazar-kimlik-kimlik
+{
+	width: 100%;
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	float: left;
+}
+#konular-yazar-kimlik-kimlik a
+{
+	text-decoration: none;
+	color:var(--temarengi);
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	padding-right: 10px;
+	float:right;
+}
+.konular-yazar-like-dislike
+{
+	float:left;
+	width:40%;
+	height: 100%;
+	float:left;
+}
+.konular-kullanicimesajkapsayicisi
+{
+	width:100%;
+	min-height: 200px;
+	position: relative;
+	float:left;
+	padding-top:30px;
+	background-color: var(--temarengidivler);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#konular-kullanicimesaj
+{
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	font-weight: 400;
+	color:var(--konumesajrenkleri);
+	text-align:left;
+	word-wrap:break-word;
+	white-space: pre-wrap;
+	padding-left:5px;
+	padding-right: 5px;
+}
+#konular-kullanici-kimlik
+{
+	width:100%;
+	height: 20px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	float: right;
+}
+#konular-kullanici-kimlik-kimlik
+{
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	float: right;
+	padding-right: 10px;
+}
+#konular-kullanici-kimlik-kimlik a
+{
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	text-decoration: none;
+	font-weight: 300;
+	color:var(--temarengi);
+	float:right;
+}
+#like
+{
+	border:none;
+	background-color: pink;
+	height: 100%;
+}
+#dislike
+{
+	border:none;
+	background-color: pink;
+	height: 100%;
+}
+
+/* ------------------------------------------- konular-content.php bitiş ------------------------------------------- */
+
+
+/* ------------------------------------------- index-content.php başlangıç ------------------------------------------- */
+
+#index-konu-baslik
+{
+	font-family:var(--temayazitipi);
+	font-weight:bold; 
+	font-size:22px;
+	text-align:left;
+	word-wrap: break-word;
+	padding-left: 5px;
+}
+#index-konu-baslik a
+{
+	text-decoration:none;
+	color:var(--)
+}
+#index-konu-icerik
+{
+	color:var(--konumesajrenkleri);
+	word-wrap:break-word;
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	white-space: pre-wrap;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#index-yazar-kimlik
+{
+	width:300px;
+	height:20px;
+	position:absolute;
+	bottom:0;
+	right:0;
+	float:right;
+	padding-right: 5px;
+}
+#index-yazar-kimlik a
+{
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	text-decoration: none;
+	font-weight: 300;
+	color:var(--temarengi);
+	float:right;
+}
+/* ------------------------------------------- index-content.php bitiş ------------------------------------------- */
+
+/* ------------------------------------------- iletisim-content.php başlangıç ------------------------------------------- */
+
+
+.iletisim-kapsayici
+{
+	width: 100%;
+	float:left;
+}
+.iletisim-mail
+{
+	width: 100%;
+
+}
+#iletisim-mail-mesaj
+{
+	width:450px;
+	height: 200px;
+	border-style: solid;
+	border-width: 1px;
+	resize: none;
+	margin-top: 20px;
+	display: block;
+}
+#iletisim-kullanici-mail
+{
+	width: 300px;
+	height: 50px;
+	border-style: solid;
+	border-width: 1px;
+	margin-top:20px;
+	display: block;
+}
+#iletisim-buton
+{
+	width: 300px;
+	height: 50px;
+	border-style: solid;
+	border-width: 1px;
+	margin-top:20px;
+	display: block;
+}
+#iletisim-bilgiler
+{
+	padding-top:20px;
+	text-align: left;
+	overflow: hidden;
+	white-space: pre-line;
+}
+
+
+
+/* ------------------------------------------- iletisim-content.php bitiş ------------------------------------------- */
+
+
+/* ------------------------------------------- adminpanel.php.php baslangic ------------------------------------------- */
+
+
+.adminpanel-basliklar
+{
+	text-align: center;
+}
+.adminpanel-buton
+{
+	border:none;
+	background-color: white;
+}
+.adminpanel-buton a
+{
+	text-decoration: none;
+	color:red;
+	font-weight: 500;
+}
+
+/* ------------------------------------------- adminpanel.php.php bitis ------------------------------------------- */
+
+/* ------------------------------------------- profil-content.php baslangic ------------------------------------------- */
+
+.profil-yorum-basliklari
+{
+	font-size:24px;
+	padding-top:35px;
+	color:var(--temarengi);
+}
+.profil-yorum-div
+{
+	width:100%;
+	min-height: 200px;
+	position: relative;
+	float:left;
+	padding-top:25px;
+	background-color: #eeeeee;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.profil-yorum-div a
+{
+	text-decoration: none;
+}
+.profil-yorum-div-baslik
+{
+	font-family:var(--temayazitipi);
+	font-weight: bold;
+	font-size:22px;
+	padding-left: 5px;
+	color:black;
+	text-align:left;
+	word-wrap:break-word; 
+}
+.profil-yorum-div-mesaj
+{
+	font-family:var(--temayazitipi);
+	font-weight: lighter;
+	white-space: pre-wrap;
+	padding-left: 5px;
+	font-size:16px;
+	color:black;
+	text-align:left;
+	word-wrap: break-word;
+}
+.profil-yorum-div-kimlik-kapsayici
+{
+	width:100%;
+	height:20px;
+	position:relative; 
+	float:left; 
+	padding-top:25px; 
+	background-color: #eeeeee;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+
+}
+.profil-yorum-div-kimlik-kimlik
+{
+	width:300px;
+	height: 20px;
+	position: absolute; 
+	bottom: 0; 
+	right: 0; 
+	float: right;
+}
+.profil-yorum-div-kimlik-kimlik h3
+{
+	font-family:var(--temayazitipi);
+	font-size:14px;
+	float: right;
+	padding-right: 10px;
+}
+.profil-yorum-div-kimlik-kimlik h3 a
+{
+	text-decoration: none;
+	font-weight: 400; 
+	color:var(--temarengi);
+}
+.profil-yorum-div-ghost
+{
+	width: 100%;
+	height: 40px;
+	float: left;
+}
+/* ------------------------------------------- profil-content.php bitis ------------------------------------------- */
+
+
+
+/* ------------------------------------------- REKLAMLAR ------------------------------------------- */
+
+#reklam-1
+{
+
+}
+#reklam-1 img
+{
+	width: 100%;
+	padding-top:10px;
+}
+#reklam-2
+{
+	
+}
+#reklam-2 img
+{
+	display:block;
+	margin:0 auto;
+	height: 160px;
+	padding-bottom: 20px;
+}
+#reklam-3
+{
+
+}
+#reklam-3 img
+{
+	width: 100%;
+}
+#reklam-4
+{
+
+}
+#reklam-4 img
+{
+	width:100%;
+	padding-top:20px;
+}
+#reklam-5
+{
+
+}
+#reklam-5 img
+{
+	display: block;
+	margin:0 auto;
+	height: 160px;
+	margin-top:20px;
+}
+
+/* ------------------------------------------- REKLAMLAR ------------------------------------------- */
