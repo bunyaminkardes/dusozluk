@@ -2,8 +2,6 @@
 
 session_start();
 
-
-
 function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait kullanıcı bilgilerini bir dizi olarak return eder.
 {
 	$baglanti = new PDO("mysql:host=localhost;dbname=id16174737_veritabanim","root","");
@@ -16,10 +14,10 @@ function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait k
 	return $row;
 }
 
-function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi istenen URL
+function seo_link($s)
 {
-	$tr = array('ş','Ş','ı','I','İ','ğ','Ğ','ü','Ü','ö','Ö','Ç','ç','(',')','/',' ',',','?'); // İstenmeyen Türkçe karakterler için bir dizi oluşturulmuş.
-	$eng = array('s','s','i','i','i','g','g','u','u','o','o','c','c','','','-','-','',''); // Bu istenmeyen Türkçe karakterler bu İngilizce karakterlerle değiştirilecek.
+	$tr = array('ş','Ş','ı','I','İ','ğ','Ğ','ü','Ü','ö','Ö','Ç','ç','(',')','/',' ',',','?');
+	$eng = array('s','s','i','i','i','g','g','u','u','o','o','c','c','','','-','-','','');
 	$s = str_replace($tr,$eng,$s);
 	$s = strtolower($s);
 	$s = preg_replace('/&amp;amp;amp;amp;amp;amp;amp;amp;amp;.+?;/', '', $s);
@@ -28,7 +26,7 @@ function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi iste
 	$s = preg_replace('/#/', '', $s);
 	$s = str_replace('.', '', $s);
 	$s = trim($s, '-');
-	return $s; // Seo'ya uygun olarak düzeltilmiş url return ediliyor.
+	return $s;
 }
 
 ?>
