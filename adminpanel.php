@@ -1,35 +1,31 @@
 <?php
 
-	 session_start(); 
-     include('baglanti.php'); 
-     $kullaniciadi = @$_SESSION['girisyapankullanici'];
+	session_start(); 
+    include('baglanti.php'); 
+    $kullaniciadi = @$_SESSION['girisyapankullanici'];
+    
+    if(!isset($kullaniciadi)) //giriş yapmayan kişilerin url kısmından vs. panele kaçak yoldan girmesini engellemek için giriş yapılmış mı diye bir ön kontrol yapıyoruz.
+    {
+    	echo "<script type='text/javascript'> document.location = '404.php'; </script>"; 
+    }
+    $panelsorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi ");
+    $panelsorgusu->bindParam(':kullaniciadi',$kullaniciadi);
+    $panelsorgusu->fetch(PDO::FETCH_ASSOC);
+    $panelsorgusu->execute();
 
-     
-     if(!isset($kullaniciadi))
-     {
-     	echo "<script type='text/javascript'> document.location = '404.php'; </script>"; #giriş yapmayan kişilerin url kısmından vs. panele kaçak yoldan girmesini engellemek için giriş yapılmış mı diye bir ön kontrol yapıyoruz.
-     }
-     $panelsorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi ");
-     $panelsorgusu->bindParam(':kullaniciadi',$kullaniciadi);
-     $panelsorgusu->fetch(PDO::FETCH_ASSOC);
-     $panelsorgusu->execute();
-
-     
-
-     if($panelsorgusu->rowCount()>0)
-     {
-     	foreach($panelsorgusu as $row)
+    if($panelsorgusu->rowCount()>0)
+    {
+    	foreach($panelsorgusu as $row)
      	{
-     		$GLOBALS['kullanici_rutbe'] = $row['rutbe']; # ....................................
+     		$GLOBALS['kullanici_rutbe'] = $row['rutbe'];
      	}
-     	if ($row['rutbe']=='admin' || $row['rutbe']=='moderator')
+     	if ($row['rutbe']=='admin' || $row['rutbe']=='moderator') //giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
 	 	{
-			#giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
-	 	
+	 		
      	}
-     	else
+     	else //giriş yapan kullanıcı admin değilse kullanıcıyı 404.php sayfasına yönlendiriyoruz.
 		{
-			echo "<script type='text/javascript'> document.location = '404.php'; </script>"; #giriş yapan kullanıcı admin değilse kullanıcıyı 404.php sayfasına yönlendiriyoruz.
+			echo "<script type='text/javascript'> document.location = '404.php'; </script>"; 
 	 	}
      }
 ?>
@@ -180,7 +176,10 @@
 
 
 
-<?php #BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
+<?php 
+
+	//BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
+
 	if(isset($_GET['moderator']) && @$_GET['moderator']==1)
 	{
 	 	@$kullaniciadi = $_GET['kullaniciadi'];
@@ -189,8 +188,7 @@
 	 	$guncellemesorgusu->bindParam(':moderator',$rutbe);
 	 	$guncellemesorgusu->bindParam(':kullaniciadi',$kullaniciadi);
 	 	$guncellemesorgusu->execute();
-	 	#AŞAĞIDAKİ SAYFA YENİLEME KODUNU ANLAMAK ÇOK ÖNEMLİ. İŞLEMİN DATABASE'DE UYGULANMASI BİRAZ VAKİT ALABİLİYOR. EĞER DELAYSIZ, HEMEN BİR SAYFA GÜNCELLEMESİ YAPARSAN
-	 	#DEĞİŞİKLİKLERİ GÖREMEYEBİLİRSİN. BU YÜZDEN 1,5 SANİYE GİBİ BİR DELAY EKLEYEREK SAYFA YENİLİYORUZ.
+	 	// 1.5sn delay ekleyelim, verilerin güncellenmesi vakit alabileceğinden değişiklikleri göremeyebiliriz.
 	 	echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1500); </script>";
 	 }
 
