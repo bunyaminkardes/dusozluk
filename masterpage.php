@@ -1,5 +1,5 @@
 <?php 
-   error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken bunu aktifleştirmek iyidir. */
+   error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken aktifleştir. */
    require_once("baglanti.php");
    require_once("kutuphane.php");
 ?>
@@ -24,7 +24,6 @@
             </div>
          </div>
          <div class="row" style="background-color: white;">
-            <!--<div class="col-12 col-sm-12 col-lg-2"></div>-->
             <div class="col-12 col-sm-12 col-lg-4">
                <div class="header">
                   <div class="header-logo">
@@ -37,9 +36,8 @@
                      <form>
                         <input id="ara" onkeydown="goster('ipucu')" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="search" placeholder=" Kullanıcı ara">
                         <input class="header-aramabutonu" type="button" disabled>
-
                      </form>
-                     <div  id="ajaxlivesearch">
+                     <div id="ajaxlivesearch">
                         <p>
                            <div id="ipucu">
                            </div>
@@ -486,7 +484,7 @@
                      <img alt="Reklam 2" src="resimler/reklam5.jpg">
                   </div>
                   <?php 
-                     @include_once ($content); #site açıldığında değişken boş uyarıları gelecek ama bu hatanın zaten olması gerekiyor. dolayısıyla her şey yolunda, sadece hatayı gizliyoruz.
+                     @include_once ($content);
                   ?>
                </div> 
             </div>

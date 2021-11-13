@@ -7,6 +7,5 @@
 	}
 
 	$content = 'contents/giris-content.php';
-
 	@include("masterpage.php"); 
 ?>

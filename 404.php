@@ -1,3 +1,3 @@
 <?php 
-	echo "BÖYLE BİR SAYFA BULUNAMADI...";
+    echo "BÖYLE BİR SAYFA BULUNAMADI...";
 ?>

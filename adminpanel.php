@@ -1,37 +1,34 @@
 <?php
 
-	session_start(); 
-    include('baglanti.php'); 
-    $kullaniciadi = @$_SESSION['girisyapankullanici'];
-    
-    if(!isset($kullaniciadi)) //giriş yapmayan kişilerin url kısmından vs. panele kaçak yoldan girmesini engellemek için giriş yapılmış mı diye bir ön kontrol yapıyoruz.
+session_start(); 
+include('baglanti.php'); 
+$kullaniciadi = @$_SESSION['girisyapankullanici'];
+     
+if(!isset($kullaniciadi))
+{
+	echo "<script type='text/javascript'> document.location = '404.php'; </script>"; //giriş yapmayan kişilerin url kısmından vs. panele kaçak yoldan girmesini engellemek için giriş yapılmış mı diye bir ön kontrol yapalım.
+}
+
+$panelsorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi ");
+$panelsorgusu->bindParam(':kullaniciadi',$kullaniciadi);
+$panelsorgusu->fetch(PDO::FETCH_ASSOC);
+$panelsorgusu->execute();
+if($panelsorgusu->rowCount()>0)
+{
+    foreach($panelsorgusu as $row)
     {
-    	echo "<script type='text/javascript'> document.location = '404.php'; </script>"; 
+    	$GLOBALS['kullanici_rutbe'] = $row['rutbe']; 
     }
-    $panelsorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi ");
-    $panelsorgusu->bindParam(':kullaniciadi',$kullaniciadi);
-    $panelsorgusu->fetch(PDO::FETCH_ASSOC);
-    $panelsorgusu->execute();
-
-    if($panelsorgusu->rowCount()>0)
-    {
-    	foreach($panelsorgusu as $row)
-     	{
-     		$GLOBALS['kullanici_rutbe'] = $row['rutbe'];
-     	}
-     	if ($row['rutbe']=='admin' || $row['rutbe']=='moderator') //giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
-	 	{
-	 		
-     	}
-     	else //giriş yapan kullanıcı admin değilse kullanıcıyı 404.php sayfasına yönlendiriyoruz.
-		{
-			echo "<script type='text/javascript'> document.location = '404.php'; </script>"; 
-	 	}
-     }
+    if ($row['rutbe']=='admin' || $row['rutbe']=='moderator') //giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
+	{
+		
+    }
+    else //giriş yapan kullanıcı rütbesi admin veya moderatör değilse kullanıcıyı 404.php sayfasına yönlendirelim.
+	{
+		echo "<script type='text/javascript'> document.location = '404.php'; </script>"; 
+	}
+}
 ?>
-
-
-
 
 
 <!DOCTYPE html>
@@ -45,20 +42,17 @@
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			 <div class="col-12 col-sm-12 col-lg-3">
+			<div class="col-12 col-sm-12 col-lg-3">
 			 	<a href="index.php">Anasayfaya dönmek için tıkla</a>
-			 </div>
-
-
-
+			</div>
 
 			 <!-- ÜYELER LİSTESİ BAŞLANGIÇ -->
-			 <div class="col-12 col-sm-12 col-lg-3"> 
+			<div class="col-12 col-sm-12 col-lg-3"> 
 			 	<h3 class="adminpanel-basliklar">- üyeler listesi -</h3>
 			 	<?php 
 			 		$rutbekosul = 'uye';
 			 		$bandurumukosul = 0;
-					$sorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE rutbe= :uye AND bandurumu= :bandurumu ");
+					$sorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE rutbe= :uye AND bandurumu= :bandurumu");
 					$sorgu->bindParam(':uye',$rutbekosul);
 					$sorgu->bindParam(':bandurumu',$bandurumukosul);
 					$sorgu->fetch(PDO::FETCH_ASSOC);
@@ -83,10 +77,8 @@
 	 					}
 	 				}
 			 	?>
-			 </div> 
+			</div> 
 			 <!-- ÜYELER LİSTESİ BİTİŞ -->
-
-
 
 
 			 <!-- MODERATÖRLER LİSTESİ BAŞLANGIÇ -->
@@ -120,11 +112,6 @@
 			 				?>
 			 </div> 
 			 <!-- MODERATÖRLER LİSTESİ BİTİŞ -->
-
-
-
-
-
 
 
 			 <!-- BANLILAR LİSTESİ BAŞLANGIÇ -->
@@ -178,8 +165,7 @@
 
 <?php 
 
-	//BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
-
+	// BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
 	if(isset($_GET['moderator']) && @$_GET['moderator']==1)
 	{
 	 	@$kullaniciadi = $_GET['kullaniciadi'];
@@ -188,7 +174,7 @@
 	 	$guncellemesorgusu->bindParam(':moderator',$rutbe);
 	 	$guncellemesorgusu->bindParam(':kullaniciadi',$kullaniciadi);
 	 	$guncellemesorgusu->execute();
-	 	// 1.5sn delay ekleyelim, verilerin güncellenmesi vakit alabileceğinden değişiklikleri göremeyebiliriz.
+	 	// 1.5 sn delay ekleyelim, verilerin güncellenmesi zaman alabileceğinden hemen sayfa yenilemesi yapmayalım.
 	 	echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1500); </script>";
 	 }
 
