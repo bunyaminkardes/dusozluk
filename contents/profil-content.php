@@ -32,7 +32,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 	{?>		
 		<div style="width:100%; min-height: 130px; margin-left:10px; margin-top:20px; float:right; border-style: solid; border-width: 1px; border-color:#9b9b9b; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 			<div style="width:100%; height:130px; overflow: hidden; float:left; padding:5px;">
-			<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- bu çok saçma bir focus yöntemi ancak şimdilik iş görüyor. --> <?php   
+			<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus --> <?php   
 				if ($row['pp']==NULL) 
 				{
 
@@ -40,7 +40,6 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 				}
 				else
 				{
-					//echo '<img style="width:200px; height:190px; object-fit:cover; object-position: 50% 15%; float:left; border-style:solid; border-width:2px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;  display: block; border-radius: 0%; " src="data:image/jpeg;base64,'.base64_encode( $row['pp'] ).'" alt="kullanıcı profil fotoğrafı"/>';
 					?> <img style="width:120px; height:120px; object-fit:cover; object-position: 50% 15%; float:left; border-style:solid; border-width:2px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;  display: block; border-radius: 0%;" src="<?php echo $row['pp']; ?>"> <?php
 				}?>
 				<h3 style='text-align:center; font-family:var(--temayazitipi); font-size:22px; padding-left:20px; color:var(--temarengi); float:right;'><?php echo strtoupper($userbilgisi);?></h3>
@@ -54,13 +53,6 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 				<h2 style="font-size:15px; padding-left:10px; padding-top:10px; color:black; word-wrap: break-word; white-space: pre-wrap; font-family:var(--temayazitipi); font-weight: lighter; "><?php echo $row['hakkinda'];?></h2>
 			</div>
 		</div>
-		<!-- eğer profil yorumlarını ekleyecek olursak devamke...
-		<div style="width:100%; clear:both; padding-top:10px;  float:left; background-color: red;">
-			<div style="width:100%; ">
-				<h2 class="profil-yorum-basliklari">Profil yorumları :</h2>
-			</div>
-		</div>
-	-->
 
 <?php /**********************************************************************************************************************************************************/ ?>
 		<h3 class="profil-yorum-basliklari" style="clear:both;">Bu kullanıcının son 10 yorumu :</h3>
@@ -68,7 +60,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
    	  	$limit = 10;
 		$sorgu = $baglanti->prepare("SELECT * FROM mesajlar WHERE user = :userbilgisi ORDER BY tarihbilgisi DESC LIMIT :limitt ");
 		$sorgu->bindParam(':userbilgisi',$userbilgisi);
-		$sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT); #limit yollarken PDO::PARAM_INT eklemezsen hata oluyor.
+		$sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT); 
 		$sorgu->fetch(PDO::FETCH_ASSOC);
 		$sorgu->execute();
 	 	if($sorgu->rowCount()>0)

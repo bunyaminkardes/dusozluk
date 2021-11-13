@@ -4,7 +4,7 @@
 	<title>Giriş yap</title>
 </head>
 <body>
-	<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- bu çok saçma bir focus yöntemi ancak şimdilik iş görüyor. -->
+	<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus -->
 	<div class="giris">
 
 		<div class="giris-div">
@@ -38,17 +38,17 @@
 			{
 				foreach($sorgu as $row)
 				{
-					if ($kulladi == $row['kullaniciadi'] && $sif == $row['sifre'])  #kullanıcı giriş yap butonuna bastığında post ile buraya veriler gelecek. bu veriler veritabanındaki verilerle eşleşiyorsa sayaç arttırılacak.
+					if ($kulladi == $row['kullaniciadi'] && $sif == $row['sifre'])  //kullanıcı giriş yap butonuna bastığında post ile buraya veriler gelecek. bu veriler veritabanındaki verilerle eşleşiyorsa sayaç arttırılacak.
 					{
-						$sayac++; #eşleşen kayıt varsa sayaç 1 olucak, giriş başarılı demek bu.
+						$sayac++; //eşleşen kayıt varsa sayaç 1 olucak, giriş başarılı demek bu.
 						break;
 					}
 				}
-				if ($sayac==0) #sayacı 0'dan başlatmıştık. eğer başarısız giriş olursa sayacın değerini 2 yapacağız. sayaç 2 ise giriş başarısız demek.
+				if ($sayac==0) //sayacı 0'dan başlatmıştık. eğer başarısız giriş olursa sayacın değerini 2 yapacağız. sayaç 2 ise giriş başarısız demek.
 				{
 					$sayac=$sayac+2;
 				}
-				if ($sayac == 1) #sayaç 1 olduğunda giriş işlemlerini yapıyoruz ve kullanıcıyı anasayfaya yönlendiriyoruz.
+				if ($sayac == 1) //sayaç 1 olduğunda giriş işlemlerini yapıyoruz ve kullanıcıyı anasayfaya yönlendiriyoruz.
 				{
 					$_SESSION['girisyapankullanici'] = $kulladi;
 					$_SESSION['kullanicibandurumu'] = $row['bandurumu'];
@@ -58,7 +58,7 @@
 					@$kullanicibilgisi = $_SESSION['girisyapankullanici'];
 					echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
 				}
-				else if (!$kulladi=="" && !$sif=="" && $sayac==2) #giriş başarısızsa bu if koşulu devreye girecek. default olarak display:none olan hata mesajını display:block yapıp ekrana yazacak.
+				else if (!$kulladi=="" && !$sif=="" && $sayac==2) //giriş başarısızsa hata mesajı gösterilsin.
 				{
 					?>
 					<h3 id="hatamesaj">kullanıcı adı veya şifre hatalı.</h3>
