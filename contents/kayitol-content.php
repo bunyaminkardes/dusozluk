@@ -9,7 +9,7 @@ session_start();
 <body>
 
 
-<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- bu çok saçma bir focus yöntemi ancak şimdilik iş görüyor. -->
+<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus -->
 	<div class="giris">
 		<div class="giris-div">
 			<h3 id="giris-yazilar">kayıt ol</h3>	
@@ -52,7 +52,7 @@ session_start();
 				
 
 
-				if (isset($_SESSION['girisyapankullanici'])) #oturum açıksa bu sayfaya girilemesin.
+				if (isset($_SESSION['girisyapankullanici'])) //oturum açıksa bu sayfaya girilemesin.
 				{
 					echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
 				}
@@ -65,7 +65,7 @@ session_start();
 					$sorgu->bindParam(':mail',$kayitmailbilgisi);
 					$sorgu->fetch(PDO::FETCH_ASSOC);
 					$sorgu->execute();
-					if ($sorgu->rowCount()>0) #kullanıcı kayıt olurken zaten kayıtlı mail veya kullanıcı adı bilgisi girerse veritabanından kontrol edip hata verdirttiriyoruz.
+					if ($sorgu->rowCount()>0) // kullanıcı kayıt olurken zaten kayıtlı mail veya kullanıcı adı bilgisi girerse veritabanından kontrol edip hata verdirttiriyoruz.
 					{
 						?><script type="text/javascript">document.getElementById("hatamesaj2").style.display="block";</script><?php
 					}

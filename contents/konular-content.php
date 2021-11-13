@@ -84,22 +84,9 @@
           </div>
           <div style="float:left; position: relative; width: 100%; ">
             <div id="konular-yazar-kimlik">
-
-
-
-                
-                <!--<div class="konular-yazar-like-dislike">
-                  
-                  
-                
-                </div>
-              -->
-
+                <!--<div class="konular-yazar-like-dislike"></div>-->
                 <h3 id="konular-yazar-kimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo  $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>
-
-
             </div>
-
           </div>  
           <div id="konular-yazar-ghost" style="width: 100%; height: 40px; background-color: #eeeeee; float: left;"></div> 
         <?php
@@ -254,10 +241,10 @@
                                     $komutt->execute();
 
 
-                                 $guncellemesorgusu = "UPDATE konular SET mesajsayisi=mesajsayisi+1 WHERE id ='$konuid'"; #mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
+                                 $guncellemesorgusu = "UPDATE konular SET mesajsayisi=mesajsayisi+1 WHERE id ='$konuid'"; //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
                                  $prepareislemi = $baglanti->prepare($guncellemesorgusu);
                                  $prepareislemi->execute();
-                                 #@header("Refresh:0"); bu komut yerine aşağıdakini kullanalım. javascriptle sayfa yenilemenin milyon tane yolu varmış. en kolayı aşağıdaki deniliyor. güvenlik konusunda problem yaratır mı araştırmak lazım.
+                            
                                  echo "<script> location = location; </script>";
 
                                  }
@@ -320,7 +307,7 @@ if(isset($_GET['mesajid']))
 <?php 
 # DISPLAY - VISIBILITY ISLEMLERI #
 
-  if($toplamverisayisi<$sayfalimiti) #toplam kayıt sayısı, sayfa limitinden az ise sayfalama yapısının görünmesi mantıksız olur.
+  if($toplamverisayisi<$sayfalimiti) //toplam kayıt sayısı, sayfa limitinden az ise sayfalama yapısının görünmesi mantıksız olur.
   {
     echo "<script>document.getElementById('pagi').style.display = 'none';</script>";
   } 
