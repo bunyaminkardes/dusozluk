@@ -5,13 +5,8 @@
    </head>
    <body>
       <div class="index-content-div">
-
-
-
          <?php  
-
          $kategori = $_GET['kategori'];
-
          if($kategori == "gundem" || !isset($kategori))
          {
             // gündemdeki konular gösterilecek.
@@ -23,7 +18,8 @@
             if ($sorgu->rowCount()>0)
             {
                foreach($sorgu as $row)
-               {?> 
+               {
+                  ?> 
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
@@ -46,7 +42,8 @@
             if ($sorgu->rowCount()>0)
             {
                foreach($sorgu as $row)
-               {?> 
+               {
+                  ?> 
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
@@ -70,7 +67,8 @@
             if ($sorgu->rowCount()>0)
             {
                foreach($sorgu as $row)
-               {?> 
+               {
+                  ?> 
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
@@ -82,14 +80,7 @@
                }
             }
          }
-
-
-
-
          ?>
-
-
-
       </div>
    </body>
 </html>
