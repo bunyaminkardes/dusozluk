@@ -1,4 +1,7 @@
 @charset "UTF-8";
+
+/* BÜNYAMİN KARDEŞ */
+
 *
 {
 	box-sizing: border-box;
@@ -25,6 +28,12 @@ body
 	--baslikrenkleri :#282A35;
 	--konumesajrenkleri :#282A35;
 }
+.focus
+{
+	width:0px;
+	height:0px;
+	border:none;
+}
 #ajaxlivesearch
 {
 	background-color: var(--temarengidivler);
@@ -35,7 +44,7 @@ body
 	border-top-width: 0px;
 	border-radius: 5px 5px 0px 0px;
 	position: absolute;
-	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top vermeliyiz. */
+	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top ver. */
 	display: none;
 	z-index: 999999;
 }
