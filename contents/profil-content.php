@@ -32,7 +32,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 	{?>		
 		<div style="width:100%; min-height: 130px; margin-left:10px; margin-top:20px; float:right; border-style: solid; border-width: 1px; border-color:#9b9b9b; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
 			<div style="width:100%; height:130px; overflow: hidden; float:left; padding:5px;">
-			<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus --> <?php   
+			<input readonly autofocus class="focus"> <!-- focus --> <?php   
 				if ($row['pp']==NULL) 
 				{
 

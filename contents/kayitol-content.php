@@ -7,7 +7,7 @@
 	<title>Kayıt ol</title>
 </head>
 <body>
-	<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus -->
+	<input readonly autofocus class="focus"> <!-- focus -->
 	<div class="giris">
 		<div class="giris-div">
 			<h3 id="giris-yazilar">kayıt ol</h3>	
@@ -44,7 +44,7 @@
 							{
 								?>
 								<script type="text/javascript">document.getElementById("hatamesaj2").style.display="block";</script>
-								<?php
+							<?php
 							}
 							if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)+[0-9a-zA-Z][a-zA-Z0-9]{7,}$/', $kayitsifre) || !filter_var($kayitmailbilgisi, FILTER_VALIDATE_EMAIL)) // kriterlere uygun olmayan giriş yapıldıysa hata mesajı verdirelim.
 							{

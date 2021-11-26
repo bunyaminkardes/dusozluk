@@ -4,7 +4,7 @@
 	<title>Giriş yap</title>
 </head>
 <body>
-	<input readonly autofocus style="width:0px; height:0px; border:none;"> <!-- focus -->
+	<input readonly autofocus class="focus"> <!-- focus -->
 	<div class="giris">
 		<div class="giris-div">
 			<h3 id="giris-yazilar">Giriş Yap</h3>
