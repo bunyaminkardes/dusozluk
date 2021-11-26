@@ -45,7 +45,7 @@ if($panelsorgusu->rowCount()>0)
 				<a href="index.php">Anasayfaya dönmek için tıkla</a>
 			</div>
 
-			<!-- ÜYELER LİSTESİ BAŞLANGIÇ -->
+			<!---------------------- ÜYELER LİSTESİ BAŞLANGIÇ ---------------------->
 			<div class="col-12 col-sm-12 col-lg-3"> 
 			 	<h3 class="adminpanel-basliklar">- üyeler listesi -</h3>
 			 		<?php 
@@ -81,7 +81,7 @@ if($panelsorgusu->rowCount()>0)
 	 					}
 			 		?>
 			</div> 
-			 <!-- ÜYELER LİSTESİ BİTİŞ -->
+			<!---------------------- ÜYELER LİSTESİ BİTİŞ---------------------->
 
 
 			 <!-- MODERATÖRLER LİSTESİ BAŞLANGIÇ -->
