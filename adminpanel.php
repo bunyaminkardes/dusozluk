@@ -15,14 +15,14 @@ $panelsorgusu->fetch(PDO::FETCH_ASSOC);
 $panelsorgusu->execute();
 if($panelsorgusu->rowCount()>0)
 {
-    foreach($panelsorgusu as $row)
-    {
-    	$GLOBALS['kullanici_rutbe'] = $row['rutbe']; 
-    }
-    if ($row['rutbe']=='admin' || $row['rutbe']=='moderator') //giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
+   foreach($panelsorgusu as $row)
+   {
+   	$GLOBALS['kullanici_rutbe'] = $row['rutbe']; 
+   }
+   if ($row['rutbe']=='admin' || $row['rutbe']=='moderator') //giriş yapan kullanıcı adminse veya moderatörse ekstra bir şey yapmaya gerek yok.
 	{
-    }
-    else //giriş yapan kullanıcı rütbesi admin veya moderatör değilse kullanıcıyı 404.php sayfasına yönlendirelim.
+   }
+   else //giriş yapan kullanıcı rütbesi admin veya moderatör değilse kullanıcıyı 404.php sayfasına yönlendirelim.
 	{
 		echo "<script type='text/javascript'> document.location = '404.php'; </script>";
 	}
