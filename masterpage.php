@@ -1,5 +1,6 @@
 <?php 
-   error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken aktifleştir. */
+   // MAHMUT CAN GENCER
+   //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken aktifleştir. */
    require_once("baglanti.php");
    require_once("kutuphane.php");
 ?>
@@ -13,7 +14,7 @@
       <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
       <link rel="stylesheet" type="text/css" href="css/duSozlukCss.css">
       <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-      <link rel='shortcut icon' type='image/x-icon' href='resimler/favicon.png' />
+      <link rel='shortcut icon' type='image/x-icon' href='resimler/favicon.png'/>
    </head>
    <body>
          <!---------------------------------------------- HEADER BASLANGIC ----------------------------------------------->
@@ -33,8 +34,8 @@
             </div>
             <div class="col-12 col-sm-12 col-lg-4" style="">
                   <div class="header-aramakutusu">
-                     <form>
-                        <input id="ara" onkeydown="goster('ipucu')" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="search" placeholder=" Kullanıcı ara">
+                     <form autocomplete="off">
+                        <input id="ara" onkeydown="goster('ipucu')" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="search" placeholder=" konu ara">
                         <input class="header-aramabutonu" type="button" disabled>
                      </form>
                      <div id="ajaxlivesearch">
@@ -545,13 +546,6 @@
                                     echo $toplammesajsayisi;
                                  ?>
                                </a>
-                               <a class="sagbar-yazilar">Toplam ziyaretçi sayısı :
-                                 <?php
-                                    $sorgu = $baglanti->query("SELECT ipadresi FROM ziyaretciler", PDO::FETCH_ASSOC);
-                                    $toplamziyaretcisayisi=$sorgu->rowCount();
-                                    echo $toplamziyaretcisayisi;
-                                 ?>
-                               </a>
                                <a class="sagbar-yazilar">Toplam üye sayısı :
                                  <?php
                                     $sorgu = $baglanti->query("SELECT * FROM uyeler", PDO::FETCH_ASSOC);
@@ -607,10 +601,12 @@
 
 <?php  
          // site ziyaretçilerinin ip adreslerini veritabanına kaydetme işlemi.
+         /*
          $ziyaretciipadres = $_SERVER['REMOTE_ADDR'];
          $komutt = $baglanti->prepare("INSERT INTO ziyaretciler(ipadresi) VALUES(:ziyaretciipadres)");
          $komutt->bindParam('ziyaretciipadres',$ziyaretciipadres);
          $komutt->execute();
+         */
 
          // giriş yapan kullanıcı admin veya moderatörse admin paneline gitme linki gözüksün.
          $kullanici = girisyapankullanici();
@@ -659,6 +655,8 @@
             }
          }
 ?>
+
+
    <script type="text/javascript" src="javascript/js.js"></script>
    </body>
 </html>

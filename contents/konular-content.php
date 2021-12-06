@@ -23,16 +23,12 @@
 </html>
 
 
-
-
-
 <?php
    session_start();
    $id = $_GET['id'];
    $konuid = $_GET['konuid']; // eğer silinme işlemi varsa ilgili konu id'si get edilerek depolanacak.
    $girisyapankullanici=$_SESSION['girisyapankullanici'];
    $mesajsil = $_GET['mesaj'];
-
 
 
 
@@ -46,59 +42,77 @@
      	{
      		?> 
           <div id="konu">
-
               <h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>  
-
                 <?php 
-                //giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
-                $kullanici = girisyapankullanici();
+                  //giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
+                  $kullanici = girisyapankullanici();
                 if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-                {
-                  ?>
-                  <button id="konular-konu-sil">
+                  {
+                    ?>
+                    <button id="konular-konu-sil">
                       <a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id']; ?>">
                         konuyu sil
                       </a>
-                  </button> 
-                  <?php
-                }
-              ?>
-              <input readonly autofocus style="width:0px;  height:0px; border:none;"> <!-- bu çok saçma bir focus yöntemi ancak şimdilik iş görüyor. -->
-
-            </h1>
-
-            
-              
+                    </button> 
+                    <?php
+                  }
+                ?>
+                <input readonly autofocus class="focus"> <!-- focus -->
+              </h1>
               <br/>
-              <p id="konular-yazar-mesaj"><?php print_r($row['konu_icerik']);?></p>
+              <p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
               <br/>
-           
-
-
-
-
-
-
-
-
           </div>
+
+
           <div style="float:left; position: relative; width: 100%; ">
             <div id="konular-yazar-kimlik">
-                <!--<div class="konular-yazar-like-dislike"></div>-->
+                <div class="konular-yazar-like-dislike">
+                  <?php
+                      $likedislikekomut = $baglanti->prepare("SELECT * FROM konular WHERE id = $id");
+                      $likedislikekomut->fetch();
+                      $likedislikekomut->execute();
+                      $gecerlilikesayisi = $row['likesayisi'];
+                      $gecerlidislikesayisi = $row['dislikesayisi'];
+                      if($likedislikekomut->rowCount()>0)
+                      {
+                        foreach($likedislikekomut as $row)
+                        {
+                           ?>
+                             <span style="display:inline-block;">
+                              <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Like : <?php echo $row['likesayisi']; ?></a> /
+                              <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Dislike : <?php echo $row['dislikesayisi']; ?></a>
+                             </span>
+                           <?php                           
+                        }
+                      }
+                  ?>
+                  <?php 
+                      $like = $_GET['like'];
+                      $dislike = $_GET['dislike'];
+                      if(isset($like))
+                      {
+                        $likedislikeguncellemesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi= $gecerlilikesayisi+1 WHERE id = $id");
+                        $likedislikeguncellemesorgusu->execute();
+                        echo "<script> window.history.back(); </script>";
+                      }
+                      if(isset($dislike))
+                      {
+                        $likedislikeguncellemesorgusu2 = $baglanti->prepare("UPDATE konular SET dislikesayisi= $gecerlidislikesayisi+1 WHERE id = $id");
+                        $likedislikeguncellemesorgusu2->execute();
+                        echo "<script> window.history.back(); </script>";                          
+                      }
+                  ?>
+                </div>
                 <h3 id="konular-yazar-kimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo  $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>
             </div>
           </div>  
-          <div id="konular-yazar-ghost" style="width: 100%; height: 40px; background-color: #eeeeee; float: left;"></div> 
-        <?php
-      }
-   }
-   ?>
-
-
-
-
-
-
+          <div id="konular-yazar-ghost" style="width: 100%; height: 40px; background-color: #eeeeee; float: left;">
+          </div> 
+      <?php
+    }
+  }
+      ?>
 
 
 
@@ -124,9 +138,6 @@
   //$goster = $hangisayfadayim*$sayfalimiti-$sayfalimiti; //sayfalama mantığının önemli kısımlarından biri burası. şimdi 1.sayfadayız diyelim. 1*10-10 = 0 çıkıyor. sayfa limitimiz de 10 olduğuna göre 0-10 arası kayıtları gösterecek. 2.sayfada olduğumuzda 2*10-10 = 10 çıkıyor. sayfa limitimiz de 10 olduğuna göre 10-20 arası kayıtları gösterecek, anladın mı?
   $goster = $sayfaid*$sayfalimiti-$sayfalimiti;
   //echo "toplam veri sayısı :".$toplamverisayisi.","."toplam sayfa sayısı :".$sayfasayisi."sayfaid :".$sayfaid; #debug amaçlı.
-
-
-
 
 
 

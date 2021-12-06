@@ -18,8 +18,11 @@
 				<input type="textbox" name="kullaniciadikayit" placeholder="Kullanıcı adınızı giriniz" id="kullaniciadi" maxlength="30" required>
 				<h5 id="giris-yazilar-1">şifre</h5>
 				<input type="password" name="sifrekayit" placeholder="Şifrenizi giriniz" id="sifre" maxlength="30" required>
-				<h5 id="giris-yazilar-1">Şifre :<br/>Minimum 8 karakterden oluşmalı<br/>1 adet büyük harf<br/>1 adet küçük harf<br/>1 adet rakam içermeli<br/>Türkçe karakter içermemelidir.</h5>
+				<h5 id="giris-yazilar-1">şifrenizi tekrar giriniz</h5>
+				<input type="password" name="sifrekayit2" placeholder="Şifrenizi tekrar giriniz" id="sifre" maxlength="30" required>
+				<h5 id="giris-yazilar-1">Şifre :<br/>Minimum 8 karakterden oluşmalı<br/>1 adet büyük harf<br/>1 adet küçük harf<br/>1 adet rakam içermeli<br/>
 				<div id="sozlesme"><input type="checkbox"><a href="#">sözleşmeyi okudum ve kabul ediyorum.</a></div>
+				<input type="submit" value="Kayıt ol" id="buton">
 				<div class="hatadiv">
 					<h3 id="hatamesaj">Kayıt başarısız.</h3>
 					<h3 id="dogrulamamesaji">Kayıt başarılı, lütfen bekleyin.</h3>
@@ -28,12 +31,15 @@
 						$kayitmailbilgisi = $_POST['mail'];
 						$kayitkullaniciadi = $_POST['kullaniciadikayit'];
 						$kayitsifre = $_POST['sifrekayit'];
-						$bandurumu = 0; 
+						$onaysifre = $_POST['sifrekayit2'];
+						$bandurumu = 0;
+						$hakkinda = "Bu kullanici kendisi hakkinda bir sey belirtmemis.";
+						$pp = NULL; 
 						if (isset($_SESSION['girisyapankullanici'])) //oturum açıksa bu sayfaya girilemesin.
 						{
 							echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
 						}
-						if (isset($_POST['kullaniciadikayit']) && isset($_POST['sifrekayit']) && isset($_POST['mail'])) // kullanıcı verileri post ettiyse kayıt işlemleri başlasın.
+						if (isset($_POST['kullaniciadikayit']) && isset($_POST['sifrekayit']) && isset($_POST['mail']) && isset($_POST['sifrekayit2'])) // kullanıcı verileri post ettiyse kayıt işlemleri başlasın.
 						{
 							$sorgu=$baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi OR mail = :mail");
 							$sorgu->bindParam(':kullaniciadi',$kayitkullaniciadi);
@@ -54,28 +60,37 @@
 							}
 							else // herhangi bir sıkıntı yoksa kayıt işlemleri tamamlansın.
 							{
-								$komut = $baglanti->prepare("INSERT INTO uyeler(kullaniciadi,mail,sifre,bandurumu) VALUES (:kayitkullaniciadi,:kayitmailbilgisi,:kayitsifre,:bandurumu)");
-								$komut->bindParam(':kayitkullaniciadi',$kayitkullaniciadi);
-								$komut->bindParam(':kayitmailbilgisi',$kayitmailbilgisi);
-								$komut->bindParam(':kayitsifre',$kayitsifre);
-								$komut->bindParam(':bandurumu',$bandurumu);
-								$komut->execute();
-								if($komut->rowCount()>0) // rowCount 0'dan büyükse veriler veritabanına eklendi demektir. sıkıntı yok.
+								if($kayitsifre == $onaysifre)
 								{
-									?>
-									<script type="text/javascript">document.getElementById("dogrulamamesaji").style.display="block";</script>
-									<?php
-									echo "<script>setTimeout(function(){window.location.href='index.php';}, 1500);</script>";
+									$komut = $baglanti->prepare("INSERT INTO uyeler(kullaniciadi,mail,sifre,bandurumu,pp,hakkinda) VALUES (:kayitkullaniciadi,:kayitmailbilgisi,:kayitsifre,:bandurumu,:pp,:hakkinda)");
+									$komut->bindParam(':kayitkullaniciadi',$kayitkullaniciadi);
+									$komut->bindParam(':kayitmailbilgisi',$kayitmailbilgisi);
+									$komut->bindParam(':kayitsifre',$kayitsifre);
+									$komut->bindParam(':bandurumu',$bandurumu);
+									$komut->bindParam(':pp',$pp);
+									$komut->bindParam(':hakkinda',$hakkinda);
+									$komut->execute();
+									if($komut->rowCount()>0) // rowCount 0'dan büyükse veriler veritabanına eklendi demektir. sıkıntı yok.
+									{
+										?>
+										<script type="text/javascript">document.getElementById("dogrulamamesaji").style.display="block";</script>
+										<?php
+										echo "<script>setTimeout(function(){window.location.href='index.php';}, 1500);</script>";
+									}
+									else // rowCount 0 ise veriler veritabanına eklenmedi demektir.
+									{
+										echo "Kayıt sırasında beklenmeyen bir hata oluştu.";
+									}
 								}
-								else // rowCount 0 ise veriler veritabanına eklenmedi demektir.
+								else
 								{
-									echo "Kayıt sırasında beklenmeyen bir hata oluştu.";
+									echo "girdiğiniz şifreler uyuşmuyor";
 								}
+
 							}	
 						}
 					?>
 				</div>
-				<input type="submit" value="Kayıt ol" id="buton">
 			</form>
 		</div>
 	</div>

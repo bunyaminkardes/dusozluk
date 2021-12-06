@@ -74,7 +74,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 	 					<h3 class="profil-yorum-div-baslik"><?php echo $row['konu']; ?></h3>
 	 				</a>
 	 				<br/>
-	 				<h3 class="profil-yorum-div-mesaj"><?php echo $row['mesaj'];?></h3>
+	 				<h3 class="profil-yorum-div-mesaj"><?php echo htmlentities($row['mesaj']);?></h3>
 	 			</div>
 	 			<div class="profil-yorum-div-kimlik-kapsayici">
 	 				<div class="profil-yorum-div-kimlik-kimlik">

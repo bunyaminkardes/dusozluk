@@ -23,7 +23,7 @@
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
-                     <p id="index-konu-icerik"><?php print_r($row['konu_icerik']);?></p>
+                     <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
                      <br/>
                      <div id="index-yazar-kimlik"><a href="profil/<?php echo seo_link($row['user']); ?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></div>
                   </div>
@@ -47,7 +47,7 @@
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
-                     <p id="index-konu-icerik"><?php print_r($row['konu_icerik']);?></p>
+                     <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
                      <br/>
                      <div id="index-yazar-kimlik"><a href="profil/<?php echo seo_link($row['user']); ?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></div>
                   </div>
@@ -72,7 +72,7 @@
                   <div id="konu">
                      <h3 id="index-konu-baslik"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a></h3>
                      <br/>
-                     <p id="index-konu-icerik"><?php print_r($row['konu_icerik']);?></p>
+                     <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
                      <br/>
                      <div id="index-yazar-kimlik"><a href="profil/<?php echo seo_link($row['user']); ?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></div>
                   </div>
