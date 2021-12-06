@@ -13,9 +13,9 @@ function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait k
 	return $row;
 }
 
-function seo_link($s) // bu fonksiyon querystring halindeki url'yi seo uyumlu link halinde return eder.
+function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi istenen URL
 {
-	$tr = array('ş','Ş','ı','I','İ','ğ','Ğ','ü','Ü','ö','Ö','Ç','ç','(',')','/',' ',',','?'); 
+	$tr = array('ş','Ş','ı','I','İ','ğ','Ğ','ü','Ü','ö','Ö','Ç','ç','(',')','/',' ',',','?');
 	$eng = array('s','s','i','i','i','g','g','u','u','o','o','c','c','','','-','-','',''); 
 	$s = str_replace($tr,$eng,$s);
 	$s = strtolower($s);
@@ -25,7 +25,7 @@ function seo_link($s) // bu fonksiyon querystring halindeki url'yi seo uyumlu li
 	$s = preg_replace('/#/', '', $s);
 	$s = str_replace('.', '', $s);
 	$s = trim($s, '-');
-	return $s; 
+	return $s;
 }
 
 ?>

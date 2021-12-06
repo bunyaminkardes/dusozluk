@@ -70,7 +70,7 @@ else
 		}
 		else
 		{
-			echo "başarısızlık";
+			echo "hata";
 		}
 	}
 	if(isset($hakkinda) && $hakkinda!= "") // kullanıcı sadece hakkındayı güncellemek isterse burası çalışacak. hakkında boş olmamalı çünkü her türlü formdan hakkında post edilecek butona basıldığında. boş gelirse güncelleme yapmasın, boşu boşuna hakkında silinir sonra.

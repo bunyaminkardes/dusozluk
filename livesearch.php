@@ -8,6 +8,28 @@ $hint = "";
 
 
 
+$sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_baslik LIKE '$q%' ORDER BY mesajsayisi DESC LIMIT 10 ");
+$sorgu->fetch(PDO::FETCH_ASSOC);
+$sorgu->execute();
+if($sorgu->rowCount()>0)
+{
+    foreach($sorgu as $row)
+    {
+        ?>
+        <a style="text-decoration: none; color:#f2058f; font-weight: bold; padding-left:5px;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>">konu : <?php echo $row['konu_baslik']; ?> </a>
+        <br/>
+        <?php
+    }
+}
+else
+{
+    echo "sonuç bulunamadı";
+}
+
+
+
+
+/*
 $sorgu = $baglanti->prepare("SELECT kullaniciadi FROM uyeler");
 $sorgu->fetch(PDO::FETCH_ASSOC);
 $sorgu->execute();
@@ -55,3 +77,4 @@ if($q !== "") //
 
 
 ?>
+*/

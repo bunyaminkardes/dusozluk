@@ -1,27 +1,3 @@
-function goster()
-{
-    document.getElementById("mobilkategori").style.display="block";
-}
-
-function kategori_goster()
-{
-    document.getElementById("yanbar-kategori").style.display="block";
-}
-function kategorigostergizle($gosterilecekolan,$gizlenecekolan1,$gizlenecekolan2,$gizlenecekolan3,$gizlenecekolan4,$gizlenecekolan5,$gizlenecekolan6,$gizlenecekolan7,$gizlenecekolan8,$gizlenecekolan9)
-{
-    document.getElementById($gosterilecekolan).style.display="block";
-    document.getElementById($gizlenecekolan1).style.display="none";
-    document.getElementById($gizlenecekolan2).style.display="none";
-    document.getElementById($gizlenecekolan3).style.display="none";
-    document.getElementById($gizlenecekolan4).style.display="none";
-    document.getElementById($gizlenecekolan5).style.display="none";
-    document.getElementById($gizlenecekolan6).style.display="none";
-    document.getElementById($gizlenecekolan7).style.display="none";
-    document.getElementById($gizlenecekolan8).style.display="none";
-    document.getElementById($gizlenecekolan9).style.display="none";
-    document.getElementById("yanbar-kategori").style.display="none";
-};
-
 function ipucugoster(str)
 {
     if(str.length == 0)
@@ -43,6 +19,20 @@ function ipucugoster(str)
         xmlhttpnesnesi.send();
     }
 }
+function kategorigostergizle($gosterilecekolan,$gizlenecekolan1,$gizlenecekolan2,$gizlenecekolan3,$gizlenecekolan4,$gizlenecekolan5,$gizlenecekolan6,$gizlenecekolan7,$gizlenecekolan8,$gizlenecekolan9)
+{
+    document.getElementById($gosterilecekolan).style.display="block";
+    document.getElementById($gizlenecekolan1).style.display="none";
+    document.getElementById($gizlenecekolan2).style.display="none";
+    document.getElementById($gizlenecekolan3).style.display="none";
+    document.getElementById($gizlenecekolan4).style.display="none";
+    document.getElementById($gizlenecekolan5).style.display="none";
+    document.getElementById($gizlenecekolan6).style.display="none";
+    document.getElementById($gizlenecekolan7).style.display="none";
+    document.getElementById($gizlenecekolan8).style.display="none";
+    document.getElementById($gizlenecekolan9).style.display="none";
+    document.getElementById("yanbar-kategori").style.display="none";
+}
 
 
 var input = document.getElementById("ara");
@@ -60,9 +50,22 @@ document.addEventListener('DOMContentLoaded', function ()
             document.getElementById("ajaxlivesearch").style.display="block";
             document.getElementById("mobilkategori").style.display="none";
         }
-    });
-});
+    }
+    );
+}
+);
 
+
+function goster()
+{
+    document.getElementById("mobilkategori").style.display="block";
+}
+
+
+function kategori_goster()
+{
+    document.getElementById("yanbar-kategori").style.display="block";
+}
 
 
 const hedefdiv = document.getElementById("mobilkategori");
@@ -81,12 +84,6 @@ buton.onclick = function ()
 
 const hedefdiv2 = document.getElementById("yanbar-kategori");
 const buton2 = document.getElementById("yanbar-kategori-butonu");
-/*
-    butonlara bir kere basildiginda ikinci kez basilamiyordu, onun yuzunden bunlari ekledik.
-    hedefdivin display ozelligi none degilse none yapiyor yani kapatiyor. none ise de block
-    yapiyor yani aciyor. divin display ozelligine none verdigimizde sorunsuz calisiyor ancak
-    bunu external css olarak verdigimizde calismiyor, inline olarak verdigimizde calisiyor.
-*/
 buton2.onclick = function () 
 {
     if (hedefdiv2.style.display !== "none") 
@@ -98,3 +95,4 @@ buton2.onclick = function ()
         hedefdiv2.style.display = "block";
     }
 };
+

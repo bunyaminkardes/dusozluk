@@ -1,4 +1,7 @@
 @charset "UTF-8";
+
+/* BÜNYAMİN KARDEŞ */
+
 *
 {
 	box-sizing: border-box;
@@ -25,6 +28,12 @@ body
 	--baslikrenkleri :#282A35;
 	--konumesajrenkleri :#282A35;
 }
+.focus
+{
+	width:0px;
+	height:0px;
+	border:none;
+}
 #ajaxlivesearch
 {
 	background-color: var(--temarengidivler);
@@ -35,7 +44,7 @@ body
 	border-top-width: 0px;
 	border-radius: 5px 5px 0px 0px;
 	position: absolute;
-	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top vermeliyiz. */
+	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top ver. */
 	display: none;
 	z-index: 999999;
 }
@@ -449,7 +458,6 @@ body
 .giris-div
 {
 	width: 300px;
-	height: 550px;
 	position: relative;
 	display: block;
 	margin:0 auto;
@@ -482,7 +490,7 @@ body
 	height: 40px;
 	background-color: var(--temarengi);
 	border:none;
-	margin-top:60px;
+	margin-top:20px;
 	color:white;
 }
 #buton:hover
@@ -505,7 +513,6 @@ body
 .hatadiv
 {
 	width: 100%;
-	position: absolute;
 	margin-top:20px;
 }
 #hatamesaj
@@ -645,10 +652,10 @@ body
 }
 #konular-yazar-kimlik-kimlik
 {
-	width: 100%;
+	width: 60%;
 	font-family:var(--temayazitipi);
 	font-size:14px;
-	float: left;
+	float: right;
 }
 #konular-yazar-kimlik-kimlik a
 {
@@ -661,10 +668,17 @@ body
 }
 .konular-yazar-like-dislike
 {
-	float:left;
+	display: inline-block;
 	width:40%;
 	height: 100%;
-	float:left;
+	font-size:14px;
+	font-weight: bold;
+	padding-left:5px;
+}
+.konular-yazar-like-dislike a
+{
+	text-decoration: none;
+	color:var(--temarengi);
 }
 .konular-kullanicimesajkapsayicisi
 {
