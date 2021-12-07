@@ -3,78 +3,39 @@
 require_once("baglanti.php");
 require_once("kutuphane.php");
 
-$q = $_REQUEST['q']; // yazdığımız ajax fonksiyonu çalıştığında buraya bir q değişkeni gönderilecek. onu depolayalım.
-$hint = "";
+$q = $_REQUEST['q'];
 
-
-
-$sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_baslik LIKE '$q%' ORDER BY mesajsayisi DESC LIMIT 10 ");
-$sorgu->fetch(PDO::FETCH_ASSOC);
-$sorgu->execute();
-if($sorgu->rowCount()>0)
+$konuSorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_baslik LIKE '%$q%' ORDER BY mesajsayisi DESC LIMIT 6 ");
+$konuSorgu->fetch(PDO::FETCH_ASSOC);
+$konuSorgu->execute();
+if($konuSorgu->rowCount()>0)
 {
-    foreach($sorgu as $row)
+    foreach($konuSorgu as $row)
     {
         ?>
-        <a style="text-decoration: none; color:#f2058f; font-weight: bold; padding-left:5px;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>">konu : <?php echo $row['konu_baslik']; ?> </a>
+        <a style="text-decoration: none; color:#f2058f; font-weight: bold;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>">
+            konu : <?php echo $row['konu_baslik']; ?> 
+        </a>
         <br/>
         <?php
     }
 }
-else
+$kullaniciSorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi LIKE '%$q%' LIMIT 6 ");
+$kullaniciSorgu->fetch(PDO::FETCH_ASSOC);
+$kullaniciSorgu->execute();
+if($kullaniciSorgu->rowCount()>0)
 {
-    echo "sonuç bulunamadı";
-}
-
-
-
-
-/*
-$sorgu = $baglanti->prepare("SELECT kullaniciadi FROM uyeler");
-$sorgu->fetch(PDO::FETCH_ASSOC);
-$sorgu->execute();
-if($q !== "") //
-{
-    $q = strtolower($q); // strtolower fonksiyonu string bir ifadenin harflerini küçük harfe çevirir.
-    $len = strlen($q);   // strlen fonksiyonu string bir ifadenin uzunluğunu return eder.
-    foreach($sorgu as $row) 
+    foreach($kullaniciSorgu as $row)
     {
-        $row = array_unique($row); // array_unique fonksiyonu dizide tekrar eden değerleri atarak tekrar etmeyen halini return eder.
-        $row = implode(",",$row);  // implode fonksiyonu dizideki elemanları string hale getirip return eder. 
-        if(stristr($q, substr($row, 0, $len))) // substr fonksiyonu string bir ifadenin istenilen bir parçasını return eder. stristr ise string bir ifadenin içinde istenilen stringi arar.
-        {
-            if($hint==="")
-            {
-                $hint=$row;
-            }
-            else
-            {
-                //burada echo işlemi yapma.
-                //$hint .="<br/>$name"; //$hint değişkenini $name değişkeni ile birleştiriyor.
-            }
-        }
-    }
-}
- 
- 
- if($hint === "")
- {
-    echo ("sonuç bulunamadı");
- }
- else
- { 
-
         ?>
-        <a style="text-decoration: none; color:#f2058f; font-weight: bold; padding-left:5px;" href="profil/<?php echo seo_link($hint);?>">kullanıcı : <?php echo $hint; ?> </a>
+        <a style="text-decoration: none; color:#282A35; font-weight: bold;" href="profil/<?php echo seo_link($row['kullaniciadi']);?>">
+            kullanıcı : <?php echo $row['kullaniciadi']; ?> 
+        </a>
         <br/>
         <?php
- }
-
-
-
-
-
-
-
-?>
-*/
+    }
+}
+if($konuSorgu->rowCount()==0 && $kullaniciSorgu->rowCount()==0)
+{
+    echo "Sonuç Bulunamadı.";
+}

@@ -1,21 +1,11 @@
 @charset "UTF-8";
 
-/* BÜNYAMİN KARDEŞ */
-
 *
 {
 	box-sizing: border-box;
 	outline: none;
 	margin:0;
 	padding:0;
-}
-html
-{
-
-}
-body
-{
-	background-color: var(--arkaplanrenk);
 }
 :root
 {
@@ -27,6 +17,13 @@ body
 	--navbar:#282A35;
 	--baslikrenkleri :#282A35;
 	--konumesajrenkleri :#282A35;
+}
+html
+{
+}
+body
+{
+	background-color: var(--arkaplanrenk);
 }
 .focus
 {
@@ -44,7 +41,7 @@ body
 	border-top-width: 0px;
 	border-radius: 5px 5px 0px 0px;
 	position: absolute;
-	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px top ver. */
+	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px. */
 	display: none;
 	z-index: 999999;
 }
@@ -572,7 +569,48 @@ body
 	border-width: 1px;
 	border-color:#9b9b9b;
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 
+#konuac-baslik
+{
+	padding-top: 30px;
+	text-align:center;
+	font-size:23px;
+}
+#konuac-konubasligi
+{
+	width:50%;
+	height: 35px;
+	display: block;
+	position: relative;
+	top:20px;
+	margin: auto;
+}
+#konuac-konuicerigi
+{
+	width:70%;
+	height: 100px;
+	display: block;
+	position: relative;
+	top:40px;
+	resize: none;
+	margin: auto;
+}
+#konuac-konuturu
+{
+	display: block;
+	position: relative;
+	top: 60px;
+	margin:0 auto;
+}
+#konuac-buton
+{
+	width:90px;
+	height: 30px;
+	display: block;
+	position: relative;
+	top:80px;
+	margin: auto;
 }
 /* ------------------------------------------- konuac.php bitiş ------------------------------------------- */
 
@@ -872,6 +910,7 @@ body
 	font-size:24px;
 	padding-top:35px;
 	color:var(--temarengi);
+	clear:both;
 }
 .profil-yorum-div
 {
@@ -947,15 +986,135 @@ body
 	height: 40px;
 	float: left;
 }
+.profil-bar
+{
+	width:100%;
+	min-height: 130px;
+	margin-left:10px;
+	margin-top:20px;
+	float:right;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	padding:5px;
+}
+.pp
+{
+	width: 120px;
+	height: 120px;
+	object-fit:cover;
+	object-position: 50% 50%;
+	float:left;
+	border-style:solid;
+	border-width:2px;
+	border-radius: 0%;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	display: block;
+}
+.pp-user-bilgisi
+{
+	text-align:center;
+	font-family:var(--temayazitipi);
+	font-size:22px;
+	padding-left:20px;
+	color:var(--temarengi);
+	float:right;
+}
+.profil-hakkinda
+{
+	width:100%;
+	min-height: 200px;
+	padding-top:10px;
+	margin-top:30px;
+	clear:both;
+	float:left;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#profil-hakkinda-baslik
+{
+	font-size:18px;
+	text-align: center;
+	color:var(--temarengi);
+	font-family:var(--temayazitipi);
+}
+#profil-hakkinda-hakkinda
+{
+	font-size:15px;
+	padding-left:10px;
+	padding-top:10px; 
+	color:black;
+	word-wrap:
+	break-word;
+	white-space: pre-wrap;
+	font-family:var(--temayazitipi);
+	font-weight: lighter; 
+}
 /* ------------------------------------------- profil-content.php bitis ------------------------------------------- */
 
-
+/* ------------------------------------------- profilim-content.php baslangic ------------------------------------------- */
+.profilim-ozellestir-kapsayici
+{
+	width:100%;
+	min-height: 300px;
+	padding-top:10px;
+	margin-top:30px;
+	clear:both;
+	float:left;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#profilim-ozellestir-form
+{
+	width:100%;
+	display: block;
+}
+#profilim-ozellestir-baslik
+{
+	font-size:24px;
+	text-align: center;
+	padding-top:15px;
+	font-family:var(--temayazitipi);
+}
+#profilim-ozellestir-textarea
+{
+	resize:none;
+	width:90%;
+	display:block;
+	margin:0 auto;
+	height: 150px;
+}
+#profilim-ozellestir-ppdegistir
+{
+	width:90%;
+	margin:0 auto;
+	margin-top:10px;
+}
+#profilim-ozellestir-ppdegistir-butonkapsayici
+{
+	width:90%;
+	display: block;
+	margin:0 auto;
+}
+#profilim-ozellestir-ppdegistir-butonkapsayici-buton
+{
+	width:60px;
+	height:35px;
+	margin-bottom:10px;
+	float:right;
+	display:inline-block;
+	margin-top:10px;
+}
+/* ------------------------------------------- profilim-content.php bitis ------------------------------------------- */
 
 /* ------------------------------------------- REKLAMLAR ------------------------------------------- */
-
 #reklam-1
 {
-
 }
 #reklam-1 img
 {
@@ -963,8 +1122,7 @@ body
 	padding-top:10px;
 }
 #reklam-2
-{
-	
+{	
 }
 #reklam-2 img
 {
@@ -975,7 +1133,6 @@ body
 }
 #reklam-3
 {
-
 }
 #reklam-3 img
 {
@@ -983,7 +1140,6 @@ body
 }
 #reklam-4
 {
-
 }
 #reklam-4 img
 {
@@ -992,7 +1148,6 @@ body
 }
 #reklam-5
 {
-
 }
 #reklam-5 img
 {
@@ -1001,5 +1156,4 @@ body
 	height: 160px;
 	margin-top:20px;
 }
-
 /* ------------------------------------------- REKLAMLAR ------------------------------------------- */

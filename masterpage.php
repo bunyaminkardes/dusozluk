@@ -1,6 +1,6 @@
 <?php 
    // MAHMUT CAN GENCER
-   //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken aktifleştir. */
+   //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
    require_once("baglanti.php");
    require_once("kutuphane.php");
 ?>
@@ -35,7 +35,7 @@
             <div class="col-12 col-sm-12 col-lg-4" style="">
                   <div class="header-aramakutusu">
                      <form autocomplete="off">
-                        <input id="ara" onkeydown="goster('ipucu')" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="search" placeholder=" konu ara">
+                        <input id="ara" onkeydown="goster('ipucu')" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="search" placeholder=" konu veya kullanıcı ara">
                         <input class="header-aramabutonu" type="button" disabled>
                      </form>
                      <div id="ajaxlivesearch">
@@ -47,43 +47,38 @@
                   </div>
             </div>
             <div class="col-12 col-sm-12 col-lg-4" >
-                     <div class="header-girisvekayitol" >
-                     <ul>
-                        <?php
-                           $cikisbilgisi=0;
-                           if(@$_SESSION['hosgeldiniz']=="") // kullanıcı session bilgisi boşsa, yani giriş yapılmamışsa giriş ve kayıt ol gözükecek.
-                           {
-                              echo  '<li><a href="kayit-ol" id="deneme1">kayıt ol</a></li><li><a href="giris-yap" id="deneme">giriş</a></li>';  
-                           }
-                           else // kullanıcı session bilgisi boş değilse, yani giriş yapılmışsa çıkış yap gözükecek.
-                           {
+               <div class="header-girisvekayitol" >
+                  <ul>
+                     <?php
+                     $cikisbilgisi=0;
+                     if(@$_SESSION['hosgeldiniz']=="") // kullanıcı session bilgisi boşsa, yani giriş yapılmamışsa giriş ve kayıt ol gözükecek.
+                     {
+                        echo '<li><a href="kayit-ol" id="deneme1">kayıt ol</a></li><li><a href="giris-yap" id="deneme">giriş</a></li>';  
+                     }
+                     else // kullanıcı session bilgisi boş değilse, yani giriş yapılmışsa çıkış yap gözükecek.
+                     {
                         ?>
-                              <li><a href="index.php?cikis=<?php echo 1; ?>">çıkış yap</a></li>
-
+                        <li><a href="index.php?cikis=<?php echo 1; ?>">çıkış yap</a></li>
                         <?php
-                              $kullanici = girisyapankullanici(); // ayrıca, kullanıcı banlıysa konu aç da gözükmesin.
-                              if($kullanici['bandurumu']==0)
-                              {
-                        ?>
-                                 <li><a href="konu-ac">konu aç</a></li>
-                        <?php
-                              }
-                           }
-
-
-                           @$cikisbilgisi=$_GET['cikis'];
-                           if ($cikisbilgisi==1) // cikis bilgisi 1 ise session'lar yok edilip çıkış yapılacak ve kullanıcı anasayfaya yönlendirilecek.
-                           {
-                              echo "<script type='text/javascript'> document.location = 'anasayfa'; </script>";
-                              session_unset();
-                              session_destroy();
-                           }
-                        ?>
-                           <li>
-                              <a href="profilim.php?kullanici=<?php echo @$_SESSION['girisyapankullanici']; ?>" id="a00"><?php echo @$_SESSION['hosgeldiniz'];?></a>
-                           </li>
-                     </ul>
-                  </div>
+                        $kullanici = girisyapankullanici(); // ayrıca, kullanıcı banlıysa konu aç da gözükmesin.
+                        if($kullanici['bandurumu']==0)
+                        {
+                           ?>
+                           <li><a href="konu-ac">konu aç</a></li>
+                           <?php
+                        }
+                     }
+                     @$cikisbilgisi=$_GET['cikis'];
+                     if ($cikisbilgisi==1) // cikis bilgisi 1 ise session'lar yok edilip çıkış yapılacak ve kullanıcı anasayfaya yönlendirilecek.
+                     {
+                        echo "<script type='text/javascript'> document.location = 'anasayfa'; </script>";
+                        session_unset();
+                        session_destroy();
+                     }
+                     ?>
+                     <li><a href="profilim.php?kullanici=<?php echo @$_SESSION['girisyapankullanici']; ?>" id="kullanicihosgeldin"><?php echo @$_SESSION['hosgeldiniz'];?></a></li>
+                  </ul>
+               </div>
             </div>
             <div class="col-12 col-sm-12" style="height: 1px; background-color: gray;">
             </div>
@@ -493,13 +488,12 @@
            
             <!---------------------------------------------- SAGBAR BASLANGIC ----------------------------------------------->
             <div class="col-12 col-sm-12 col-lg-2"> 
+
                <div class="sagbar">
+
                   <div id="reklam-3" class="d-none">
                         <img alt="Reklam 3" src="resimler/reklam5.jpg">
                   </div>
- 
-
-
 
                   <div class="sagbar-div">
                               <h5 class="sagbar-yazilar-baslik">Son Mesajlar</h5>
@@ -528,8 +522,6 @@
                                  ?>
                   </div>
 
-
-
                   <div class="sagbar-div">
                                 <h5 class="sagbar-yazilar-baslik">İstatistikler</h5>
                                <a class="sagbar-yazilar">Toplam konu sayısı :
@@ -555,9 +547,11 @@
                                </a>
                   </div>
                </div>
+               
                 <div id="reklam-4" class="d-none">
                    <img alt="Reklam 4" src="resimler/reklam5.jpg">
                </div>
+
             </div> 
             <!---------------------------------------------- SAGBAR BITIS ----------------------------------------------->
          </div>
@@ -637,20 +631,20 @@
             else if($row['bandurumu']==1)
             {?>
                <script type="text/javascript">
-                  document.getElementById("a00").style.textDecoration="line-through";
-                  document.getElementById("a00").style.color="#ff0000";
+                  document.getElementById("kullanicihosgeldin").style.textDecoration="line-through";
+                  document.getElementById("kullanicihosgeldin").style.color="#ff0000";
                </script><?php
             }
             if($row['rutbe']=="admin")
             {?>
                <script type="text/javascript">
-                  document.getElementById("a00").style.color="#f27900";
+                  document.getElementById("kullanicihosgeldin").style.color="#f27900";
                </script><?php
             }
             else if($row['rutbe']=="moderator")
             {?>
                <script type="text/javascript">
-                  document.getElementById("a00").style.color="#1d9bf0";
+                  document.getElementById("kullanicihosgeldin").style.color="#1d9bf0";
                </script><?php
             }
          }

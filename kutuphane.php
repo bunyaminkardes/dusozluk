@@ -28,5 +28,13 @@ function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi iste
 	return $s;
 }
 
+function ters_seo_link($s) // kullanıcıların profillerinde en son 10 yorumları gözüküyor, ancak veritabanına seo linkli halleri kaydedilmiş, estetik dursun diye tekrar işlem yapalım.
+{
+	$degistirilecek = '-';
+	$sunadegistir = " ";
+	$s = str_replace($degistirilecek, $sunadegistir, $s);
+	return $s;
+}
+
 ?>
  

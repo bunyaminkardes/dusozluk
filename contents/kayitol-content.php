@@ -21,7 +21,7 @@
 				<h5 id="giris-yazilar-1">şifrenizi tekrar giriniz</h5>
 				<input type="password" name="sifrekayit2" placeholder="Şifrenizi tekrar giriniz" id="sifre" maxlength="30" required>
 				<h5 id="giris-yazilar-1">Şifre :<br/>Minimum 8 karakterden oluşmalı<br/>1 adet büyük harf<br/>1 adet küçük harf<br/>1 adet rakam içermeli<br/>
-				<div id="sozlesme"><input type="checkbox"><a href="#">sözleşmeyi okudum ve kabul ediyorum.</a></div>
+				<!--<div id="sozlesme"><input type="checkbox"><a href="#">sözleşmeyi okudum ve kabul ediyorum.</a></div>-->
 				<input type="submit" value="Kayıt ol" id="buton">
 				<div class="hatadiv">
 					<h3 id="hatamesaj">Kayıt başarısız.</h3>

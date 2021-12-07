@@ -23,10 +23,10 @@
 		<body>
 		<div id="konuac">
 		<form method="POST" action="">
-			<h3 style="padding-top: 30px; text-align:center; font-size:23px; ">- konu aç -</h3>
-			<input style="width:50%; height: 35px; display: block; position: relative; top:20px; margin: auto;" type="textbox" name="konu_baslikk" autofocus placeholder="konu başlığı (maksimum 60 karakter)" maxlength="60" required>
-			<textarea style="width:70%; height: 100px; display: block; position: relative; top:40px; resize: none; margin: auto;" name="konu_icerikk" placeholder="konu içeriği (maksimum 6000 karakter)" maxlength="6000" required></textarea>
-			<select name="konu_turu" style="display: block; position: relative; top: 60px; margin:0 auto;">
+			<h3 id="konuac-baslik">- konu aç -</h3>
+			<input id="konuac-konubasligi" type="textbox" name="konu_baslikk" autofocus placeholder="konu başlığı (maksimum 60 karakter)" maxlength="60" required>
+			<textarea id="konuac-konuicerigi" name="konu_icerikk" placeholder="konu içeriği (maksimum 6000 karakter)" maxlength="6000" required></textarea>
+			<select id="konuac-konuturu" name="konu_turu">
 				<option value="Secilmemis">Lütfen Konu türünü seçiniz.</option>
   				<option value="Siyaset">Siyaset</option>
   				<option value="Ekonomi">Ekonomi</option>
@@ -37,7 +37,7 @@
   				<option value="Anime">Anime</option>
   				<option value="Genel">Genel</option>
 			</select>
-			<input style="width:90px; height: 30px; display: block; position: relative; top:80px; margin: auto;" type="submit" value="konu aç">
+			<input id="konuac-buton" type="submit" value="konu aç">
 			<br/><br/><br/><br/><br/><br/>
 			<?php
 				session_start();
@@ -48,7 +48,6 @@
 				
 				date_default_timezone_set('Europe/Istanbul');
 				$tarih = date("d-m-Y H:i");
-
 
 				if (isset($_POST['konu_baslikk']) && isset($_POST['konu_icerikk']) && isset($_POST['konu_turu']) ) // konu başlığı ve konu içeriği post edilmişse konu açılacak demektir, veritabanına insert edelim.
 				{
@@ -68,7 +67,6 @@
 					{
 						echo "Hata, büyük ihtimalle bu isimde zaten bir konu bulunuyor.";
 					}
-
 				}
 				else
 				{

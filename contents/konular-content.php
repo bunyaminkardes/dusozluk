@@ -31,7 +31,6 @@
    $mesajsil = $_GET['mesaj'];
 
 
-
    $sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
    $sorgu->bindParam(':id',$id);
    $sorgu->fetch(PDO::FETCH_ASSOC);
@@ -63,7 +62,6 @@
               <p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
               <br/>
           </div>
-
 
           <div style="float:left; position: relative; width: 100%; ">
             <div id="konular-yazar-kimlik">
@@ -154,25 +152,20 @@
    			?> 
           <div class="konular-kullanicimesajkapsayicisi">
               <h3 id="konular-kullanicimesaj"><?php echo $row['mesaj'];?></h3>
-
-
-              <?php
-              //giriş yapan kullanıcı sadece admin veya moderatörse mesaj sil butonu gözüksün.
-              $kullanici = girisyapankullanici();
-              if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-              {
+                <?php
+                //giriş yapan kullanıcı sadece admin veya moderatörse mesaj sil butonu gözüksün.
+                $kullanici = girisyapankullanici();
+                if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
+                {
+                  ?>
+                <button id="konular-mesaj-sil">
+                 <a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>?mesajid=<?php echo $row['mesajid']; ?>">
+                    mesajı sil
+                 </a>
+                </button>
+                <?php
+                }
                 ?>
-              <button id="konular-mesaj-sil">
-               <a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>?mesajid=<?php echo $row['mesajid']; ?>">
-                  mesajı sil
-               </a>
-              </button>
-              <?php
-              }
-              ?>
-
-
-
           </div>
           <div style="float:left; position: relative; width:100%; height: 20px; background-color: #eeeeee; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;">
             <div id="konular-kullanici-kimlik">
@@ -184,6 +177,9 @@
        }
    }
    ?>
+
+
+
     <ul class="pagination" id="pagi" style="float:right; padding-top:30px;">
         <li class="page-item" id="onceki"><a class="page-link" href="konular.php?id=<?php echo $hangisayfadayim; ?>&sayfaid=<?php echo $sayfaid-1; ?>&konu=<?php echo $row['konu']; ?>">Önceki</a></li>
         <form>
@@ -205,76 +201,55 @@
 
         </form>
         <li class="page-item" id="sonraki"><a class="page-link" href="konular.php?id=<?php echo $hangisayfadayim; ?>&sayfaid=<?php echo $sayfaid+1; ?>&konu=<?php echo $row['konu']; ?>">Sonraki</a></li>
-
     </ul>
 
 
 
-
-
-
-
-
-
-    <?php
-                        // eğer giriş yapan kullanıcı banlı değilse sadece konulara mesaj ekleme kısmı gözüksün.
-                        $kullanici = girisyapankullanici();
-                        if($kullanici['bandurumu']==0)
-                        {
-                     ?>
-                           <div id="main-mesajekle-div">
-                     <?php 
-                              if(isset($_SESSION['girisyapankullanici']))
-                              {
-                                 echo " <script type='text/javascript'>document.getElementById('main-mesajekle-div').style.display='block';</script>";
-                              }
-                     ?>
-                              <h3 id="main-mesajekle-baslik">-Mesaj Ekle-</h3>
-                              <form id="main-mesajekle-form" method="POST">
-                              <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder="mesajınız... (maksimum 1500 karakter)" required></textarea>
-                              <input style="float:right; width:80px; border:none; height: 30px; background-color: var(--temarengi); color:#ffffff;" type="submit" value="Gönder">
-                     <?php 
-                              @$mesaj = $_POST['mesajekle'];                            
-                              @$konuid = $_GET['id'];
-                              @$konuisim = $_GET['konu'];
-                              $userrr = $_SESSION['girisyapankullanici'];
-                              date_default_timezone_set('Europe/Istanbul');
-                              $tarihbilgisi = date("d-m-Y H:i");
-                              //echo $konuid." ".$mesaj." ".$konuisim." ".$userrr." ".$tarihbilgisi; #DEBUG
-                                 if (isset($mesaj) && isset($konuid)) 
-                                 {
-                                    $komutt = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
-                                    $komutt->bindParam(':konuid',$konuid);
-                                    $komutt->bindParam(':mesaj',$mesaj);
-                                    $komutt->bindParam(':konuisim',$konuisim);
-                                    $komutt->bindParam(':userrr',$userrr);
-                                    $komutt->bindParam(':tarihbilgisi',$tarihbilgisi);
-                                    $komutt->execute();
-
-
-                                 $guncellemesorgusu = "UPDATE konular SET mesajsayisi=mesajsayisi+1 WHERE id ='$konuid'"; //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
-                                 $prepareislemi = $baglanti->prepare($guncellemesorgusu);
-                                 $prepareislemi->execute();
-                            
-                                 echo "<script> location = location; </script>";
-
-                                 }
-
-                     ?>
-                              </form>
-                           </div>
-                     <?php
-                        }
-                     ?>
-
-
-
-
-
-
-
-    
-
+<?php
+    // eğer giriş yapan kullanıcı banlı değilse sadece konulara mesaj ekleme kısmı gözüksün.
+    $kullanici = girisyapankullanici();
+    if($kullanici['bandurumu']==0)
+    {
+      ?>
+      <div id="main-mesajekle-div">
+        <?php 
+        if(isset($_SESSION['girisyapankullanici']))
+        {
+          echo " <script type='text/javascript'>document.getElementById('main-mesajekle-div').style.display='block';</script>";
+        }
+        ?>
+        <h3 id="main-mesajekle-baslik">-Mesaj Ekle-</h3>
+        <form id="main-mesajekle-form" method="POST">
+          <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder="mesajınız... (maksimum 1500 karakter)" required></textarea>
+          <input style="float:right; width:80px; border:none; height: 30px; background-color: var(--temarengi); color:#ffffff;" type="submit" value="Gönder">
+          <?php 
+          @$mesaj = $_POST['mesajekle'];                            
+          @$konuid = $_GET['id'];
+          @$konuisim = $_GET['konu'];
+          $userrr = $_SESSION['girisyapankullanici'];
+          date_default_timezone_set('Europe/Istanbul');
+          $tarihbilgisi = date("d-m-Y H:i");
+          if (isset($mesaj) && isset($konuid)) 
+          {
+            $komutt = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
+            $komutt->bindParam(':konuid',$konuid);
+            $komutt->bindParam(':mesaj',$mesaj);
+            $komutt->bindParam(':konuisim',$konuisim);
+            $komutt->bindParam(':userrr',$userrr);
+            $komutt->bindParam(':tarihbilgisi',$tarihbilgisi);
+            $komutt->execute();
+                                   
+            $guncellemesorgusu = "UPDATE konular SET mesajsayisi=mesajsayisi+1 WHERE id ='$konuid'"; //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
+            $prepareislemi = $baglanti->prepare($guncellemesorgusu);
+            $prepareislemi->execute();
+            echo "<script> location = location; </script>";
+          }
+          ?>
+        </form>
+      </div>
+      <?php
+    }
+?>
 
 <?php 
 $mesajid = $_GET['mesajid'];
@@ -307,13 +282,7 @@ if(isset($_GET['mesajid']))
   $prepareislemi->execute();
   echo "<script> setTimeout(function(){ window.location.href='index.php'; }, 1500); </script>";
 }
-
-
 ?>
-
-
-
-
 
 <?php 
 # DISPLAY - VISIBILITY ISLEMLERI #
@@ -339,39 +308,4 @@ if(isset($_GET['mesajid']))
   {
     echo "<script>document.getElementById('onceki').style.display = 'none';</script>";
   }
-
-
-  $sorgu = $baglanti->query(" SELECT * FROM uyeler WHERE kullaniciadi = '$girisyapankullanici'  ", PDO::FETCH_ASSOC);
-  if($sorgu->rowCount()>0)
-    {
-      foreach($sorgu as $row)
-      {
-        if($row['rutbe']=="admin")
-        {
-          echo "<script>document.getElementById('konuyusil').style.display = 'block';</script>";
-          echo 
-          "<script>
-            for (let element of document.getElementsByClassName('mesajsil'))
-              {
-                element.style.display='block';
-              }
-          </script>";
-        }
-        if($row['rutbe']=="moderator")
-        {
-          echo "<script>document.getElementById('konuyusil').style.display = 'block';</script>";
-          echo 
-          "<script>
-            for (let element of document.getElementsByClassName('mesajsil'))
-              {
-                element.style.display='block';
-              }
-          </script>";
-        }
-        if($row['rutbe']=="uye")
-        {
-          echo "<script>document.getElementById('konuyusil').style.display = 'none';</script>";
-        }
-      }
-   }
 ?>

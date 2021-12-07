@@ -19,22 +19,6 @@ function ipucugoster(str)
         xmlhttpnesnesi.send();
     }
 }
-function kategorigostergizle($gosterilecekolan,$gizlenecekolan1,$gizlenecekolan2,$gizlenecekolan3,$gizlenecekolan4,$gizlenecekolan5,$gizlenecekolan6,$gizlenecekolan7,$gizlenecekolan8,$gizlenecekolan9)
-{
-    document.getElementById($gosterilecekolan).style.display="block";
-    document.getElementById($gizlenecekolan1).style.display="none";
-    document.getElementById($gizlenecekolan2).style.display="none";
-    document.getElementById($gizlenecekolan3).style.display="none";
-    document.getElementById($gizlenecekolan4).style.display="none";
-    document.getElementById($gizlenecekolan5).style.display="none";
-    document.getElementById($gizlenecekolan6).style.display="none";
-    document.getElementById($gizlenecekolan7).style.display="none";
-    document.getElementById($gizlenecekolan8).style.display="none";
-    document.getElementById($gizlenecekolan9).style.display="none";
-    document.getElementById("yanbar-kategori").style.display="none";
-}
-
-
 var input = document.getElementById("ara");
 document.addEventListener('DOMContentLoaded', function () 
 {
@@ -54,20 +38,6 @@ document.addEventListener('DOMContentLoaded', function ()
     );
 }
 );
-
-
-function goster()
-{
-    document.getElementById("mobilkategori").style.display="block";
-}
-
-
-function kategori_goster()
-{
-    document.getElementById("yanbar-kategori").style.display="block";
-}
-
-
 const hedefdiv = document.getElementById("mobilkategori");
 const buton = document.getElementById("kategoriacbutonu");
 buton.onclick = function () 
@@ -95,4 +65,25 @@ buton2.onclick = function ()
         hedefdiv2.style.display = "block";
     }
 };
-
+function kategorigostergizle($gosterilecekolan,$gizlenecekolan1,$gizlenecekolan2,$gizlenecekolan3,$gizlenecekolan4,$gizlenecekolan5,$gizlenecekolan6,$gizlenecekolan7,$gizlenecekolan8,$gizlenecekolan9)
+{
+    document.getElementById($gosterilecekolan).style.display="block";
+    document.getElementById($gizlenecekolan1).style.display="none";
+    document.getElementById($gizlenecekolan2).style.display="none";
+    document.getElementById($gizlenecekolan3).style.display="none";
+    document.getElementById($gizlenecekolan4).style.display="none";
+    document.getElementById($gizlenecekolan5).style.display="none";
+    document.getElementById($gizlenecekolan6).style.display="none";
+    document.getElementById($gizlenecekolan7).style.display="none";
+    document.getElementById($gizlenecekolan8).style.display="none";
+    document.getElementById($gizlenecekolan9).style.display="none";
+    document.getElementById("yanbar-kategori").style.display="none";
+}
+function goster()
+{
+    document.getElementById("mobilkategori").style.display="block";
+}
+function kategori_goster()
+{
+    document.getElementById("yanbar-kategori").style.display="block";
+}
