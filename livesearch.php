@@ -1,7 +1,6 @@
 <?php 
-
-require_once("baglanti.php");
 require_once("kutuphane.php");
+error_reporting(0);
 
 $q = $_REQUEST['q'];
 
