@@ -33,7 +33,9 @@
 						$kayitsifre = $_POST['sifrekayit'];
 						$onaysifre = $_POST['sifrekayit2'];
 						$bandurumu = 0;
-						$hakkinda = "Bu kullanici kendisi hakkinda bir sey belirtmemis.";
+						$hakkinda = "Bu kullanıcı kendisi hakkında bir şey belirtmemiş.";
+						date_default_timezone_set('Europe/Istanbul');
+						$kayitTarihi = date("d-m-Y H:i");
 						$pp = NULL; 
 						if (isset($_SESSION['girisyapankullanici'])) //oturum açıksa bu sayfaya girilemesin.
 						{
@@ -62,13 +64,15 @@
 							{
 								if($kayitsifre == $onaysifre)
 								{
-									$komut = $baglanti->prepare("INSERT INTO uyeler(kullaniciadi,mail,sifre,bandurumu,pp,hakkinda) VALUES (:kayitkullaniciadi,:kayitmailbilgisi,:kayitsifre,:bandurumu,:pp,:hakkinda)");
+									$komut = $baglanti->prepare("INSERT INTO uyeler(kullaniciadi,mail,sifre,bandurumu,pp,hakkinda,kayitOlmaTarihi,sonGorulmeTarihi) VALUES (:kayitkullaniciadi,:kayitmailbilgisi,:kayitsifre,:bandurumu,:pp,:hakkinda,:kayitOlmaTarihi,:sonGorulmeTarihi)");
 									$komut->bindParam(':kayitkullaniciadi',$kayitkullaniciadi);
 									$komut->bindParam(':kayitmailbilgisi',$kayitmailbilgisi);
 									$komut->bindParam(':kayitsifre',$kayitsifre);
 									$komut->bindParam(':bandurumu',$bandurumu);
 									$komut->bindParam(':pp',$pp);
 									$komut->bindParam(':hakkinda',$hakkinda);
+									$komut->bindParam(':kayitOlmaTarihi',$kayitTarihi);
+									$komut->bindParam(':sonGorulmeTarihi',$kayitTarihi);
 									$komut->execute();
 									if($komut->rowCount()>0) // rowCount 0'dan büyükse veriler veritabanına eklendi demektir. sıkıntı yok.
 									{
