@@ -32,7 +32,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 			}
 			else
 			{
-				?><img class="pp" src="<?php echo $row['pp'];?>"><?php
+				?><img class="pp" src="<?php echo $row['pp'];?>" alt="profil fotoğrafı yüklenirken hata oluştu."><?php
 			}
 		?>
 			<div class="profil-user-kapsayici">
