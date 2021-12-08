@@ -1,7 +1,5 @@
 <?php 
-   // MAHMUT CAN GENCER
    //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
-   require_once("baglanti.php");
    require_once("kutuphane.php");
 ?>
 <!DOCTYPE html>
@@ -18,7 +16,7 @@
    </head>
    <body>
          <!---------------------------------------------- HEADER BASLANGIC ----------------------------------------------->
-      <div class="container-fluid"> 
+      <div class="container-fluid sticky-top" style="z-index: 1050;"> 
          <div class="row">
             <div class="col-12 col-sm-12 col-lg-12" style="background-color: var(--temarengi);">
                <div class="header-yesilbar"></div>
@@ -71,9 +69,17 @@
                      @$cikisbilgisi=$_GET['cikis'];
                      if ($cikisbilgisi==1) // cikis bilgisi 1 ise session'lar yok edilip çıkış yapılacak ve kullanıcı anasayfaya yönlendirilecek.
                      {
-                        echo "<script type='text/javascript'> document.location = 'anasayfa'; </script>";
+                        date_default_timezone_set('Europe/Istanbul');
+                        $sonGorulmeTarihiCikis = date("d-m-Y H:i");
+
+                        $songorulmesorgusuCikis = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
+                        $songorulmesorgusuCikis->bindParam(":sonGorulmeTarihi",$sonGorulmeTarihiCikis);
+                        $songorulmesorgusuCikis->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici']);
+                        $songorulmesorgusuCikis->execute();
+
                         session_unset();
                         session_destroy();
+                        echo "<script type='text/javascript'> document.location = 'anasayfa'; </script>";
                      }
                      ?>
                      <li><a href="profilim.php?kullanici=<?php echo @$_SESSION['girisyapankullanici']; ?>" id="kullanicihosgeldin"><?php echo @$_SESSION['hosgeldiniz'];?></a></li>
@@ -112,13 +118,12 @@
          </div>
       </div> 
       <!---------------------------------------------- HEADER BITIS ----------------------------------------------->
-
       <!---------------------------------------------- MAIN BASLANGIC ----------------------------------------------->
       <div class="container-fluid"> 
          <div class="row">
             <!---------------------------------------------- YANBAR BASLANGIC ----------------------------------------------->
-            <div class="d-none d-sm-block col-12 col-sm-12  col-lg-3 "> <!-- d-none d-sm-block : hide on screens smaller than xs -->
-               <div class="yanbar" >
+            <div class="d-none d-sm-block col-12 col-sm-12  col-lg-3"> <!-- d-none d-sm-block : hide on screens smaller than xs -->
+               <div class="yanbar">
                   <div id="yanbar-kategori" style="display:none;">
                      <button class="yanbar-kategoriler" onclick="kategorigostergizle('siyaset','gundem','enTaze','ekonomi','yasam','spor','genel','muzik','universite','anime')">Siyaset</button>
                      <button class="yanbar-kategoriler" onclick="kategorigostergizle('ekonomi','gundem','enTaze','siyaset','yasam','spor','genel','muzik','universite','anime')">Ekonomi</button>
@@ -590,7 +595,7 @@
                <div class="col-12 col-sm-12 col-lg-3"></div>
          </div>  
       </div>
-         <!---------------------------------------------- FOOTER BITIS ----------------------------------------------->
+      <!---------------------------------------------- FOOTER BITIS ----------------------------------------------->
 
 
 <?php  
@@ -645,6 +650,12 @@
             {?>
                <script type="text/javascript">
                   document.getElementById("kullanicihosgeldin").style.color="#1d9bf0";
+               </script><?php
+            }
+            else if($row['rutbe']=="uye")
+            {?>
+               <script type="text/javascript">
+                  document.getElementById("kullanicihosgeldin").style.color="#f2058f";
                </script><?php
             }
          }
