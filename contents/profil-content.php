@@ -35,7 +35,12 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 				?><img class="pp" src="<?php echo $row['pp'];?>"><?php
 			}
 		?>
-			<h3 class="pp-user-bilgisi"><?php echo strtoupper($userbilgisi);?></h3>
+			<div class="profil-user-kapsayici">
+				<h3 class="pp-user-bilgisi-baslik"><?php echo strtoupper($userbilgisi);?></h3>
+				<h3 class="profil-user-bilgisi-altbasliklar"><?php echo "Üyelik Tarihi : ".$row['kayitOlmaTarihi']; ?></h3>
+				<h3 class="profil-user-bilgisi-altbasliklar"><?php echo "Son Görülme : ".$row['sonGorulmeTarihi']; ?></h3>
+				<button class="profil-dmbutton">Özel mesaj</button>
+			</div>
 		</div>
 		<div class="profil-hakkinda">
 			<h2 id="profil-hakkinda-baslik">Hakkında :</h2>
@@ -72,6 +77,10 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 	 			<div class="profil-yorum-div-ghost"></div> 	
 				<?php
 	 		}
+	 	}
+	 	else if($sorgu->rowCount()==0)
+	 	{
+	 		echo("Bu kullanıcı daha önce hiçbir konuya yorum yapmamış.");
 	 	}
 	}
 }
