@@ -86,6 +86,6 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 }
 else
 {
-	echo "hata";
+	echo "profili görüntülemeye çalışırken hata ile karşılaşıldı.";
 }
 ?>
