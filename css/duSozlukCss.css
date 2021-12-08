@@ -427,7 +427,10 @@ body
 .sagbar-yazilar-baslik
 {
 	text-align: center;
-	padding-top: 15px;
+	background-color: var(--baslikrenkleri);
+	color:white;
+	line-height: 40px;
+	font-family: var(--temayazitipi);
 }
 .sagbar-div
 {
