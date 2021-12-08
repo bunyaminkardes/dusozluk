@@ -30,6 +30,10 @@
                   <div style="width: 100%; height: 40px; background-color: #eeeeee; float: left;"></div><?php
                }
             }
+            else if($sorgu->rowCount()==0)
+            {
+               echo "Bu kategoriye ait hiç konu açılmamış.";
+            }
          }
          else if($kategori == "enTaze")
          {
@@ -53,6 +57,10 @@
                   </div>
                   <div style="width: 100%; height: 40px; background-color: #eeeeee; float: left;"></div><?php
                }
+            }
+            else if($sorgu->rowCount()==0)
+            {
+               echo "Bu kategoriye ait hiç konu açılmamış.";
             }
          }
          else
@@ -78,6 +86,10 @@
                   </div>
                   <div style="width: 100%; height: 40px; background-color: #eeeeee; float: left;"></div><?php
                }
+            }
+            else if($sorgu->rowCount()==0)
+            {
+               echo "Bu kategoriye ait hiç konu açılmamış.";
             }
          }
          ?>
