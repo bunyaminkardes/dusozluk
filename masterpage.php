@@ -16,7 +16,7 @@
    </head>
    <body>
          <!---------------------------------------------- HEADER BASLANGIC ----------------------------------------------->
-      <div class="container-fluid sticky-top" style="z-index: 1050;"> 
+      <div class="container-fluid sticky-top"> 
          <div class="row">
             <div class="col-12 col-sm-12 col-lg-12" style="background-color: var(--temarengi);">
                <div class="header-yesilbar"></div>
@@ -229,6 +229,10 @@
                               </div><?php             
                            }
                         }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                        }
                         ?>
                   </div>
                   <div class="yanbar-gundem"  id="ekonomi"      style="display:none;">
@@ -262,6 +266,10 @@
                                  </ul>
                               </div><?php             
                            }
+                        }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
                         }
                         ?>
                   </div>
@@ -297,6 +305,10 @@
                               </div><?php             
                            }
                         }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                        }
                         ?>
                   </div>
                   <div class="yanbar-gundem"  id="spor"         style="display:none;">
@@ -330,6 +342,10 @@
                                  </ul>
                               </div><?php             
                            }
+                        }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
                         }
                         ?>
                   </div>
@@ -365,6 +381,10 @@
                               </div><?php             
                            }
                         }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                        }
                         ?>
                   </div>
                   <div class="yanbar-gundem"  id="universite"   style="display:none;">
@@ -398,6 +418,10 @@
                                  </ul>
                               </div><?php             
                            }
+                        }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
                         }
                         ?>
                   </div>
@@ -433,6 +457,10 @@
                               </div><?php             
                            }
                         }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                        }
                         ?>
                   </div>
                   <div class="yanbar-gundem"  id="genel"        style="display:none;">
@@ -466,6 +494,10 @@
                                  </ul>
                               </div><?php             
                            }
+                        }
+                        else if($sorgu->rowCount()==0)
+                        {
+                           echo "Bu kategoriye ait hiç konu açılmamış.";
                         }
                         ?>
                   </div>
