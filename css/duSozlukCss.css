@@ -131,7 +131,6 @@ body
 .header-girisvekayitol ul li
 {
 	display: inline;
-
 }
 .header-girisvekayitol ul li a
 {
@@ -150,23 +149,20 @@ body
 .header-navbar
 {
 	width: 100%;
-	height: 50px;	
-
+	height: 50px;
 }
-
 .yanbar
 {
 	width: 100%;
-	position:relative;
 	float: right;
 	padding-top: 30px;
+	position: relative;
 }
 .yanbar-gundem
 {
 	width: 100%;
 	background-color: var(--temarengidivler);
 	float:right;
-	/*overflow-y:scroll;*/
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .yanbar-gundem-baslik
@@ -216,6 +212,7 @@ body
 	color:white; 
 	text-decoration: none;
 	text-align: center;
+
 }
 .yanbar-kategoriler:hover
 {
@@ -1002,7 +999,7 @@ body
 .pp
 {
 	width: 120px;
-	height: 120px;
+	height: auto;
 	object-fit:cover;
 	object-position: 50% 50%;
 	float:left;
@@ -1012,14 +1009,37 @@ body
 	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 	display: block;
 }
-.pp-user-bilgisi
+.profil-user-kapsayici
 {
-	text-align:center;
+	float:left;
+	height: 100%;
+	position: relative;
+}
+.pp-user-bilgisi-baslik
+{
 	font-family:var(--temayazitipi);
-	font-size:22px;
+	font-size:18px;
 	padding-left:20px;
 	color:var(--temarengi);
-	float:right;
+}
+.profil-user-bilgisi-altbasliklar
+{
+	font-family:var(--temayazitipi);
+	font-size:16px;
+	color:var(--baslikrenkleri);
+	padding-left:20px;
+}
+.profil-dmbutton
+{
+	width:100px;
+	height: 30px;
+	margin-left:20px;
+	padding:2px;
+	border:none;
+	color:white;
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	background-color:var(--temarengi);
 }
 .profil-hakkinda
 {
