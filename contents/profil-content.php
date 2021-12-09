@@ -89,3 +89,23 @@ else
 	echo "profili görüntülemeye çalışırken hata ile karşılaşıldı.";
 }
 ?>
+
+<?php  
+
+$kullanici = girisyapankullanici();
+date_default_timezone_set('Europe/Istanbul');
+$islemTarihi = date("d-m-Y H:i");
+
+if(isset($_GET['kullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
+{
+	if($_GET['kullanici']!=$kullanici['kullaniciadi']) // kendi profilini görüntüleyenler loglanmasın.
+	{
+		$islem = $kullanici['kullaniciadi']." "."adlı kullanıcı"." ".$_GET['kullanici']." "."adlı kullanıcının profilini görüntüledi.";
+		$logsorgusu = $baglanti->prepare("INSERT INTO profilLoglari(islem,tarih) VALUES (:islem,:tarih)");
+		$logsorgusu->bindParam(":islem",$islem);
+		$logsorgusu->bindParam(":tarih",$islemTarihi);
+		$logsorgusu->execute();
+	}
+}
+
+?>
