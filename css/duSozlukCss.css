@@ -295,7 +295,6 @@ body
 	width:100%;
 	height: 200px;
 	float: left;
-	display:none;
 	margin-top:20px;
 	border-style: solid;
 	border-width: 1px;
@@ -320,6 +319,15 @@ body
 	width: 100%;
 	height: 100%;
 	resize:none; /* textarea'lar icin bir ozellik resize, tutup genisletmeyi onluyor. */
+}
+#main-mesajekle-buton
+{
+	float:right;
+	width:80px;
+	border:none;
+	height: 30px;
+	background-color: var(--temarengi);
+	color:#ffffff;
 }
 .main-maincont
 {
@@ -679,6 +687,12 @@ body
 	padding-right: 5px;
 	color:var(--konumesajrenkleri);
 }
+.konular-yazar-kimlik-kapsayici
+{
+	float:left;
+	position: relative;
+	width: 100%;
+}
 #konular-yazar-kimlik
 {
 	width:100%;
@@ -718,6 +732,13 @@ body
 	text-decoration: none;
 	color:var(--temarengi);
 }
+#konular-yazar-ghost
+{
+	width: 100%;
+	height: 40px;
+	background-color: var(--arkaplanrenk);
+	float: left;
+}
 .konular-kullanicimesajkapsayicisi
 {
 	width:100%;
@@ -739,6 +760,15 @@ body
 	white-space: pre-wrap;
 	padding-left:5px;
 	padding-right: 5px;
+}
+.konular-kullanici-kimlik-kapsayici
+{
+	float:left;
+	position: relative;
+	width:100%;
+	height: 20px;
+	background-color: var(--arkaplanrenk);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
 }
 #konular-kullanici-kimlik
 {
@@ -776,6 +806,13 @@ body
 	border:none;
 	background-color: pink;
 	height: 100%;
+}
+#konular-kullanici-ghost
+{
+	width: 100%;
+	height: 40px;
+	background-color: var(--arkaplanrenk);
+	float: left;
 }
 
 /* ------------------------------------------- konular-content.php bitiş ------------------------------------------- */
