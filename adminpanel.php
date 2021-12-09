@@ -48,9 +48,7 @@ else
                   if($row['rutbe']=="uye" && $row['bandurumu']==0)
                   {
                      ?>
-                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
-                     <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
-                     <br/>
+                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
                      <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
                      <?php
                      if($row['rutbe']=="admin") // admin dışında kimse üyelere moderatörlük veremesin.
@@ -78,9 +76,7 @@ else
                   if($row['rutbe']=="moderator" && $row['bandurumu']==0)
                   {
                      ?>
-                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
-                     <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
-                     <br/>
+                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
                      <?php
                      if($row['rutbe'] == "admin") // moderatörler birbirini banlayamasın ve moderatörlüğünü alamasın.
                      {
@@ -108,9 +104,7 @@ else
                   if($row['bandurumu']==1)
                   {
                      ?>
-                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
-                     <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
-                     <br/>
+                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
                      <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=0">Ban kaldır</a></button>
                      <br/>
                      <hr/>
