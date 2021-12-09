@@ -236,6 +236,11 @@
 
 <?php 
 $mesajid = $_GET['mesajid'];
+$kullanici = girisyapankullanici();
+date_default_timezone_set('Europe/Istanbul');
+$islemTarihi = date("d-m-Y H:i");
+
+
 if(isset($_GET['konuid']))
 {
   // konu id tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
@@ -248,6 +253,12 @@ if(isset($_GET['konuid']))
     $silmesorgusu2->bindParam(':konuid',$konuid);
     $silmesorgusu2->execute();
   }
+
+  $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['konuid']." "."numaralı konuyu sildi.";
+  $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
+  $logsorgusu->bindParam(":islem",$islem);
+  $logsorgusu->bindParam(":tarih",$islemTarihi);
+  $logsorgusu->execute();
 
   echo "<script> setTimeout(function(){ window.location.href='index.php'; }, 1500); </script>";
 }
