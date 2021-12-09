@@ -45,7 +45,7 @@
 							$_SESSION['hosgeldiniz']=$hosgeldin1;
 							@$kullanicibilgisi = $_SESSION['girisyapankullanici'];
 							date_default_timezone_set('Europe/Istanbul');
-          					$tarih = date("d-m-Y H:i");
+							$tarih = date("d-m-Y H:i");
 
 
 							$songorulmesorgusu = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
