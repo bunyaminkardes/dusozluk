@@ -52,7 +52,14 @@ else
                      <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
                      <br/>
                      <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
+                     <?php
+                     if($row['rutbe']=="admin") // admin dışında kimse üyelere moderatörlük veremesin.
+                     {
+                        ?>
+                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
+                        <?php
+                     }
+                     ?>
                      <br/>
                      <hr/>
                      <?php
@@ -74,8 +81,15 @@ else
                      <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
                      <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
                      <br/>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
+                     <?php
+                     if($row['rutbe'] == "admin") // moderatörler birbirini banlayamasın ve moderatörlüğünü alamasın.
+                     {
+                        ?>
+                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
+                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
+                        <?php
+                     }
+                     ?>
                      <br/>
                      <hr/>
                      <?php
