@@ -41,56 +41,56 @@ else
          <!---------------------- ÜYELER LİSTESİ BAŞLANGIÇ ---------------------->
          <div class="col-12 col-sm-12 col-lg-3"> 
             <h3 class="adminpanel-basliklar">- üyeler listesi -</h3>
-            <?php
-               $kullanici = kullanicilar();
-               foreach($kullanici as $row)
+            <?php 
+            $kullanici = kullanicilar();
+            $girisyapankullanici = girisyapankullanici();
+            foreach($kullanici as $row)
+            {
+               if($row['rutbe']=="uye" && $row['bandurumu']==0)
                {
-                  if($row['rutbe']=="uye" && $row['bandurumu']==0)
-                  {
-                     ?>
-                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
-                     <?php
-                     if($row['rutbe']=="admin") // admin dışında kimse üyelere moderatörlük veremesin.
+                  ?>
+                  <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
+                  <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
+                  <?php
+                     if($girisyapankullanici['rutbe']=="admin") // üyeleri sadece adminler moderatörlüğe yükseltebilme yetkisine sahip olsun.
                      {
                         ?>
-                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
+                        <button class="adminpanel-buton2"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
                         <?php
                      }
-                     ?>
-                     <br/>
-                     <hr/>
-                     <?php
-                  }
+                  ?>
+                  <hr/>
+                  <?php
                }
+            }
             ?>
          </div> 
          <!---------------------- ÜYELER LİSTESİ BİTİŞ---------------------->
          <!---------------------- MODERATÖRLER LİSTESİ BAŞLANGIÇ ---------------------->
          <div class="col-12 col-sm-12 col-lg-3" > 
             <h3 class="adminpanel-basliklar">- moderatörler listesi -</h3>
-            <?php
-               $kullanici = kullanicilar();
-               foreach($kullanici as $row)
+            <?php 
+            $kullanici = kullanicilar();
+            $girisyapankullanici = girisyapankullanici();
+            foreach($kullanici as $row)
+            {
+               if($row['rutbe']=="moderator" && $row['bandurumu']==0)
                {
-                  if($row['rutbe']=="moderator" && $row['bandurumu']==0)
-                  {
-                     ?>
-                     <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
-                     <?php
-                     if($row['rutbe'] == "admin") // moderatörler birbirini banlayamasın ve moderatörlüğünü alamasın.
+                  ?>
+                  <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
+                  <?php
+                     if($girisyapankullanici['rutbe']=="admin") // moderatörler birbirini banlayamasın ve moderatörlüğünü alamasın
                      {
                         ?>
-                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
-                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
+                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
+                        <button class="adminpanel-buton2"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
                         <?php
                      }
-                     ?>
-                     <br/>
-                     <hr/>
-                     <?php
-                  }
+                  ?>
+                  <hr/>
+                  <?php
                }
+            }
             ?>
          </div> 
          <!---------------------- MODERATÖRLER LİSTESİ BİTİŞ ---------------------->
