@@ -54,7 +54,7 @@
 							$songorulmesorgusu->execute();
 
 
-							$islem = $_SESSION['girisyapankullanici']."adlı kullanıcı"." "."giriş yaptı.";
+							$islem = $_SESSION['girisyapankullanici']." "."adlı kullanıcı"." "."giriş yaptı.";
 							$ipadresi = $_SERVER['REMOTE_ADDR'];
 							$girislogsorgusu = $baglanti->prepare("INSERT INTO girisLoglari(islem,ipadresi,tarih) VALUES(:islem,:ipadresi,:tarih)");
 							$girislogsorgusu->bindParam(":islem",$islem);
