@@ -45,13 +45,23 @@
 							$_SESSION['hosgeldiniz']=$hosgeldin1;
 							@$kullanicibilgisi = $_SESSION['girisyapankullanici'];
 							date_default_timezone_set('Europe/Istanbul');
-          					$sonGorulmeTarihi = date("d-m-Y H:i");
+          					$tarih = date("d-m-Y H:i");
 
 
 							$songorulmesorgusu = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
-							$songorulmesorgusu->bindParam(":sonGorulmeTarihi",$sonGorulmeTarihi);
+							$songorulmesorgusu->bindParam(":sonGorulmeTarihi",$tarih);
 							$songorulmesorgusu->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici']);
 							$songorulmesorgusu->execute();
+
+
+							$islem = $_SESSION['girisyapankullanici']."adlı kullanıcı"." "."giriş yaptı.";
+							$ipadresi = $_SERVER['REMOTE_ADDR'];
+							$girislogsorgusu = $baglanti->prepare("INSERT INTO girisLoglari(islem,ipadresi,tarih) VALUES(:islem,:ipadresi,:tarih)");
+							$girislogsorgusu->bindParam(":islem",$islem);
+							$girislogsorgusu->bindParam(":ipadresi",$ipadresi);
+							$girislogsorgusu->bindParam(":tarih",$tarih);
+							$girislogsorgusu->execute();
+
 
 							echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
 						}
