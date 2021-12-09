@@ -1,3 +1,4 @@
-<?php 
-    echo "BÖYLE BİR SAYFA BULUNAMADI...";
+<?php
+	header("Refresh:3; url=index.php"); 
+	echo "Böyle bir sayfa bulunamadı, anasayfaya yönlendiriliyorsunuz, lütfen bekleyin...";
 ?>
