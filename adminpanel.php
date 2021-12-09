@@ -115,9 +115,12 @@ else
 <?php 
    // BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
 
+   $kullanici = girisyapankullanici();
    @$hedefkullaniciadi = $_GET['kullaniciadi'];
+   date_default_timezone_set('Europe/Istanbul');
+   $islemTarihi = date("d-m-Y H:i");
 
-   if(isset($_GET['moderator']) && @$_GET['moderator']==1)
+   if(isset($_GET['moderator']) && @$_GET['moderator']==1) // moderatörlük verir.
    {
       $rutbe = 'moderator';
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:moderator WHERE kullaniciadi = :kullaniciadi");
@@ -127,7 +130,7 @@ else
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     }
 
-    if(isset($_GET['moderator']) && @$_GET['moderator']==0)
+    if(isset($_GET['moderator']) && @$_GET['moderator']==0) // moderatörlüğü kaldırır.
     {
       $rutbe = 'uye';
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:uye WHERE kullaniciadi = :kullaniciadi");
@@ -137,23 +140,40 @@ else
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     } 
 
-   if (isset($_GET['ban']) && @$_GET['ban'] == 1)
+   if (isset($_GET['ban']) && @$_GET['ban'] == 1)  // banlama işlemi yapar.
    {
       $bandurumu = 1;
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
       $guncellemesorgusu->bindParam(':bandurumu',$bandurumu);
       $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi);
       $guncellemesorgusu->execute();
+
+      $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcıyı banladı.";
+
+      $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
+      $logsorgusu->bindParam(":islem",$islem);
+      $logsorgusu->bindParam(":tarih",$islemTarihi);
+      $logsorgusu->execute();
+
+
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     }
 
-    if (isset($_GET['ban']) && @$_GET['ban'] == 0)
+    if (isset($_GET['ban']) && @$_GET['ban'] == 0) // ban kaldırır.
     {
       $bandurumu = 0;
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
       $guncellemesorgusu->bindParam(':bandurumu',$bandurumu);
       $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi);
       $guncellemesorgusu->execute();
+
+      $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcının banını kaldırdı.";
+
+      $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
+      $logsorgusu->bindParam(":islem",$islem);
+      $logsorgusu->bindParam(":tarih",$islemTarihi);
+      $logsorgusu->execute();
+
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     }
 ?>
