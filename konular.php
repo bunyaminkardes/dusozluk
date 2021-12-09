@@ -1,6 +1,6 @@
 <?php 
 	$content = 'contents/konular-content.php';
-	include("masterpage.php");
+	require_once("masterpage.php");
 ?>
 
 

@@ -1,5 +1,5 @@
 <?php
-require('kutuphane.php');
+require_once('kutuphane.php');
 
 $kullanici = girisyapankullanici();
 
@@ -51,7 +51,7 @@ else
                      <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
                      <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
                      <br/>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
+                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
                      <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
                      <br/>
                      <hr/>
@@ -74,7 +74,7 @@ else
                      <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>"."mail : ".$row['mail']."<br/>";?></a>
                      <a>Ban durumu : <?php echo $row['bandurumu']; ?></a>
                      <br/>
-                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
+                     <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla -</a></button>
                      <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
                      <br/>
                      <hr/>

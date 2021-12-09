@@ -1,6 +1,3 @@
-<?php 
-	session_start();
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,10 +34,6 @@
 						date_default_timezone_set('Europe/Istanbul');
 						$kayitTarihi = date("d-m-Y H:i");
 						$pp = NULL; 
-						if (isset($_SESSION['girisyapankullanici'])) //oturum açıksa bu sayfaya girilemesin.
-						{
-							echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
-						}
 						if (isset($_POST['kullaniciadikayit']) && isset($_POST['sifrekayit']) && isset($_POST['mail']) && isset($_POST['sifrekayit2'])) // kullanıcı verileri post ettiyse kayıt işlemleri başlasın.
 						{
 							$sorgu=$baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi OR mail = :mail");

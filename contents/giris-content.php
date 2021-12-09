@@ -44,6 +44,15 @@
 							$hosgeldin1=$hosgeldin." ".$kulladi;
 							$_SESSION['hosgeldiniz']=$hosgeldin1;
 							@$kullanicibilgisi = $_SESSION['girisyapankullanici'];
+							date_default_timezone_set('Europe/Istanbul');
+          					$sonGorulmeTarihi = date("d-m-Y H:i");
+
+
+							$songorulmesorgusu = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
+							$songorulmesorgusu->bindParam(":sonGorulmeTarihi",$sonGorulmeTarihi);
+							$songorulmesorgusu->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici']);
+							$songorulmesorgusu->execute();
+
 							echo "<script type='text/javascript'> document.location = 'index.php'; </script>";
 						}
 						else if (!$kulladi=="" && !$sif=="" && $sayac==2) //giriş başarısızsa hata mesajı gösterilsin.

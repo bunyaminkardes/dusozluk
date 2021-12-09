@@ -1,4 +1,4 @@
 <?php 
 	$content = 'contents/profil-content.php';
-	@include("masterpage.php");
+	@require_once("masterpage.php");
 ?>

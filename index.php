@@ -1,5 +1,5 @@
 <?php
 	$content = 'contents/index-content.php';
-	include("masterpage.php");
+	require_once("masterpage.php");
 ?>
 
