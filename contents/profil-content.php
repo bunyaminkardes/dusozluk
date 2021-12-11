@@ -96,7 +96,7 @@ $kullanici = girisyapankullanici();
 date_default_timezone_set('Europe/Istanbul');
 $islemTarihi = date("d-m-Y H:i");
 
-if(isset($_GET['kullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
+if(isset($_GET['kullanici']) && isset($_SESSION['girisyapankullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
 {
 	if($_GET['kullanici']!=$kullanici['kullaniciadi']) // kendi profilini görüntüleyenler loglanmasın.
 	{

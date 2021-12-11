@@ -132,8 +132,8 @@ else
    {
       $rutbe = 'moderator';
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:moderator WHERE kullaniciadi = :kullaniciadi");
-      $guncellemesorgusu->bindParam(':moderator',$rutbe);
-      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi);
+      $guncellemesorgusu->bindParam(':moderator',$rutbe,PDO::PARAM_STR);
+      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
       $guncellemesorgusu->execute();
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     }
@@ -142,8 +142,8 @@ else
     {
       $rutbe = 'uye';
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:uye WHERE kullaniciadi = :kullaniciadi");
-      $guncellemesorgusu->bindParam(':uye',$rutbe);
-      $guncellemesorgusu->bindParam(':kullaniciadi', $hedefkullaniciadi);
+      $guncellemesorgusu->bindParam(':uye',$rutbe,PDO::PARAM_STR);
+      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
       $guncellemesorgusu->execute();
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
     } 
@@ -152,15 +152,15 @@ else
    {
       $bandurumu = 1;
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
-      $guncellemesorgusu->bindParam(':bandurumu',$bandurumu);
-      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi);
+      $guncellemesorgusu->bindParam(':bandurumu',$bandurumu,PDO::PARAM_INT);
+      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
       $guncellemesorgusu->execute();
 
       $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcıyı banladı.";
 
       $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
-      $logsorgusu->bindParam(":islem",$islem);
-      $logsorgusu->bindParam(":tarih",$islemTarihi);
+      $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+      $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
       $logsorgusu->execute();
 
 
@@ -171,15 +171,15 @@ else
     {
       $bandurumu = 0;
       $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
-      $guncellemesorgusu->bindParam(':bandurumu',$bandurumu);
-      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi);
+      $guncellemesorgusu->bindParam(':bandurumu',$bandurumu,PDO::PARAM_INT);
+      $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
       $guncellemesorgusu->execute();
 
       $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcının banını kaldırdı.";
 
       $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
-      $logsorgusu->bindParam(":islem",$islem);
-      $logsorgusu->bindParam(":tarih",$islemTarihi);
+      $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+      $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
       $logsorgusu->execute();
 
       echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";

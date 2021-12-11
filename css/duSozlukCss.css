@@ -44,6 +44,7 @@ body
 	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px. */
 	display: none;
 	z-index: 999999;
+	word-wrap: break-word;
 }
 /* ------------------------------------------- index.php başlangıç ------------------------------------------ */
 .index-content-div
@@ -704,7 +705,7 @@ body
 }
 #konular-yazar-kimlik-kimlik
 {
-	width: 60%;
+	
 	font-family:var(--temayazitipi);
 	font-size:14px;
 	float: right;
@@ -720,17 +721,17 @@ body
 }
 .konular-yazar-like-dislike
 {
-	display: inline-block;
-	width:40%;
-	height: 100%;
-	font-size:14px;
-	font-weight: bold;
+	float:left;
 	padding-left:5px;
+	margin-top:-5px;
 }
-.konular-yazar-like-dislike a
+.konular-yazar-like-dislike span a
 {
 	text-decoration: none;
-	color:var(--temarengi);
+	color:#2C8E18;
+	font-family: var(--temayazitipi);
+	font-weight: bold;
+	font-size:14px;
 }
 #konular-yazar-ghost
 {

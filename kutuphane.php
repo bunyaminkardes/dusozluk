@@ -19,7 +19,7 @@ function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait k
 	$baglanti = new PDO("mysql:host=localhost;dbname=dusozluk_bunyaminkardes","root","");
 	$kullaniciadi = @$_SESSION['girisyapankullanici'];
 	$sorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
-	$sorgu->bindParam(":kullaniciadi",$kullaniciadi);
+	$sorgu->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
 	$sorgu->execute();
 	$row = $sorgu->fetch();
 	return $row;

@@ -73,8 +73,8 @@
                         $sonGorulmeTarihiCikis = date("d-m-Y H:i");
 
                         $songorulmesorgusuCikis = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
-                        $songorulmesorgusuCikis->bindParam(":sonGorulmeTarihi",$sonGorulmeTarihiCikis);
-                        $songorulmesorgusuCikis->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici']);
+                        $songorulmesorgusuCikis->bindParam(":sonGorulmeTarihi",$sonGorulmeTarihiCikis,PDO::PARAM_STR);
+                        $songorulmesorgusuCikis->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici'],PDO::PARAM_STR);
                         $songorulmesorgusuCikis->execute();
 
                         session_unset();
@@ -144,7 +144,7 @@
                      </div>
                      <?php
                         $limit =15;
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
@@ -654,7 +654,7 @@
          */
          $kullaniciadi = @$_SESSION['girisyapankullanici'];
          $bansorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi ");
-         $bansorgusu->bindParam(':kullaniciadi',$kullaniciadi);
+         $bansorgusu->bindParam(':kullaniciadi',$kullaniciadi,PDO::PARAM_STR);
          $bansorgusu->fetch(PDO::FETCH_ASSOC);
          $bansorgusu->execute();
          if ($bansorgusu->rowCount()>0)
