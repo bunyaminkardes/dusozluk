@@ -24,115 +24,111 @@
 
 
 <?php
-   session_start();
-   $id = $_GET['id'];
-   $konuid = $_GET['konuid']; // eğer silinme işlemi varsa ilgili konu id'si get edilerek depolanacak.
-   $girisyapankullanici=$_SESSION['girisyapankullanici'];
-   $mesajsil = $_GET['mesaj'];
+session_start();
+$id = $_GET['id'];
+$konuid = $_GET['konuid']; // eğer silinme işlemi varsa ilgili konu id'si get edilerek depolanacak.
+$girisyapankullanici=$_SESSION['girisyapankullanici'];
+$mesajsil = $_GET['mesaj'];
 
 
-   $sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
-   $sorgu->bindParam(':id',$id,PDO::PARAM_INT);
-   $sorgu->fetch(PDO::FETCH_ASSOC);
-   $sorgu->execute();
-   if ($sorgu->rowCount()>0)
-   {
-     	foreach($sorgu as $row)
-     	{
-            ?>
-            <div id="konu">
-                <h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>  
-                    <?php 
-                    //giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
-                    $kullanici = girisyapankullanici();
-                    if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-                    {
-                        ?>
-                        <button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button> 
-                        <?php
-                    }
-                    ?>
-                    <input readonly autofocus class="focus"> <!-- focus -->
-                </h1>
-                <br/>
-                <p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
-                <br/>
-            </div>
-            <div class="konular-yazar-kimlik-kapsayici">
-                <div id="konular-yazar-kimlik">
-                    <div class="konular-yazar-like-dislike">
-                        <?php
-                        $kullanici = girisyapankullanici();
-                        $kullaniciadi = $kullanici['kullaniciadi'];
+$sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
+$sorgu->bindParam(':id',$id,PDO::PARAM_INT);
+$sorgu->fetch(PDO::FETCH_ASSOC);
+$sorgu->execute();
+if ($sorgu->rowCount()>0)
+{
+	foreach($sorgu as $row)
+	{
+		?>
+		<div id="konu">
+			<h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>
+				<?php 
+				//giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
+				$kullanici = girisyapankullanici();
+				if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
+				{
+					?>
+					<button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button>
+					<?php
+				}
+				?>
+				<input readonly autofocus class="focus"> <!-- focus -->
+			</h1>
+			<br/>
+			<p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+			<br/>
+		</div>
+		<div class="konular-yazar-kimlik-kapsayici">
+			<div id="konular-yazar-kimlik">
+				<div class="konular-yazar-like-dislike">
+					<?php
+					$kullanici = girisyapankullanici();
+					$kullaniciadi = $kullanici['kullaniciadi'];
 
-                        $likedislikekomut = $baglanti->prepare("SELECT * FROM konular WHERE id = $id");
-                        $likedislikekomut->fetch();
-                        $likedislikekomut->execute();
+					$likedislikekomut = $baglanti->prepare("SELECT * FROM konular WHERE id = $id");
+					$likedislikekomut->fetch();
+					$likedislikekomut->execute();
+					$kullaniciLikeAtmisMi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullaniciadi");
+					$kullaniciLikeAtmisMi->bindParam(":id",$id,PDO::PARAM_INT);
+					$kullaniciLikeAtmisMi->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
+					$kullaniciLikeAtmisMi->fetch();
+					$kullaniciLikeAtmisMi->execute();
 
-                        $kullaniciLikeAtmisMi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullaniciadi");
-                        $kullaniciLikeAtmisMi->bindParam(":id",$id,PDO::PARAM_INT);
-                        $kullaniciLikeAtmisMi->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
-                        $kullaniciLikeAtmisMi->fetch();
-                        $kullaniciLikeAtmisMi->execute();
+					$gecerlilikesayisi = $row['likesayisi'];
+					$gecerlidislikesayisi = $row['dislikesayisi'];
 
-
-                        $gecerlilikesayisi = $row['likesayisi'];
-                        $gecerlidislikesayisi = $row['dislikesayisi'];
-
-  // KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
-                        if($kullaniciLikeAtmisMi->rowCount()>0)
-                        {
-                            foreach($likedislikekomut as $row)
-                            {
-                              if(isset($_SESSION['girisyapankullanici'])) // giriş yapmayanlara gözükmesin like-dislike butonları.
-                              {
-                                foreach($kullaniciLikeAtmisMi as $rows)
-                                {
-                                  if($rows['likedislike']=="like") // kullanıcı daha önce like attıysa like butonu görünmesin.
-                                  {
-                                    ?>
-                                    <span style="display:inline-block;">
-                                      <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo false; ?>" style="color:#2C8E18; background-color: #C1FE8F;">Beğendim : <?php echo $row['likesayisi']; ?></a>
-                                      <a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
-                                    </span>
-                                    <?php
-                                  }
-                                  else if($rows['likedislike']=="dislike") // kullanıcı daha önce dislike attıysa dislike butonu görünmesin.
-                                  {
-                                    ?>
-                                    <span style="display:inline-block;">
-                                      <a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
-                                      <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo false; ?>" style="color:#E82424; background-color: #FFCAC8;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
-                                    </span>
-                                    <?php
-                                  }
-                                }
-                              }
-                            }
-                        }
-                        // rowCount 0 ise bu kullanıcı bu konuya like veya dislike atmamıştır. iki butonu da gösterelim.
-                        else if($kullaniciLikeAtmisMi->rowCount()==0 && isset($_SESSION['girisyapankullanici'])) 
-                        {
-                          ?>
-                          <span style="display:inline-block;">
-                            <a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
-                            <a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
-                          </span>
-                          <?php
-                        }
-                        if(!isset($_SESSION['girisyapankullanici'])) // giriş yapmayan kullanıcılar sadece beğenme ve beğenmeme sayılarını görebilsin.
-                        {
-                          ?>
-                          <span style="display:inline-block;">
-                            <a style="color:#2C8E18;">Beğendim : <?php echo $row['likesayisi']; ?></a>
-                            <a style="color:#E82424;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
-                          </span>
-                          <?php
-                        }
 // KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
-
-
-
+					if($kullaniciLikeAtmisMi->rowCount()>0)
+					{
+						foreach($likedislikekomut as $row)
+						{
+							if(isset($_SESSION['girisyapankullanici'])) // giriş yapmayanlara gözükmesin like-dislike butonları.
+							{
+								foreach($kullaniciLikeAtmisMi as $rows)
+								{
+									if($rows['likedislike']=="like") // kullanıcı daha önce like attıysa like butonu görünmesin.
+									{
+										?>
+										<span style="display:inline-block;">
+											<a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo false; ?>" style="color:#2C8E18; background-color: #C1FE8F;">Beğendim : <?php echo $row['likesayisi']; ?></a>
+											<a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+										</span>
+										<?php
+									}
+									else if($rows['likedislike']=="dislike") // kullanıcı daha önce dislike attıysa dislike butonu görünmesin.
+									{
+										?>
+										<span style="display:inline-block;">
+											<a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
+											<a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo false; ?>" style="color:#E82424; background-color: #FFCAC8;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+										</span>
+										<?php
+									}
+								}
+							}
+						}
+					}
+					// rowCount 0 ise bu kullanıcı bu konuya like veya dislike atmamıştır. iki butonu da gösterelim.
+					else if($kullaniciLikeAtmisMi->rowCount()==0 && isset($_SESSION['girisyapankullanici'])) 
+					{
+						?>
+						<span style="display:inline-block;">
+							<a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
+							<a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+						</span>
+						<?php
+					}
+					if(!isset($_SESSION['girisyapankullanici'])) // giriş yapmayan kullanıcılar sadece beğenme ve beğenmeme sayılarını görebilsin.
+					{
+						?>
+						<span style="display:inline-block;">
+							<a style="color:#2C8E18;">Beğendim : <?php echo $row['likesayisi']; ?></a>
+							<a style="color:#E82424;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+						</span>
+						<?php
+					}
+// KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
+					
 # ********************************************************* LIKE - DISLIKE BUTONU ISLEMLERI ********************************************************* #
 $like = $_GET['like'];
 $dislike = $_GET['dislike'];
@@ -298,7 +294,6 @@ if(isset($_GET['dislike']) && $_GET['dislike'] == 0) // zaten dislike atılmış
 }
 
 ?>
-
 </div>
 <h3 id="konular-yazar-kimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>
 </div>
