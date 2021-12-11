@@ -49,17 +49,17 @@
 
 
 							$songorulmesorgusu = $baglanti->prepare("UPDATE uyeler SET sonGorulmeTarihi = :sonGorulmeTarihi WHERE kullaniciadi = :kullaniciadi");
-							$songorulmesorgusu->bindParam(":sonGorulmeTarihi",$tarih);
-							$songorulmesorgusu->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici']);
+							$songorulmesorgusu->bindParam(":sonGorulmeTarihi",$tarih,PDO::PARAM_STR);
+							$songorulmesorgusu->bindParam(":kullaniciadi",$_SESSION['girisyapankullanici'],PDO::PARAM_STR);
 							$songorulmesorgusu->execute();
 
 
 							$islem = $_SESSION['girisyapankullanici']." "."adlı kullanıcı"." "."giriş yaptı.";
 							$ipadresi = $_SERVER['REMOTE_ADDR'];
 							$girislogsorgusu = $baglanti->prepare("INSERT INTO girisLoglari(islem,ipadresi,tarih) VALUES(:islem,:ipadresi,:tarih)");
-							$girislogsorgusu->bindParam(":islem",$islem);
-							$girislogsorgusu->bindParam(":ipadresi",$ipadresi);
-							$girislogsorgusu->bindParam(":tarih",$tarih);
+							$girislogsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+							$girislogsorgusu->bindParam(":ipadresi",$ipadresi,PDO::PARAM_STR);
+							$girislogsorgusu->bindParam(":tarih",$tarih,PDO::PARAM_STR);
 							$girislogsorgusu->execute();
 
 

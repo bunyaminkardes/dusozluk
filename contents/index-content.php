@@ -12,7 +12,7 @@
          {
             $konuid = 25;
             $ilkgirissorgusu = $baglanti->prepare("SELECT * FROM konular WHERE id = :konuid");
-            $ilkgirissorgusu->bindParam(":konuid",$konuid);
+            $ilkgirissorgusu->bindParam(":konuid",$konuid,PDO::PARAM_INT);
             $ilkgirissorgusu->execute();
             foreach($ilkgirissorgusu as $row)
             {

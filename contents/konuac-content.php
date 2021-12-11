@@ -37,11 +37,11 @@
 					try 
 					{
 						$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,user,tarih,konu_turu) VALUES (:kbaslik,:kicerik,:user,:tarih,:konu_turu)");
-						$sqlkomut->bindParam(':kbaslik',$kbaslik);
-						$sqlkomut->bindParam(':kicerik',$kicerik);
-						$sqlkomut->bindParam(':user',$user);
-						$sqlkomut->bindParam(':tarih',$tarih);
-						$sqlkomut->bindParam(':konu_turu',$konu_turu);
+						$sqlkomut->bindParam(':kbaslik',$kbaslik,PDO::PARAM_STR);
+						$sqlkomut->bindParam(':kicerik',$kicerik,PDO::PARAM_STR);
+						$sqlkomut->bindParam(':user',$user,PDO::PARAM_STR);
+						$sqlkomut->bindParam(':tarih',$tarih,PDO::PARAM_STR);
+						$sqlkomut->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
 						$sqlkomut->execute();
 						echo "Yeni konu başarıyla oluşturuldu.";
 						echo "<script> setTimeout(function() {window.location.href='index.php';}, 1500);</script>";

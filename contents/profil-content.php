@@ -17,7 +17,7 @@ $_GET['kullanici'];
 $userbilgisi = $_GET['kullanici'];
 
 $kullaniciprofilfotosorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
-$kullaniciprofilfotosorgusu->bindParam(':kullaniciadi',$userbilgisi);
+$kullaniciprofilfotosorgusu->bindParam(':kullaniciadi',$userbilgisi,PDO::PARAM_STR);
 $kullaniciprofilfotosorgusu->fetch(PDO::FETCH_ASSOC);
 $kullaniciprofilfotosorgusu->execute();
 if ($kullaniciprofilfotosorgusu->rowCount()>0)
@@ -50,7 +50,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 		<?php
    	  	$limit = 10;
 		$sorgu = $baglanti->prepare("SELECT * FROM mesajlar WHERE user = :userbilgisi ORDER BY tarihbilgisi DESC LIMIT :limitt");
-		$sorgu->bindParam(':userbilgisi',$userbilgisi);
+		$sorgu->bindParam(':userbilgisi',$userbilgisi,PDO::PARAM_STR);
 		$sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT); 
 		$sorgu->fetch(PDO::FETCH_ASSOC);
 		$sorgu->execute();
@@ -102,8 +102,8 @@ if(isset($_GET['kullanici']) && isset($_SESSION['girisyapankullanici'])) // prof
 	{
 		$islem = $kullanici['kullaniciadi']." "."adlı kullanıcı"." ".$_GET['kullanici']." "."adlı kullanıcının profilini görüntüledi.";
 		$logsorgusu = $baglanti->prepare("INSERT INTO profilLoglari(islem,tarih) VALUES (:islem,:tarih)");
-		$logsorgusu->bindParam(":islem",$islem);
-		$logsorgusu->bindParam(":tarih",$islemTarihi);
+		$logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+		$logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
 		$logsorgusu->execute();
 	}
 }

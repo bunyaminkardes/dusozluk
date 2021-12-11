@@ -5,7 +5,7 @@
       <?php
         $id = $_GET['id'];
         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE id = :id");
-        $sorgu->bindParam(':id',$id);
+        $sorgu->bindParam(':id',$id,PDO::PARAM_INT);
         $sorgu->fetch(PDO::FETCH_ASSOC);
         $sorgu->execute();
         if ($sorgu->rowCount()>0)
@@ -32,7 +32,7 @@
 
 
    $sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
-   $sorgu->bindParam(':id',$id);
+   $sorgu->bindParam(':id',$id,PDO::PARAM_INT);
    $sorgu->fetch(PDO::FETCH_ASSOC);
    $sorgu->execute();
    if ($sorgu->rowCount()>0)
@@ -70,8 +70,8 @@
                         $likedislikekomut->execute();
 
                         $kullaniciLikeAtmisMi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullaniciadi");
-                        $kullaniciLikeAtmisMi->bindParam(":id",$id);
-                        $kullaniciLikeAtmisMi->bindParam(":kullaniciadi",$kullaniciadi);
+                        $kullaniciLikeAtmisMi->bindParam(":id",$id,PDO::PARAM_INT);
+                        $kullaniciLikeAtmisMi->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
                         $kullaniciLikeAtmisMi->fetch();
                         $kullaniciLikeAtmisMi->execute();
 
@@ -419,11 +419,11 @@ if(isset($_GET['dislike']) && $_GET['dislike'] == 0) // zaten dislike atılmış
                 if(isset($mesaj) && isset($konuid))
                 {
                     $komutt = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
-                    $komutt->bindParam(':konuid',$konuid);
-                    $komutt->bindParam(':mesaj',$mesaj);
-                    $komutt->bindParam(':konuisim',$konuisim);
-                    $komutt->bindParam(':userrr',$userrr);
-                    $komutt->bindParam(':tarihbilgisi',$tarihbilgisi);
+                    $komutt->bindParam(':konuid',$konuid,PDO::PARAM_STR);
+                    $komutt->bindParam(':mesaj',$mesaj,PDO::PARAM_STR);
+                    $komutt->bindParam(':konuisim',$konuisim,PDO::PARAM_STR);
+                    $komutt->bindParam(':userrr',$userrr,PDO::PARAM_STR);
+                    $komutt->bindParam(':tarihbilgisi',$tarihbilgisi,PDO::PARAM_STR);
                     $komutt->execute();
 
                     //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
@@ -450,19 +450,19 @@ if(isset($_GET['konuid']))
 {
   // konu id tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
   $silmesorgusu = $baglanti->prepare("DELETE FROM konular WHERE id = :konuid");
-  $silmesorgusu->bindParam(':konuid',$konuid);
+  $silmesorgusu->bindParam(':konuid',$konuid,PDO::PARAM_INT);
   //$silmesorgusu->execute();
   if($silmesorgusu->execute())
   {
     $silmesorgusu2 = $baglanti->prepare("DELETE FROM mesajlar WHERE id = :konuid");
-    $silmesorgusu2->bindParam(':konuid',$konuid);
+    $silmesorgusu2->bindParam(':konuid',$konuid,PDO::PARAM_STR);
     $silmesorgusu2->execute();
   }
 
   $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['konuid']." "."numaralı konuyu sildi.";
   $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
-  $logsorgusu->bindParam(":islem",$islem);
-  $logsorgusu->bindParam(":tarih",$islemTarihi);
+  $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+  $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
   $logsorgusu->execute();
 
   echo "<script> setTimeout(function(){ window.location.href='index.php'; }, 1500); </script>";
@@ -472,7 +472,7 @@ if(isset($_GET['mesajid']))
 {
   // mesaj tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
   $silmesorgusu = $baglanti->prepare("DELETE FROM mesajlar WHERE mesajid = :mesajid");
-  $silmesorgusu->bindParam(':mesajid',$mesajid);
+  $silmesorgusu->bindParam(':mesajid',$mesajid,PDO::PARAM_INT);
   $silmesorgusu->execute();
   
 
