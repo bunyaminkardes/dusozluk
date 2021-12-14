@@ -1,4 +1,7 @@
 <?php 
+
+   // MASTERPAGE -- LAYOUT SAYFASI.
+
    //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
    require_once("kutuphane.php");
 ?>
@@ -143,7 +146,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $sorgu = $baglanti->prepare("SELECT * FROM konular ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
@@ -175,7 +178,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =20;
+                        $limit =10;
                         $sorgu = $baglanti->prepare("SELECT * FROM konular ORDER BY tarihal DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
@@ -206,7 +209,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Siyaset";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -244,7 +247,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Ekonomi";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -282,7 +285,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Yasam";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -320,7 +323,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Spor";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -358,7 +361,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Muzik";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -396,7 +399,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Universite";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -434,7 +437,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Anime";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
@@ -472,7 +475,7 @@
                         </h3>
                      </div>
                      <?php
-                        $limit =15;
+                        $limit =10;
                         $konu_turu="Genel";
                         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
