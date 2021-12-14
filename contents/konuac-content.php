@@ -34,7 +34,7 @@
 
 				if (isset($_POST['konu_baslikk']) && isset($_POST['konu_icerikk']) && isset($_POST['konu_turu']) ) // konu başlığı ve konu içeriği post edilmişse konu açılacak demektir, veritabanına insert edelim.
 				{
-					try 
+					try // halihazırda var olan bir konu insert edilmeye çalışırsa diye patlamamak için try-catch ile yapalım bu işlemi.
 					{
 						$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,user,tarih,konu_turu) VALUES (:kbaslik,:kicerik,:user,:tarih,:konu_turu)");
 						$sqlkomut->bindParam(':kbaslik',$kbaslik,PDO::PARAM_STR);
