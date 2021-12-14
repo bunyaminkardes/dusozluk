@@ -13,6 +13,7 @@
 </html>
 
 <?php 
+
 $_GET['kullanici'];
 $userbilgisi = $_GET['kullanici'];
 
@@ -23,7 +24,8 @@ $kullaniciprofilfotosorgusu->execute();
 if ($kullaniciprofilfotosorgusu->rowCount()>0)
 {
 	foreach($kullaniciprofilfotosorgusu as $row)
-	{?>		
+	{
+		?>		
 		<div class="profil-bar">
 			<input readonly autofocus class="focus"> <!-- focus --> <?php   
 			if ($row['pp']==NULL) 
@@ -34,7 +36,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 			{
 				?><img class="pp" src="<?php echo $row['pp'];?>" alt="profil fotoğrafı yüklenirken hata oluştu."><?php
 			}
-		?>
+			?>
 			<div class="profil-user-kapsayici">
 				<h3 class="pp-user-bilgisi-baslik"><?php echo strtoupper($userbilgisi);?></h3>
 				<h3 class="profil-user-bilgisi-altbasliklar"><?php echo "Üyelik Tarihi : ".$row['kayitOlmaTarihi']; ?></h3>
