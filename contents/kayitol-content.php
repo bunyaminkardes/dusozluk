@@ -83,7 +83,6 @@
 								{
 									echo "girdiğiniz şifreler uyuşmuyor";
 								}
-
 							}	
 						}
 					?>
