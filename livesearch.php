@@ -34,7 +34,7 @@ if($kullaniciSorgu->rowCount()>0)
         <?php
     }
 }
-if($konuSorgu->rowCount()==0 && $kullaniciSorgu->rowCount()==0)
+if($konuSorgu->rowCount()==0 && $kullaniciSorgu->rowCount()==0) // konu veya kullanıcı tablolarında aranan kelimeye uygun kayıt yoksa
 {
     echo "Sonuç Bulunamadı.";
 }

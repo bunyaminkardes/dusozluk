@@ -19,7 +19,7 @@ function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait k
 	$baglanti = new PDO("mysql:host=localhost;dbname=dusozluk_bunyaminkardes","root","");
 	$kullaniciadi = @$_SESSION['girisyapankullanici'];
 	$sorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
-	$sorgu->bindParam(":kullaniciadi",$kullaniciadi);
+	$sorgu->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
 	$sorgu->execute();
 	$row = $sorgu->fetch();
 	return $row;
@@ -32,7 +32,7 @@ function kullanicilar() // bu fonksiyon veritabanındaki tüm kullanıcıları b
 	$row = $sorgu->fetchAll();
 	return $row;
 }
-function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi istenen URL
+function seo_link($s) // bu fonksiyon parametre olarak gelen linki seo dostu link olarak geri return eder.
 {
 	$tr = array('ş','Ş','ı','I','İ','ğ','Ğ','ü','Ü','ö','Ö','Ç','ç','(',')','/',' ',',','?');
 	$eng = array('s','s','i','i','i','g','g','u','u','o','o','c','c','','','-','-','',''); 
@@ -47,7 +47,7 @@ function seo_link($s) // s isimli bir parametre gelecek. yani düzeltilmesi iste
 	return $s;
 }
 
-function ters_seo_link($s) // kullanıcıların profillerinde en son 10 yorumları gözüküyor, ancak veritabanına seo linkli halleri kaydedilmiş, estetik dursun diye tekrar işlem yapalım.
+function ters_seo_link($s) // bu fonksiyon ters seo link işlemi yapar.
 {
 	$degistirilecek = '-';
 	$sunadegistir = " ";

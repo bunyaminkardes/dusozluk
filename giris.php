@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if(isset($_SESSION['girisyapankullanici'])) // giriş yapan kullanıcı varsa bu sayfaya giremesin.
+	if(isset($_SESSION['girisyapankullanici'])) // giriş yapan kullanıcı varsa tekrar giriş yapma sayfasına giremesin.
 	{
 		header("Location: index.php");
 		exit();

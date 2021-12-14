@@ -32,7 +32,7 @@ else
 		<form method="POST" action="" enctype="multipart/form-data" id="profilim-ozellestir-form">
 			<textarea maxlength="1500" placeholder="Hakkında (maksimum 1500 karakter)" name="hakkinda" id="profilim-ozellestir-textarea"></textarea>
 			<div id="profilim-ozellestir-ppdegistir">
-				profil resmini değiştir : <input style="" type="file" name="profilfoto">
+				profil resmini değiştir : <input type="file" name="profilfoto">
 			</div>
 			<div id="profilim-ozellestir-ppdegistir-butonkapsayici">
 				<input id="profilim-ozellestir-ppdegistir-butonkapsayici-buton" type="submit" name="gonderke" value="değiştir">
@@ -52,12 +52,12 @@ else
 		$geciciKonum = $_FILES["profilfoto"]["tmp_name"];
 		$isim = $_FILES["profilfoto"]["name"];
 		$dosyaKonumu = $konum;
-		$Final = $konum.$isim;
+		$finalpp = $konum.$isim;
 
 		if(move_uploaded_file($geciciKonum, "$dosyaKonumu/$isim"))
 		{
 			$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET pp=:pp WHERE kullaniciadi= :username");			
-			$profilguncelleme->bindParam(":pp",$Final,PDO::PARAM_STR);
+			$profilguncelleme->bindParam(":pp",$finalpp,PDO::PARAM_STR);
 			$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
 			$profilguncelleme->execute();
 			echo "<script> setTimeout(function(){ location = location; }, 1500); </script>";
@@ -69,7 +69,7 @@ else
 	}
 	if(isset($hakkinda) && $hakkinda!= "") // kullanıcı sadece hakkındayı güncellemek isterse burası çalışacak. hakkında boş olmamalı çünkü her türlü formdan hakkında post edilecek butona basıldığında. boş gelirse güncelleme yapmasın, boşu boşuna hakkında silinir sonra.
 	{
-		$profilguncelleme = $baglanti->prepare("  UPDATE uyeler SET hakkinda=:hakkinda  WHERE kullaniciadi=:username  ");
+		$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET hakkinda=:hakkinda  WHERE kullaniciadi=:username");
 		$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
 		$profilguncelleme->bindParam(":hakkinda",$hakkinda,PDO::PARAM_STR);
 		$profilguncelleme->execute();

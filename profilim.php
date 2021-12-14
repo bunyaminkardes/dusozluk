@@ -1,4 +1,4 @@
 <?php
-	$content = 'contents/profilim-content.php';
-	@include("masterpage.php");
+$content = 'contents/profilim-content.php';
+@include("masterpage.php");
 ?>

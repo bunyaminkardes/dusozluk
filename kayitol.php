@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if(isset($_SESSION['girisyapankullanici'])) // oturum açıksa bu sayfaya girilemesin.
+	if(isset($_SESSION['girisyapankullanici'])) // oturum açıksa tekrar kayıt ol sayfasına girilemesin.
 	{
 		header("Location: index.php");
 		exit();

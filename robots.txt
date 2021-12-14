@@ -1,4 +1,5 @@
 User-Agent: *
 Disallow: /adminpanel.php
-Disallow: /fonksiyonlar.php
-Disallow: /baglanti.php
+Disallow: /kutuphane.php
+Disallow: /livesearch.php
+Disallow: /profilim.php

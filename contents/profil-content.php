@@ -13,17 +13,19 @@
 </html>
 
 <?php 
+
 $_GET['kullanici'];
 $userbilgisi = $_GET['kullanici'];
 
 $kullaniciprofilfotosorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
-$kullaniciprofilfotosorgusu->bindParam(':kullaniciadi',$userbilgisi);
+$kullaniciprofilfotosorgusu->bindParam(':kullaniciadi',$userbilgisi,PDO::PARAM_STR);
 $kullaniciprofilfotosorgusu->fetch(PDO::FETCH_ASSOC);
 $kullaniciprofilfotosorgusu->execute();
 if ($kullaniciprofilfotosorgusu->rowCount()>0)
 {
 	foreach($kullaniciprofilfotosorgusu as $row)
-	{?>		
+	{
+		?>		
 		<div class="profil-bar">
 			<input readonly autofocus class="focus"> <!-- focus --> <?php   
 			if ($row['pp']==NULL) 
@@ -34,7 +36,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 			{
 				?><img class="pp" src="<?php echo $row['pp'];?>" alt="profil fotoğrafı yüklenirken hata oluştu."><?php
 			}
-		?>
+			?>
 			<div class="profil-user-kapsayici">
 				<h3 class="pp-user-bilgisi-baslik"><?php echo strtoupper($userbilgisi);?></h3>
 				<h3 class="profil-user-bilgisi-altbasliklar"><?php echo "Üyelik Tarihi : ".$row['kayitOlmaTarihi']; ?></h3>
@@ -50,7 +52,7 @@ if ($kullaniciprofilfotosorgusu->rowCount()>0)
 		<?php
    	  	$limit = 10;
 		$sorgu = $baglanti->prepare("SELECT * FROM mesajlar WHERE user = :userbilgisi ORDER BY tarihbilgisi DESC LIMIT :limitt");
-		$sorgu->bindParam(':userbilgisi',$userbilgisi);
+		$sorgu->bindParam(':userbilgisi',$userbilgisi,PDO::PARAM_STR);
 		$sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT); 
 		$sorgu->fetch(PDO::FETCH_ASSOC);
 		$sorgu->execute();
@@ -96,14 +98,14 @@ $kullanici = girisyapankullanici();
 date_default_timezone_set('Europe/Istanbul');
 $islemTarihi = date("d-m-Y H:i");
 
-if(isset($_GET['kullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
+if(isset($_GET['kullanici']) && isset($_SESSION['girisyapankullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
 {
 	if($_GET['kullanici']!=$kullanici['kullaniciadi']) // kendi profilini görüntüleyenler loglanmasın.
 	{
 		$islem = $kullanici['kullaniciadi']." "."adlı kullanıcı"." ".$_GET['kullanici']." "."adlı kullanıcının profilini görüntüledi.";
 		$logsorgusu = $baglanti->prepare("INSERT INTO profilLoglari(islem,tarih) VALUES (:islem,:tarih)");
-		$logsorgusu->bindParam(":islem",$islem);
-		$logsorgusu->bindParam(":tarih",$islemTarihi);
+		$logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+		$logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
 		$logsorgusu->execute();
 	}
 }

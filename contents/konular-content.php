@@ -5,7 +5,7 @@
       <?php
         $id = $_GET['id'];
         $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE id = :id");
-        $sorgu->bindParam(':id',$id);
+        $sorgu->bindParam(':id',$id,PDO::PARAM_INT);
         $sorgu->fetch(PDO::FETCH_ASSOC);
         $sorgu->execute();
         if ($sorgu->rowCount()>0)
@@ -24,91 +24,292 @@
 
 
 <?php
-   session_start();
-   $id = $_GET['id'];
-   $konuid = $_GET['konuid']; // eğer silinme işlemi varsa ilgili konu id'si get edilerek depolanacak.
-   $girisyapankullanici=$_SESSION['girisyapankullanici'];
-   $mesajsil = $_GET['mesaj'];
+session_start();
+$id = $_GET['id'];
+$konuid = $_GET['konuid']; // eğer silinme işlemi varsa ilgili konu id'si get edilerek depolanacak.
+$girisyapankullanici=$_SESSION['girisyapankullanici'];
+$mesajsil = $_GET['mesaj'];
 
 
-   $sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
-   $sorgu->bindParam(':id',$id);
-   $sorgu->fetch(PDO::FETCH_ASSOC);
-   $sorgu->execute();
-   if ($sorgu->rowCount()>0)
-   {
-     	foreach($sorgu as $row)
-     	{
-            ?>
-            <div id="konu">
-                <h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>  
-                    <?php 
-                    //giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
-                    $kullanici = girisyapankullanici();
-                    if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-                    {
-                        ?>
-                        <button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button> 
-                        <?php
-                    }
-                    ?>
-                    <input readonly autofocus class="focus"> <!-- focus -->
-                </h1>
-                <br/>
-                <p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
-                <br/>
-            </div>
-            <div class="konular-yazar-kimlik-kapsayici">
-                <div id="konular-yazar-kimlik">
-                    <div class="konular-yazar-like-dislike">
-                        <?php
-                        $likedislikekomut = $baglanti->prepare("SELECT * FROM konular WHERE id = $id");
-                        $likedislikekomut->fetch();
-                        $likedislikekomut->execute();
-                        $gecerlilikesayisi = $row['likesayisi'];
-                        $gecerlidislikesayisi = $row['dislikesayisi'];
-                        if($likedislikekomut->rowCount()>0)
+$sorgu=$baglanti->prepare("SELECT * FROM konular WHERE id=:id");
+$sorgu->bindParam(':id',$id,PDO::PARAM_INT);
+$sorgu->fetch(PDO::FETCH_ASSOC);
+$sorgu->execute();
+if ($sorgu->rowCount()>0)
+{
+	foreach($sorgu as $row)
+	{
+		?>
+		<div id="konu">
+			<h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>
+				<?php 
+				//giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
+				$kullanici = girisyapankullanici();
+				if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
+				{
+					?>
+					<button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button>
+					<?php
+				}
+				?>
+				<input readonly autofocus class="focus"> <!-- focus -->
+			</h1>
+			<br/>
+			<p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+			<br/>
+		</div>
+		<div class="konular-yazar-kimlik-kapsayici">
+			<div id="konular-yazar-kimlik">
+				<div class="konular-yazar-like-dislike">
+					<?php
+					$kullanici = girisyapankullanici();
+					$kullaniciadi = $kullanici['kullaniciadi'];
+
+					$likedislikekomut = $baglanti->prepare("SELECT * FROM konular WHERE id = $id");
+					$likedislikekomut->fetch();
+					$likedislikekomut->execute();
+					$kullaniciLikeAtmisMi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullaniciadi");
+					$kullaniciLikeAtmisMi->bindParam(":id",$id,PDO::PARAM_INT);
+					$kullaniciLikeAtmisMi->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
+					$kullaniciLikeAtmisMi->fetch();
+					$kullaniciLikeAtmisMi->execute();
+
+					$gecerlilikesayisi = $row['likesayisi'];
+					$gecerlidislikesayisi = $row['dislikesayisi'];
+
+// KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
+					if($kullaniciLikeAtmisMi->rowCount()>0)
+					{
+						foreach($likedislikekomut as $row)
+						{
+							if(isset($_SESSION['girisyapankullanici'])) // giriş yapmayanlara gözükmesin like-dislike butonları.
+							{
+								foreach($kullaniciLikeAtmisMi as $rows)
+								{
+									if($rows['likedislike']=="like") // kullanıcı daha önce like attıysa like butonu görünmesin.
+									{
+										?>
+										<span style="display:inline-block;">
+											<a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo false; ?>" style="color:#2C8E18; background-color: #C1FE8F;">Beğendim : <?php echo $row['likesayisi']; ?></a>
+											<a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+										</span>
+										<?php
+									}
+									else if($rows['likedislike']=="dislike") // kullanıcı daha önce dislike attıysa dislike butonu görünmesin.
+									{
+										?>
+										<span style="display:inline-block;">
+											<a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
+											<a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo false; ?>" style="color:#E82424; background-color: #FFCAC8;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+										</span>
+										<?php
+									}
+								}
+							}
+						}
+					}
+					// rowCount 0 ise bu kullanıcı bu konuya like veya dislike atmamıştır. iki butonu da gösterelim.
+					else if($kullaniciLikeAtmisMi->rowCount()==0 && isset($_SESSION['girisyapankullanici'])) 
+					{
+						?>
+						<span style="display:inline-block;">
+							<a style="color:#2C8E18;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Beğendim : <?php echo $row['likesayisi']; ?></a>
+							<a style="color:#E82424;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+						</span>
+						<?php
+					}
+					if(!isset($_SESSION['girisyapankullanici'])) // giriş yapmayan kullanıcılar sadece beğenme ve beğenmeme sayılarını görebilsin.
+					{
+						?>
+						<span style="display:inline-block;">
+							<a style="color:#2C8E18;">Beğendim : <?php echo $row['likesayisi']; ?></a>
+							<a style="color:#E82424;">Beğenmedim : <?php echo $row['dislikesayisi']; ?></a>
+						</span>
+						<?php
+					}
+// KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
+
+# ********************************************************* LIKE - DISLIKE BUTONU ISLEMLERI ********************************************************* #
+$like = $_GET['like'];
+$dislike = $_GET['dislike'];
+$konuid = $_GET['id'];
+$kullanici = girisyapankullanici();
+$kullaniciadi = $kullanici['kullaniciadi'];
+
+if(isset($_GET['like']) && $_GET['like'] == 1) // like işlemi yapılacağı zaman bu blok çalışacak.
+{
+      $likeatmismi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullanici");
+      $likeatmismi->bindParam(":id",$id,PDO::PARAM_INT);
+      $likeatmismi->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+      $likeatmismi->execute();
+      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa bu blok çalışacak.
+      {
+            foreach($likeatmismi as $row)
+            {
+                  if($row['likedislike'] == 'like') // kullanıcı bu konuya like attıysa herhangi bir işlem yaptırmayalım.
+                  {
+
+                  }
+                  else // dislike atmışsa dislike sayısını 1 azaltıp like sayısını 1 arttıralım.
+                  {
+                        $like = $gecerlilikesayisi+1;
+                        $dislike = $gecerlidislikesayisi-1;
+                        if($dislike<0)
                         {
-                            foreach($likedislikekomut as $row)
-                            {
-                                ?>
-                                <span style="display:inline-block;">
-                                    <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>">Like : <?php echo $row['likesayisi']; ?></a> /
-                                    <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>">Dislike : <?php echo $row['dislikesayisi']; ?></a>
-                                </span>
-                                <?php
-                            }
+                              $dislike=0;
                         }
-                        $like = $_GET['like'];
-                        $dislike = $_GET['dislike'];
-                        if(isset($like))
+                        $degistir = "like";
+                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir, dislikesayisi = :dislikeattir WHERE id=:id");
+                        $likesorgusu->bindParam(":likeattir",$like,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
+                        $likesorgusu2 = $baglanti->prepare("UPDATE likedislike SET likedislike = :likedislike WHERE konuid = :id AND kullanici = :kullanici");
+                        $likesorgusu2->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
+                        $likesorgusu2->bindParam(":id",$id,PDO::PARAM_INT);
+                        $likesorgusu2->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+                        $likesorgusu->execute();
+                        $likesorgusu2->execute();
+                  }
+            }
+      }
+      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa burası çalışsın.
+      {
+			/*
+			kullanıcının likedislike tablosunda bir kayıtı yoksa, ilgili konuya like veya dislike atmamış demektir. bu durumda like işlemini yapalım,
+			likedislike tablosuna da insert işlemi yapalım ki bu kullanıcının bu konuya like attığı anlaşılsın.
+			*/      	
+            $like = $gecerlilikesayisi+1;
+            $degistir = "like";
+            $likesorgusu = $baglanti->prepare("INSERT INTO likedislike(konuid,kullanici,likedislike) VALUES(:konuid,:kullanici,:likedislike)");
+            $likesorgusu->bindParam(":konuid",$id,PDO::PARAM_INT);
+            $likesorgusu->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+            $likesorgusu->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
+            $likesorgusu2 = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir WHERE id=:id");
+            $likesorgusu2->bindParam(":likeattir",$like,PDO::PARAM_INT);
+            $likesorgusu2->bindParam(":id",$id,PDO::PARAM_INT);
+            $likesorgusu->execute();
+            $likesorgusu2->execute();
+      }
+      echo "<script> window.history.back(); </script>"; // işlem sonrası url de parametre kalmasın diye bu şekilde sayfa yenileyelim.
+}
+
+
+
+
+if(isset($_GET['dislike']) && $_GET['dislike']==1) // dislike butonuna basınca burası çalışacak.
+{
+      $likeatmismi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullanici");
+      $likeatmismi->bindParam(":id",$id,PDO::PARAM_INT);
+      $likeatmismi->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+      $likeatmismi->execute();
+      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa bu blok çalışacak.
+      {
+            foreach($likeatmismi as $row)
+            {
+                  if($row['likedislike'] == 'dislike') // dislike atmışsa tekrar like atamasın.
+                  {
+
+                  }
+                  else // dislike atmışsa dislike sayısını 1 azaltıp like sayısını 1 arttıralım.
+                  {
+                        $like = $gecerlilikesayisi-1;
+                        $dislike = $gecerlidislikesayisi+1;
+                        if($like<0)
                         {
-                            $likedislikeguncellemesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi= $gecerlilikesayisi+1 WHERE id = $id");
-                            $likedislikeguncellemesorgusu->execute();
-                            echo "<script> window.history.back(); </script>";
+                              $like=0;
                         }
-                        if(isset($dislike))
-                        {
-                            $likedislikeguncellemesorgusu2 = $baglanti->prepare("UPDATE konular SET dislikesayisi= $gecerlidislikesayisi+1 WHERE id = $id");
-                            $likedislikeguncellemesorgusu2->execute();
-                            echo "<script> window.history.back(); </script>";
-                        }
-                        ?>
-                    </div>
-                    <h3 id="konular-yazar-kimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>
-                </div>
-            </div>
-            <div id="konular-yazar-ghost"></div>
-            <?php
-        }
-    }
+                        $degistir = "dislike";
+                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir, dislikesayisi = :dislikeattir WHERE id=:id");
+                        $likesorgusu->bindParam(":likeattir",$like,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+                        $likesorgusu3 = $baglanti->prepare("UPDATE likedislike SET likedislike = :likedislike WHERE konuid = :id AND kullanici = :kullanici");
+                        $likesorgusu3->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
+                        $likesorgusu3->bindParam(":id",$id,PDO::PARAM_INT);
+                        $likesorgusu3->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+                        $likesorgusu->execute();
+                        $likesorgusu3->execute();
+                  }
+            }
+      }
+      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa bu blok çalışacak.
+      {
+      		/*
+      		kullanıcının likedislike tablosunda bir kayıtı yoksa, ilgili konuya like veya dislike atmamış demektir. bu durumda dislike işlemini yapalım,
+      		likedislike tablosuna da insert işlemi yapalım ki bu kullanıcının bu konuya dislike attığı anlaşılsın.
+      		*/ 
+            $like = $gecerlidislikesayisi+1;
+            $degistir = "dislike";
+            $likesorgusu = $baglanti->prepare("INSERT INTO likedislike(konuid,kullanici,likedislike) VALUES(:konuid,:kullanici,:likedislike)");
+            $likesorgusu->bindParam(":konuid",$id,PDO::PARAM_INT);
+            $likesorgusu->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+            $likesorgusu->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
+            $likesorgusu2 = $baglanti->prepare("UPDATE konular SET dislikesayisi = :likeattir WHERE id=:id");
+            $likesorgusu2->bindParam(":likeattir",$like,PDO::PARAM_INT);
+            $likesorgusu2->bindParam(":id",$id,PDO::PARAM_INT);
+            $likesorgusu->execute();
+            $likesorgusu2->execute();
+      }
+      echo "<script> window.history.back(); </script>"; // işlem sonrası url de parametre kalmasın diye bu şekilde sayfa yenileyelim.               
+}
+
+
+
+
+if(isset($_GET['like']) && $_GET['like'] == 0) // zaten like atılmışsa, tekrar like'a bastığında beğenme işlemini kaldıralım.
+{
+      $likesayisi = $gecerlilikesayisi-1;
+      if($likesayisi<0)
+      {
+            $likesayisi = 0;
+      }
+      $silmesorgusu = $baglanti->prepare("DELETE FROM likedislike WHERE konuid = :id AND kullanici = :kullanici");
+      $silmesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+      $silmesorgusu->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+      $silmesorgusu->execute();
+      $guncellemesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likesayisi WHERE id=:id");
+      $guncellemesorgusu->bindParam(":likesayisi",$likesayisi,PDO::PARAM_INT);
+      $guncellemesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+      $guncellemesorgusu->execute();
+      echo "<script> window.history.back(); </script>"; // işlem sonrası url de parametre kalmasın diye bu şekilde sayfa yenileyelim.
+}
+
+
+
+if(isset($_GET['dislike']) && $_GET['dislike'] == 0) // zaten dislike atılmışsa, tekrar dislike'a basıldığında beğenmeme işlemini kaldıralım.
+{
+      $dislikesayisi = $gecerlidislikesayisi-1;
+      if($dislikesayisi<0)
+      {
+            $dislikesayisi = 0;
+      }
+      $silmesorgusu = $baglanti->prepare("DELETE FROM likedislike WHERE konuid = :id AND kullanici = :kullanici");
+      $silmesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+      $silmesorgusu->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+      $silmesorgusu->execute();
+      $guncellemesorgusu = $baglanti->prepare("UPDATE konular SET dislikesayisi = :dislikesayisi WHERE id = :id");
+      $guncellemesorgusu->bindParam(":dislikesayisi",$dislikesayisi,PDO::PARAM_INT);
+      $guncellemesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
+      $guncellemesorgusu->execute();
+      echo "<script> window.history.back(); </script>"; // işlem sonrası url de parametre kalmasın diye bu şekilde sayfa yenileyelim.
+}
+
 ?>
-
-
-
-
+</div>
+<h3 id="konular-yazar-kimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>
+</div>
+</div>
+<div id="konular-yazar-ghost"></div>
 <?php
-    ########################## SAYFALAMA (PAGINATION) İŞLEMLERİ ##########################
+}
+}
+# ********************************************************* LIKE - DISLIKE BUTONU ISLEMLERI ********************************************************* #
+
+
+
+
+
+# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
     $id = $_GET['id'];
     $hangisayfadayim = intval($_GET['id']); //hangi sayfada olduğumuzu bilmemiz gerekecek.
     $sayfaid=1;
@@ -128,7 +329,7 @@
     //$goster = $hangisayfadayim*$sayfalimiti-$sayfalimiti; //sayfalama mantığının önemli kısımlarından biri burası. şimdi 1.sayfadayız diyelim. 1*10-10 = 0 çıkıyor. sayfa limitimiz de 10 olduğuna göre 0-10 arası kayıtları gösterecek. 2.sayfada olduğumuzda 2*10-10 = 10 çıkıyor. sayfa limitimiz de 10 olduğuna göre 10-20 arası kayıtları gösterecek, anladın mı?
     $goster = $sayfaid*$sayfalimiti-$sayfalimiti;
     //echo "toplam veri sayısı :".$toplamverisayisi.","."toplam sayfa sayısı :".$sayfasayisi."sayfaid :".$sayfaid; #debug amaçlı.
-
+# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
 
 
 
@@ -214,11 +415,11 @@
                 if(isset($mesaj) && isset($konuid))
                 {
                     $komutt = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
-                    $komutt->bindParam(':konuid',$konuid);
-                    $komutt->bindParam(':mesaj',$mesaj);
-                    $komutt->bindParam(':konuisim',$konuisim);
-                    $komutt->bindParam(':userrr',$userrr);
-                    $komutt->bindParam(':tarihbilgisi',$tarihbilgisi);
+                    $komutt->bindParam(':konuid',$konuid,PDO::PARAM_STR);
+                    $komutt->bindParam(':mesaj',$mesaj,PDO::PARAM_STR);
+                    $komutt->bindParam(':konuisim',$konuisim,PDO::PARAM_STR);
+                    $komutt->bindParam(':userrr',$userrr,PDO::PARAM_STR);
+                    $komutt->bindParam(':tarihbilgisi',$tarihbilgisi,PDO::PARAM_STR);
                     $komutt->execute();
 
                     //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
@@ -245,19 +446,19 @@ if(isset($_GET['konuid']))
 {
   // konu id tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
   $silmesorgusu = $baglanti->prepare("DELETE FROM konular WHERE id = :konuid");
-  $silmesorgusu->bindParam(':konuid',$konuid);
+  $silmesorgusu->bindParam(':konuid',$konuid,PDO::PARAM_INT);
   //$silmesorgusu->execute();
   if($silmesorgusu->execute())
   {
     $silmesorgusu2 = $baglanti->prepare("DELETE FROM mesajlar WHERE id = :konuid");
-    $silmesorgusu2->bindParam(':konuid',$konuid);
+    $silmesorgusu2->bindParam(':konuid',$konuid,PDO::PARAM_STR);
     $silmesorgusu2->execute();
   }
 
   $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['konuid']." "."numaralı konuyu sildi.";
   $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
-  $logsorgusu->bindParam(":islem",$islem);
-  $logsorgusu->bindParam(":tarih",$islemTarihi);
+  $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+  $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
   $logsorgusu->execute();
 
   echo "<script> setTimeout(function(){ window.location.href='index.php'; }, 1500); </script>";
@@ -267,7 +468,7 @@ if(isset($_GET['mesajid']))
 {
   // mesaj tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
   $silmesorgusu = $baglanti->prepare("DELETE FROM mesajlar WHERE mesajid = :mesajid");
-  $silmesorgusu->bindParam(':mesajid',$mesajid);
+  $silmesorgusu->bindParam(':mesajid',$mesajid,PDO::PARAM_INT);
   $silmesorgusu->execute();
   
 

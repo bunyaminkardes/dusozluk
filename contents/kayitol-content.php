@@ -37,8 +37,8 @@
 						if (isset($_POST['kullaniciadikayit']) && isset($_POST['sifrekayit']) && isset($_POST['mail']) && isset($_POST['sifrekayit2'])) // kullanıcı verileri post ettiyse kayıt işlemleri başlasın.
 						{
 							$sorgu=$baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi OR mail = :mail");
-							$sorgu->bindParam(':kullaniciadi',$kayitkullaniciadi);
-							$sorgu->bindParam(':mail',$kayitmailbilgisi);
+							$sorgu->bindParam(':kullaniciadi',$kayitkullaniciadi,PDO::PARAM_STR);
+							$sorgu->bindParam(':mail',$kayitmailbilgisi,PDO::PARAM_STR);
 							$sorgu->fetch(PDO::FETCH_ASSOC);
 							$sorgu->execute();
 							if ($sorgu->rowCount()>0) // kullanıcı kayıt olurken zaten kayıtlı mail veya kullanıcı adı bilgisi girerse veritabanından kontrol edip hata verdirttiriyoruz.
@@ -58,14 +58,14 @@
 								if($kayitsifre == $onaysifre)
 								{
 									$komut = $baglanti->prepare("INSERT INTO uyeler(kullaniciadi,mail,sifre,bandurumu,pp,hakkinda,kayitOlmaTarihi,sonGorulmeTarihi) VALUES (:kayitkullaniciadi,:kayitmailbilgisi,:kayitsifre,:bandurumu,:pp,:hakkinda,:kayitOlmaTarihi,:sonGorulmeTarihi)");
-									$komut->bindParam(':kayitkullaniciadi',$kayitkullaniciadi);
-									$komut->bindParam(':kayitmailbilgisi',$kayitmailbilgisi);
-									$komut->bindParam(':kayitsifre',$kayitsifre);
-									$komut->bindParam(':bandurumu',$bandurumu);
-									$komut->bindParam(':pp',$pp);
-									$komut->bindParam(':hakkinda',$hakkinda);
-									$komut->bindParam(':kayitOlmaTarihi',$kayitTarihi);
-									$komut->bindParam(':sonGorulmeTarihi',$kayitTarihi);
+									$komut->bindParam(':kayitkullaniciadi',$kayitkullaniciadi,PDO::PARAM_STR);
+									$komut->bindParam(':kayitmailbilgisi',$kayitmailbilgisi,PDO::PARAM_STR);
+									$komut->bindParam(':kayitsifre',$kayitsifre,PDO::PARAM_STR);
+									$komut->bindParam(':bandurumu',$bandurumu,PDO::PARAM_INT);
+									$komut->bindParam(':pp',$pp,PDO::PARAM_STR);
+									$komut->bindParam(':hakkinda',$hakkinda,PDO::PARAM_STR);
+									$komut->bindParam(':kayitOlmaTarihi',$kayitTarihi,PDO::PARAM_STR);
+									$komut->bindParam(':sonGorulmeTarihi',$kayitTarihi,PDO::PARAM_STR);
 									$komut->execute();
 									if($komut->rowCount()>0) // rowCount 0'dan büyükse veriler veritabanına eklendi demektir. sıkıntı yok.
 									{
@@ -83,7 +83,6 @@
 								{
 									echo "girdiğiniz şifreler uyuşmuyor";
 								}
-
 							}	
 						}
 					?>
