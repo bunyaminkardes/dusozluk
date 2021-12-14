@@ -52,12 +52,12 @@ else
 		$geciciKonum = $_FILES["profilfoto"]["tmp_name"];
 		$isim = $_FILES["profilfoto"]["name"];
 		$dosyaKonumu = $konum;
-		$Final = $konum.$isim;
+		$finalpp = $konum.$isim;
 
 		if(move_uploaded_file($geciciKonum, "$dosyaKonumu/$isim"))
 		{
 			$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET pp=:pp WHERE kullaniciadi= :username");			
-			$profilguncelleme->bindParam(":pp",$Final,PDO::PARAM_STR);
+			$profilguncelleme->bindParam(":pp",$finalpp,PDO::PARAM_STR);
 			$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
 			$profilguncelleme->execute();
 			echo "<script> setTimeout(function(){ location = location; }, 1500); </script>";
