@@ -128,7 +128,7 @@ if ($sorgu->rowCount()>0)
 						<?php
 					}
 // KULLANICI LIKE ATMIS MI KONTROLU *****************************************************************************************************************************
-					
+
 # ********************************************************* LIKE - DISLIKE BUTONU ISLEMLERI ********************************************************* #
 $like = $_GET['like'];
 $dislike = $_GET['dislike'];
@@ -136,17 +136,17 @@ $konuid = $_GET['id'];
 $kullanici = girisyapankullanici();
 $kullaniciadi = $kullanici['kullaniciadi'];
 
-if(isset($_GET['like']) && $_GET['like'] == 1) // like butonuna basınca burası çalışacak.
+if(isset($_GET['like']) && $_GET['like'] == 1) // like işlemi yapılacağı zaman bu blok çalışacak.
 {
       $likeatmismi = $baglanti->prepare("SELECT * FROM likedislike WHERE konuid = :id AND kullanici = :kullanici");
       $likeatmismi->bindParam(":id",$id,PDO::PARAM_INT);
       $likeatmismi->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
       $likeatmismi->execute();
-      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa
+      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa bu blok çalışacak.
       {
             foreach($likeatmismi as $row)
             {
-                  if($row['likedislike'] == 'like') // like atmışsa tekrar like atamasın.
+                  if($row['likedislike'] == 'like') // kullanıcı bu konuya like attıysa herhangi bir işlem yaptırmayalım.
                   {
 
                   }
@@ -159,25 +159,25 @@ if(isset($_GET['like']) && $_GET['like'] == 1) // like butonuna basınca burası
                               $dislike=0;
                         }
                         $degistir = "like";
-                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir WHERE id=:id");
+                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir, dislikesayisi = :dislikeattir WHERE id=:id");
                         $likesorgusu->bindParam(":likeattir",$like,PDO::PARAM_INT);
                         $likesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
-                        $likesorgusu2 = $baglanti->prepare("UPDATE konular SET dislikesayisi = :dislikeattir WHERE id=:id");
-                        $likesorgusu2->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
+                        $likesorgusu2 = $baglanti->prepare("UPDATE likedislike SET likedislike = :likedislike WHERE konuid = :id AND kullanici = :kullanici");
+                        $likesorgusu2->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
                         $likesorgusu2->bindParam(":id",$id,PDO::PARAM_INT);
-                        $likesorgusu3 = $baglanti->prepare("UPDATE likedislike SET likedislike = :likedislike WHERE konuid = :id AND kullanici = :kullanici");
-                        $likesorgusu3->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
-                        $likesorgusu3->bindParam(":id",$id,PDO::PARAM_INT);
-                        $likesorgusu3->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
+                        $likesorgusu2->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
                         $likesorgusu->execute();
                         $likesorgusu2->execute();
-                        $likesorgusu3->execute();
                   }
             }
       }
-      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa
+      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa burası çalışsın.
       {
-            // o zaman insert ederiz.
+			/*
+			kullanıcının likedislike tablosunda bir kayıtı yoksa, ilgili konuya like veya dislike atmamış demektir. bu durumda like işlemini yapalım,
+			likedislike tablosuna da insert işlemi yapalım ki bu kullanıcının bu konuya like attığı anlaşılsın.
+			*/      	
             $like = $gecerlilikesayisi+1;
             $degistir = "like";
             $likesorgusu = $baglanti->prepare("INSERT INTO likedislike(konuid,kullanici,likedislike) VALUES(:konuid,:kullanici,:likedislike)");
@@ -202,7 +202,7 @@ if(isset($_GET['dislike']) && $_GET['dislike']==1) // dislike butonuna basınca 
       $likeatmismi->bindParam(":id",$id,PDO::PARAM_INT);
       $likeatmismi->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
       $likeatmismi->execute();
-      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa
+      if($likeatmismi->rowCount()>0) // hali hazırda bu konuya like veya dislike atılmışsa bu blok çalışacak.
       {
             foreach($likeatmismi as $row)
             {
@@ -219,24 +219,25 @@ if(isset($_GET['dislike']) && $_GET['dislike']==1) // dislike butonuna basınca 
                               $like=0;
                         }
                         $degistir = "dislike";
-                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir WHERE id=:id");
+                        $likesorgusu = $baglanti->prepare("UPDATE konular SET likesayisi = :likeattir, dislikesayisi = :dislikeattir WHERE id=:id");
                         $likesorgusu->bindParam(":likeattir",$like,PDO::PARAM_INT);
+                        $likesorgusu->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
                         $likesorgusu->bindParam(":id",$id,PDO::PARAM_INT);
-                        $likesorgusu2 = $baglanti->prepare("UPDATE konular SET dislikesayisi = :dislikeattir WHERE id=:id");
-                        $likesorgusu2->bindParam(":dislikeattir",$dislike,PDO::PARAM_INT);
-                        $likesorgusu2->bindParam(":id",$id,PDO::PARAM_INT);
                         $likesorgusu3 = $baglanti->prepare("UPDATE likedislike SET likedislike = :likedislike WHERE konuid = :id AND kullanici = :kullanici");
                         $likesorgusu3->bindParam(":likedislike",$degistir,PDO::PARAM_STR);
                         $likesorgusu3->bindParam(":id",$id,PDO::PARAM_INT);
                         $likesorgusu3->bindParam(":kullanici",$kullaniciadi,PDO::PARAM_STR);
                         $likesorgusu->execute();
-                        $likesorgusu2->execute();
                         $likesorgusu3->execute();
                   }
             }
       }
-      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa
+      else if($likeatmismi->rowCount()==0) // hali hazırda bu konuya like veya dislike atılmamışsa bu blok çalışacak.
       {
+      		/*
+      		kullanıcının likedislike tablosunda bir kayıtı yoksa, ilgili konuya like veya dislike atmamış demektir. bu durumda dislike işlemini yapalım,
+      		likedislike tablosuna da insert işlemi yapalım ki bu kullanıcının bu konuya dislike attığı anlaşılsın.
+      		*/ 
             $like = $gecerlidislikesayisi+1;
             $degistir = "dislike";
             $likesorgusu = $baglanti->prepare("INSERT INTO likedislike(konuid,kullanici,likedislike) VALUES(:konuid,:kullanici,:likedislike)");
