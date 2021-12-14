@@ -1,4 +1,0 @@
-User-Agent: *
-Disallow: /adminpanel.php
-Disallow: /fonksiyonlar.php
-Disallow: /baglanti.php
