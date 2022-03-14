@@ -34,6 +34,7 @@ else
 }
 
 ?>
+
 <div class="profilim-ozellestir-kapsayici">
 	<h2 id="profilim-ozellestir-baslik">Profili Özelleştir</h2>
 	<form method="POST" action="" enctype="multipart/form-data" id="profilim-ozellestir-form">
@@ -58,33 +59,21 @@ else
 
 
 <?php
-	if(isset($_POST['PROFILI_OZELLESTIR_SUBMIT'])) // butona basılırsa
+if(isset($_POST['PROFILI_OZELLESTIR_SUBMIT'])) // butona basılırsa
+{
+	if(hash_equals($token,$postEdilenToken)==false) // csrf kontrolü geçilemezse
 	{
-		if(hash_equals($token,$postEdilenToken)==false) // csrf kontrolü geçilemezse
+		echo "<h3>HATA</h3>";
+	}
+	else // sorun yoksa işleme geç
+	{
+		if(isset($_FILES["profilfoto"])) // profil fotoğrafı değiştirilmek istenirse
 		{
-			echo "<h3>HATA</h3>";
-		}
-		else // sorun yoksa işleme geç
-		{
-			if(isset($_FILES["profilfoto"])) // profil fotoğrafı değiştirilmek istenirse
+			if(move_uploaded_file($geciciKonum, "$dosyaKonumu/$isim"))
 			{
-				if(move_uploaded_file($geciciKonum, "$dosyaKonumu/$isim"))
-				{
-					$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET pp=:pp WHERE kullaniciadi= :username");			
-					$profilguncelleme->bindParam(":pp",$finalpp,PDO::PARAM_STR);
-					$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
-					$profilguncelleme->execute();
-					if($profilguncelleme->rowCount()>0)
-					{
-						echo "<script> window.location.reload(); </script>";
-					}
-				}
-			}
-			if(isset($hakkinda) && !empty($hakkinda)) // kullanıcı sadece hakkındayı güncellemek isterse burası çalışacak. hakkında boş olmamalı çünkü her türlü formdan hakkında post edilecek butona basıldığında. boş gelirse güncelleme yapmasın, boşu boşuna hakkında silinir sonra.
-			{
-				$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET hakkinda=:hakkinda  WHERE kullaniciadi=:username");
+				$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET pp=:pp WHERE kullaniciadi= :username");
+				$profilguncelleme->bindParam(":pp",$finalpp,PDO::PARAM_STR);
 				$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
-				$profilguncelleme->bindParam(":hakkinda",$hakkinda,PDO::PARAM_STR);
 				$profilguncelleme->execute();
 				if($profilguncelleme->rowCount()>0)
 				{
@@ -92,44 +81,56 @@ else
 				}
 			}
 		}
-	}
-	else if(isset($_POST['SIFREYI_DEGISTIR_SUBMIT']))
-	{
-		if(isset($guncelSifre) && isset($yeniSifre))
+		if(isset($hakkinda) && !empty($hakkinda)) // kullanıcı sadece hakkındayı güncellemek isterse burası çalışacak. hakkında boş olmamalı çünkü her türlü formdan hakkında post edilecek butona basıldığında. boş gelirse güncelleme yapmasın, boşu boşuna hakkında silinir sonra.
 		{
-			if($guncelSifre != $kullanici['sifre'])
+			$profilguncelleme = $baglanti->prepare("UPDATE uyeler SET hakkinda=:hakkinda  WHERE kullaniciadi=:username");
+			$profilguncelleme->bindParam(":username",$kullanicibilgisi,PDO::PARAM_STR);
+			$profilguncelleme->bindParam(":hakkinda",$hakkinda,PDO::PARAM_STR);
+			$profilguncelleme->execute();
+			if($profilguncelleme->rowCount()>0)
 			{
-				echo "<h3 id='hatamesaj'>Güncel şifrenizi hatalı girdiniz.</h3>";
+				echo "<script> window.location.reload(); </script>";
+			}
+		}
+	}
+}
+else if(isset($_POST['SIFREYI_DEGISTIR_SUBMIT']))
+{
+	if(isset($guncelSifre) && isset($yeniSifre))
+	{
+		if($guncelSifre != $kullanici['sifre'])
+		{
+			echo "<h3 id='hatamesaj'>Güncel şifrenizi hatalı girdiniz.</h3>";
+		}
+		else
+		{
+			if(preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)+[0-9a-zA-Z][a-zA-Z0-9]{7,}$/', $yeniSifre)==false)
+			{
+				echo "<h3 id='hatamesaj'>Şifre kriterlere uymuyor.</h3>";
 			}
 			else
 			{
-				if(preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)+[0-9a-zA-Z][a-zA-Z0-9]{7,}$/', $yeniSifre)==false)
+				$sifreGuncellemeSorgusu = $baglanti->prepare("UPDATE uyeler SET sifre = :sifre WHERE kullaniciadi = :kullaniciadi");
+				$sifreGuncellemeSorgusu->bindParam(":sifre",$yeniSifre);
+				$sifreGuncellemeSorgusu->bindParam(":kullaniciadi",$kullanici['kullaniciadi']);
+				$sifreGuncellemeSorgusu->execute();
+				if($sifreGuncellemeSorgusu->rowCount()>0)
 				{
-					echo "<h3 id='hatamesaj'>Şifre kriterlere uymuyor.</h3>";
+					echo "<script> window.location = window.location.href; </script>";
 				}
-				else
-				{
-					$sifreGuncellemeSorgusu = $baglanti->prepare("UPDATE uyeler SET sifre = :sifre WHERE kullaniciadi = :kullaniciadi");
-					$sifreGuncellemeSorgusu->bindParam(":sifre",$yeniSifre);
-					$sifreGuncellemeSorgusu->bindParam(":kullaniciadi",$kullanici['kullaniciadi']);
-					$sifreGuncellemeSorgusu->execute();
-					if($sifreGuncellemeSorgusu->rowCount()>0)
-					{
-						echo "<script> window.location = window.location.href; </script>";
-					}
-				}
-			}		
+			}
 		}
 	}
-	else if(isset($_POST['FOTO_KALDIR_SUBMIT']))
+}
+else if(isset($_POST['FOTO_KALDIR_SUBMIT']))
+{
+	$fotoKaldirmaSorgusu = $baglanti->prepare("UPDATE uyeler SET pp = :pp WHERE kullaniciadi = :kullaniciadi");
+	$fotoKaldirmaSorgusu->bindParam(":pp",$fotoKaldir);
+	$fotoKaldirmaSorgusu->bindParam(":kullaniciadi", $kullanici['kullaniciadi']);
+	$fotoKaldirmaSorgusu->execute();
+	if($fotoKaldirmaSorgusu->rowCount()>0)
 	{
-		$fotoKaldirmaSorgusu = $baglanti->prepare("UPDATE uyeler SET pp = :pp WHERE kullaniciadi = :kullaniciadi");
-		$fotoKaldirmaSorgusu->bindParam(":pp",$fotoKaldir);
-		$fotoKaldirmaSorgusu->bindParam(":kullaniciadi", $kullanici['kullaniciadi']);
-		$fotoKaldirmaSorgusu->execute();
-		if($fotoKaldirmaSorgusu->rowCount()>0)
-		{
-			echo "<script> window.location.reload(); </script>";
-		}
+		echo "<script> window.location.reload(); </script>";
 	}
+}
 ?>
