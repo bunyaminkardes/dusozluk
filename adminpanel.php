@@ -1,6 +1,15 @@
 <?php
     require_once('kutuphane.php');
     $kullanici = girisyapankullanici();
+    @$hedefkullaniciadi = $_GET['kullaniciadi'];
+    @$kullaniciidnumarasi = $_GET['id'];
+    date_default_timezone_set('Europe/Istanbul');
+    $islemTarihi = date("d-m-Y H:i");
+    @$kullaniciadi = $_POST['kullaniciadi'];
+
+    error_reporting(0);
+
+
     if(!isset($kullanici['kullaniciadi']))
     {
         header("location: 404.php"); 
@@ -19,152 +28,290 @@
     }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Paneli</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="css/duSozlukCss.css">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel='shortcut icon' type='image/x-icon' href='resimler/favicon.png'/>
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-lg-3"><a href="index.php">Anasayfaya dönmek için tıkla</a></div>
-            <!---------------------- ÜYELER LİSTESİ BAŞLANGIÇ ---------------------->
-            <div class="col-12 col-sm-12 col-lg-3">
-                <h3 class="adminpanel-basliklar">- üyeler listesi -</h3>
-                <?php 
-                $kullanici = kullanicilar();
-                $girisyapankullanici = girisyapankullanici();
-                foreach($kullanici as $row)
-                {
-                    if($row['rutbe']=="uye" && $row['bandurumu']==0)
-                    {
-                        ?>
-                        <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
-                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="css/duSozlukCss.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+
+
+<style type="text/css">
+    body
+    {
+        background-color: var(--temarengidivler);
+    }
+    #adminpaneli-baslik
+    {
+        line-height: 50px;
+        padding-left:5px;
+        font-size:16px;
+        color:#FFF;
+        font-family: var(--temayazitipi);
+    }
+    #adminpaneli-girisyapankullanici-baslik
+    {
+        display: block;
+        padding-top:5px;
+        padding-bottom:25px;
+    }
+    #adminpaneli-kullanici-islemleri-baslik
+    {
+        font-size:16px;
+        color:black;
+        padding-bottom:10px;
+    }
+    #adminpaneli-kullanici-islemleri-input
+    {
+        width: 100%;
+        height: 30px;
+        display: block;
+    }
+    #adminpaneli-kullanici-islemleri-buton
+    {
+        width:100px;
+        height: 30px;
+        margin-top:10px;
+        margin-bottom:20px;
+        color:#FFFFFF;
+        font-family: var(--temayazitipi);
+        border:none;
+        background-color: var(--temarengi);
+        display: block;
+        float:right;
+    }
+    .adminpaneli-kullanicisorgusu-basliklar
+    {
+        font-size:14px;
+        font-family: var(--temayazitipi);
+    }
+    .adminpaneli-kullanicisorgusu-islemler-kapsayici
+    {
+    }
+    .adminpaneli-kullanicisorgusu-islemler-baslik
+    {
+        font-size:16px;
+        color:black;
+        padding-bottom:10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-lg-12" style="background-color: var(--temarengi); height: 50px;">
+            <h3 id="adminpaneli-baslik">Dusozluk admin paneli</h3>
+        </div>
+        <div class="col-12 col-sm-12 col-lg-12" style="background-color: var(--temarengidivler);">
+            <span id="adminpaneli-girisyapankullanici-baslik">
+                <?php echo $kullanici['kullaniciadi']." (".$kullanici['rutbe'].")"." olarak giriş yaptınız."; ?><br>
+                <a href="anasayfa">Anasayfaya dönmek için tıklayın.</a>
+            </span>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-4">
+                        <h3 id="adminpaneli-kullanici-islemleri-baslik">Kullanıcı işlemleri:</h3>
+                        <form method="POST" action="" autocomplete="off">
+                            Kullanıcı ara : <input id="adminpaneli-kullanici-islemleri-input" type="text" name="kullaniciadi">
+                            <input id="adminpaneli-kullanici-islemleri-buton" type="submit" name="kullaniciara" value="Ara">
+                        </form>
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-4">
                         <?php
-                        if($girisyapankullanici['rutbe']=="admin") // üyeleri sadece adminler moderatörlüğe yükseltebilme yetkisine sahip olsun.
-                        {
-                            ?>
-                            <button class="adminpanel-buton2"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></button>
-                            <?php
-                        }
+                            if(isset($_POST['kullaniciara']) || isset($_GET['kullaniciadi']))
+                            {
+                                $kullanicisorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
+                                if(isset($_POST['kullaniciara']))
+                                {
+                                    $kullanicisorgusu->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
+                                }
+                                else if(isset($hedefkullaniciadi))
+                                {
+                                    $kullanicisorgusu->bindParam(":kullaniciadi",$hedefkullaniciadi,PDO::PARAM_STR);
+                                }
+                                
+                                $kullanicisorgusu->execute();
+                                if($kullanicisorgusu->rowCount()>0)
+                                {
+                                    foreach($kullanicisorgusu as $row)
+                                    {
+                                        ?>
+                                        <?php 
+                                        if($row['pp']==null)
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="resimler/yenikullanicipp.jpg"></h3>
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="<?php echo $row['pp']; ?>"></h3>
+                                            <?php
+                                        }
+                                        ?>
+                                        
+                                        <h3 class="adminpaneli-kullanicisorgusu-basliklar">Kullanıcı adı : <?php echo $row['kullaniciadi']; ?></h3>
+                                        <?php 
+
+                                        if($row['rutbe']=="admin" && $kullanici['rutbe'] == "moderator")
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar">Üye no : <?php echo $row['id']; ?></h3>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar">Mail adresi : <?php echo $row['mail']; ?></h3>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar">Rütbe : <?php echo $row['rutbe']; ?></h3>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar">Ban durumu : <?php echo $row['bandurumu']; ?></h3>
+                                            <h3 style="padding-bottom:25px;" class="adminpaneli-kullanicisorgusu-basliklar">Kayıt Tarihi : <?php echo $row['kayitOlmaTarihi']; ?></h3>
+                                            <?php
+                                        }
+
+                                        ?>
+                                        
+                                        <?php
+                                    }
+                                }
+                                else
+                                {
+                                    echo "Aranan kayıt bulunamadı.";
+                                }
+                            }
                         ?>
-                        <hr/>
-                        <?php
-                    }
-                }
-                ?>
-            </div> 
-            <!---------------------- ÜYELER LİSTESİ BİTİŞ---------------------->
-            <!---------------------- MODERATÖRLER LİSTESİ BAŞLANGIÇ ---------------------->
-            <div class="col-12 col-sm-12 col-lg-3" >
-                <h3 class="adminpanel-basliklar">- moderatörler listesi -</h3>
-                <?php 
-                $kullanici = kullanicilar();
-                $girisyapankullanici = girisyapankullanici();
-                foreach($kullanici as $row)
-                {
-                    if($row['rutbe']=="moderator" && $row['bandurumu']==0)
-                    {
+                    </div>
+                    <div class="col-12 col-sm-12 col-lg-4">
+                        <?php 
+                            if(isset($_POST['kullaniciara']) || isset($hedefkullaniciadi) && $kullanicisorgusu->rowCount()>0)
+                            {
+                                ?>
+                                <div class="adminpaneli-kullanicisorgusu-islemler-kapsayici">
+                                    <h3 class="adminpaneli-kullanicisorgusu-islemler-baslik">Buradan işlem yapabilirsiniz:</h3>
+                                    <?php
+                                        if($row['bandurumu']==0) // kullanıcı banlı değilse
+                                        {
+                                            if($kullanici['rutbe']=="moderator")
+                                            {
+                                                if($row['rutbe']=="admin" || $row['rutbe']=="moderator") // moderatörler adminleri veya başka moderatörleri banlayamaz.
+                                                {
+
+                                                }
+                                                else
+                                                {
+                                                    ?>
+                                                    <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Kullanıcıyı banla</a></h3>
+                                                    <?php
+                                                }
+                                            }
+                                            else if($kullanici['rutbe']=="admin") // adminler diğer adminleri banlayamaz.
+                                            {
+                                                if($row['rutbe']=="admin")
+                                                {
+
+                                                }
+                                                else
+                                                {
+                                                    ?>
+                                                    <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Kullanıcıyı banla</a></h3>
+                                                    <?php
+                                                }
+                                            }
+                                        }
+                                        else if($row['bandurumu']==1)
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=0">Banını kaldır</a></h3>
+                                            <?php
+                                        }
+                                        if($row['rutbe']=="uye" && $kullanici['rutbe']=="admin") // üyeleri sadece adminler moderatör yapabilir.
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=1">Moderatör yap</a></h3>
+                                            <?php
+                                        }
+
+                                        if($row['rutbe']=="moderator" && $kullanici['rutbe'] =="admin") // moderatörlükleri sadece adminler geri alabilir.
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></h3>
+                                            <?php
+                                        }
+
+                                        if($kullanici['rutbe'] == "admin" && $row['rutbe'] == "uye" || $row['rutbe'] == "moderator") // sadece adminler üye veya moderatörleri sistemden silebilir.
+                                        {
+                                            ?>
+                                            <h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="">Üyeyi sistemden sil</a></h3>
+                                            <?php
+                                        }
+                                    ?>
+                                </div>
+                                <?php
+                            }
                         ?>
-                        <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
-                        <?php
-                        if($girisyapankullanici['rutbe']=="admin") // moderatörler birbirini banlayamasın ve moderatörlüğünü alamasın
-                        {
-                            ?>
-                            <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=1">Banla</a></button>
-                            <button class="adminpanel-buton2"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></button>
-                            <?php
-                        }
-                        ?>
-                        <hr/>
-                        <?php
-                    }
-                }
-                ?>
-            </div>
-            <!---------------------- MODERATÖRLER LİSTESİ BİTİŞ ---------------------->
-            <!---------------------- BANLILAR LİSTESİ BAŞLANGIÇ ---------------------->
-            <div class="col-12 col-sm-12 col-lg-3">
-                <h3 class="adminpanel-basliklar">- banlılar listesi -</h3>
-                <?php
-                $kullanici = kullanicilar();
-                foreach($kullanici as $row)
-                {
-                    if($row['bandurumu']==1)
-                    {
-                        ?>
-                        <a><?php echo "kullanıcı adı : ".$row['kullaniciadi']."<br/>";?></a>
-                        <button class="adminpanel-buton"><a href="adminpanel.php?kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=0">Ban kaldır</a></button>
-                        <br/>
-                        <hr/>
-                        <?php
-                    }
-                }
-                ?>
-            </div>
-            <!---------------------- BANLILAR LİSTESİ BİTİŞ ---------------------->
+                    </div>
+                </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
 
 <?php // BANLAMA - BAN KALDIRMA - MODERATÖR YAPMA - MODERATÖRLÜK KALDIRMA İŞLEMLERİ
-
-    $kullanici = girisyapankullanici();
-    @$hedefkullaniciadi = $_GET['kullaniciadi'];
-    date_default_timezone_set('Europe/Istanbul');
-    $islemTarihi = date("d-m-Y H:i");
-
-    if(isset($_GET['moderator']) && @$_GET['moderator']==1) // moderatörlük verir.
+    if(isset($_GET['moderator']) && isset($_GET['id']) && @$_GET['moderator']==1) // moderatörlük verir.
     {
         $rutbe = 'moderator';
-        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:moderator WHERE kullaniciadi = :kullaniciadi");
+        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:moderator WHERE id = :kullaniciidnumarasi");
         $guncellemesorgusu->bindParam(':moderator',$rutbe,PDO::PARAM_STR);
-        $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
+        $guncellemesorgusu->bindParam(':kullaniciidnumarasi',$kullaniciidnumarasi,PDO::PARAM_STR);
         $guncellemesorgusu->execute();
-        echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
+        if($guncellemesorgusu->rowCount()>0)
+        {
+            echo "<script> window.location.href = window.location.href </script>";
+        }
     }
-    if(isset($_GET['moderator']) && @$_GET['moderator']==0) // moderatörlüğü kaldırır.
+    if(isset($_GET['moderator']) && isset($_GET['id']) && @$_GET['moderator']==0) // moderatörlüğü kaldırır.
     {
         $rutbe = 'uye';
-        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:uye WHERE kullaniciadi = :kullaniciadi");
+        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET rutbe=:uye WHERE id = :kullaniciidnumarasi");
         $guncellemesorgusu->bindParam(':uye',$rutbe,PDO::PARAM_STR);
-        $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
+        $guncellemesorgusu->bindParam(':kullaniciidnumarasi',$kullaniciidnumarasi,PDO::PARAM_STR);
         $guncellemesorgusu->execute();
-        echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
+        if($guncellemesorgusu->rowCount()>0)
+        {
+            echo "<script> window.location.href = window.location.href </script>";
+        }
     }
-    if (isset($_GET['ban']) && @$_GET['ban'] == 1)  // banlama işlemi yapar.
+    if (isset($_GET['ban']) && isset($_GET['id']) && @$_GET['ban'] == 1)  // banlama işlemi yapar.
     {
         $bandurumu = 1;
-        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
+        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE id = :kullaniciidnumarasi");
         $guncellemesorgusu->bindParam(':bandurumu',$bandurumu,PDO::PARAM_INT);
-        $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
+        $guncellemesorgusu->bindParam(':kullaniciidnumarasi',$kullaniciidnumarasi,PDO::PARAM_STR);
         $guncellemesorgusu->execute();
+
         $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcıyı banladı.";
-        $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
+        $logsorgusu = $baglanti->prepare("INSERT INTO moderatorloglari(islem,tarih) VALUES (:islem,:tarih)");
         $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
         $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
         $logsorgusu->execute();
-        echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
+
+        if($guncellemesorgusu->rowCount()>0 && $logsorgusu->rowCount()>0)
+        {
+            echo "<script> window.location.href = window.location.href </script>";
+        }
     }
-    if (isset($_GET['ban']) && @$_GET['ban'] == 0) // ban kaldırır.
+    if (isset($_GET['ban']) && isset($_GET['id']) && @$_GET['ban'] == 0) // ban kaldırır.
     {
         $bandurumu = 0;
-        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE kullaniciadi = :kullaniciadi");
+        $guncellemesorgusu = $baglanti->prepare("UPDATE uyeler SET bandurumu=:bandurumu WHERE id = :kullaniciidnumarasi");
         $guncellemesorgusu->bindParam(':bandurumu',$bandurumu,PDO::PARAM_INT);
-        $guncellemesorgusu->bindParam(':kullaniciadi',$hedefkullaniciadi,PDO::PARAM_STR);
+        $guncellemesorgusu->bindParam(':kullaniciidnumarasi',$kullaniciidnumarasi,PDO::PARAM_STR);
         $guncellemesorgusu->execute();
-        $islem = $kullanici['kullaniciadi']." "."adlı moderatör"." ".$_GET['kullaniciadi']." "."adlı kullanıcının banını kaldırdı.";
-        $logsorgusu = $baglanti->prepare("INSERT INTO moderatorLoglari(islem,tarih) VALUES (:islem,:tarih)");
+
+        $islem = $kullanici['kullaniciadi']." "."adlı"." ".$kullanici['rutbe']." ".$_GET['kullaniciadi']." "."adlı kullanıcının banını kaldırdı.";
+        $logsorgusu = $baglanti->prepare("INSERT INTO moderatorloglari(islem,tarih) VALUES (:islem,:tarih)");
         $logsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
         $logsorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
         $logsorgusu->execute();
-        echo "<script> setTimeout(function(){ window.location.href='adminpanel.php'; }, 1000); </script>";
+
+        if($guncellemesorgusu->rowCount()>0 && $logsorgusu->rowCount()>0)
+        {
+            echo "<script> window.location.href = window.location.href </script>";
+        }
     }
 ?>

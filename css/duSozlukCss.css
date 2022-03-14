@@ -10,6 +10,7 @@
 :root
 {
 	--temarengi: #f2058f;
+	--temarengihover :#ff30a5;
 	--loginrenk: black;
 	--temarengidivler:#eeeeee;
 	--arkaplanrenk:#eeeeee;
@@ -25,6 +26,35 @@ html
 body
 {
 	background-color: var(--arkaplanrenk);
+}
+#bildirimZiliKapsayiciButon
+{
+	border:none;
+	background-color: white;
+	position: relative;
+}
+#bildirimZiliAcilirMenu
+{
+	border-style: solid;
+	border-width: 1px;
+	background-color: var(--temarengidivler);
+	width: 300px;
+	height: 200px;
+	position: absolute;
+	right: 0px;
+	top:31px;
+	overflow: auto;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-top-left-radius: 3px;
+}
+#bildirimZiliAcilirMenu a
+{
+	text-align: left;
+	color:var(--temarengi);
+	padding-right: 5px;
+	padding-left:5px;
+	font-size:16px;
 }
 .focus
 {
@@ -44,7 +74,7 @@ body
 	position: absolute;
 	top:41px; /* bootstrap padding'inden dolayı 10px + arama kutusunun height'i 30px = 40px. */
 	display: none;
-	z-index: 999999;
+	z-index: 1000;
 	word-wrap: break-word;
 }
 /* ------------------------------------------- index.php başlangıç ------------------------------------------ */
@@ -200,7 +230,7 @@ body
 	width: 100%;
 	height: 200px;
 	background-color:var(--navbar);
-	z-index: 9999999;
+	z-index: 1000;
 	display: none;
 }
 .yanbar-kategoriler
@@ -228,7 +258,7 @@ body
 	right: 0;
 	background-color:var(--navbar);
 	display: none;
-	z-index: 9999999;
+	z-index: 1000;
 }
 #mobilkategori ul
 {
@@ -391,7 +421,7 @@ body
 	position: fixed;
 	bottom: 0;
 	left:0;
-	z-index: 99999;
+	z-index: 1000;
 }
 #adminpanelegit:hover
 {
@@ -441,6 +471,7 @@ body
 	color:white;
 	line-height: 40px;
 	font-family: var(--temayazitipi);
+	font-size:14px;
 }
 .sagbar-div
 {
@@ -469,6 +500,7 @@ body
 	display: block;
 	margin:0 auto;
 	margin-top:30px;
+	padding-bottom:40px;
 }
 #kullaniciadi
 {
@@ -504,6 +536,29 @@ body
 {
 	background-color: #ff30a5;
 }
+#giris-buton
+{
+	width: 100%;
+	height: 40px;
+	background-color: var(--temarengi);
+	border:none;
+	margin-top:30px;
+	margin-bottom:10px;
+	color:white;
+}
+#giris-buton:hover
+{
+	background-color: #ff30a5;
+}
+#giris-sifremi-unuttum
+{
+	text-decoration: none;
+	color:var(--baslikrenkleri);
+}
+#giris-sifremi-unuttum:hover
+{
+	text-decoration: underline;
+}
 #giris-yazilar
 {
 	font-family: var(--temayazitipi);
@@ -530,7 +585,7 @@ body
 	text-align: center;
 	line-height: 20px;
 	color:red;
-	display:none;
+	/*display:none;*/
 }
 #hatamesaj2
 {
@@ -550,7 +605,7 @@ body
 	text-align: center;
 	line-height: 20px;
 	color:black;
-	display:none;
+	/*display:none;*/
 }
 .kayitol
 {
@@ -572,9 +627,7 @@ body
 #konuac
 {
 	width:100%;
-	height: 400px;
 	float: left;
-	margin-top:50px;
 	border-style: solid;
 	border-width: 1px;
 	border-color:#9b9b9b;
@@ -583,44 +636,45 @@ body
 
 #konuac-baslik
 {
-	padding-top: 30px;
+	height: 50px;
 	text-align:center;
-	font-size:23px;
+	font-size:21px;
+	background-color:var(--baslikrenkleri);
+	font-family: (--temayazitipi);
+	color:#FFFFFF;
+	line-height: 50px;
 }
 #konuac-konubasligi
 {
-	width:50%;
+	width:70%;
 	height: 35px;
 	display: block;
-	position: relative;
-	top:20px;
 	margin: auto;
+	margin-top:20px;
 }
 #konuac-konuicerigi
 {
 	width:70%;
-	height: 100px;
+	height: 200px;
 	display: block;
-	position: relative;
-	top:40px;
 	resize: none;
 	margin: auto;
+	margin-top:20px;
 }
 #konuac-konuturu
 {
 	display: block;
-	position: relative;
-	top: 60px;
 	margin:0 auto;
+	margin-top:20px;
 }
 #konuac-buton
 {
 	width:90px;
 	height: 30px;
 	display: block;
-	position: relative;
-	top:80px;
 	margin: auto;
+	margin-top:20px;
+	margin-bottom:20px;
 }
 /* ------------------------------------------- konuac.php bitiş ------------------------------------------- */
 
@@ -631,7 +685,6 @@ body
 #konu /*konular-content.php içerisinde yer alıyor bu. konuyu açan kişiye ait otomatik oluşturulan div bu. bunu da inline hale getirebiliriz aslında.*/
 {
 	width:100%;
-	min-height: 200px;
 	position: relative;
 	float: left;
 	padding-top:15px;
@@ -692,24 +745,20 @@ body
 .konular-yazar-kimlik-kapsayici
 {
 	float:left;
-	position: relative;
+	position: absolute;
+	bottom:20px;
 	width: 100%;
 }
 #konular-yazar-kimlik
 {
 	width:100%;
 	height: 20px;
-	position: absolute;
-	bottom: 0;
-	right: 0;
 	float:right;
 }
 #konular-yazar-kimlik-kimlik
 {
-	
 	font-family:var(--temayazitipi);
 	font-size:14px;
-	float: right;
 }
 #konular-yazar-kimlik-kimlik a
 {
@@ -744,7 +793,7 @@ body
 .konular-kullanicimesajkapsayicisi
 {
 	width:100%;
-	min-height: 200px;
+	min-height: 100px;
 	position: relative;
 	float:left;
 	padding-top:30px;
@@ -822,6 +871,16 @@ body
 
 /* ------------------------------------------- index-content.php başlangıç ------------------------------------------- */
 
+#index-konu
+{
+	width:100%;
+	position: relative;
+	float: left;
+	padding-top:15px;
+	background-color: var(--temarengidivler);
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	min-height: 100px;
+}
 #index-konu-baslik
 {
 	font-family:var(--temayazitipi);
@@ -834,7 +893,8 @@ body
 #index-konu-baslik a
 {
 	text-decoration:none;
-	color:var(--)
+	color:var(--temarengi);
+	padding-top:10px;
 }
 #index-konu-icerik
 {
@@ -845,10 +905,11 @@ body
 	white-space: pre-wrap;
 	padding-left: 5px;
 	padding-right: 5px;
+	margin-top:20px;
+	margin-bottom:40px;
 }
 #index-yazar-kimlik
 {
-	width:300px;
 	height:20px;
 	position:absolute;
 	bottom:0;
@@ -864,6 +925,13 @@ body
 	font-weight: 300;
 	color:var(--temarengi);
 	float:right;
+}
+.index-ghost-div
+{
+	width:100%;
+	height:40px;
+	background-color:var(--arkaplanrenk);
+	float: left;
 }
 /* ------------------------------------------- index-content.php bitiş ------------------------------------------- */
 
@@ -966,7 +1034,7 @@ body
 
 .profil-yorum-basliklari
 {
-	font-size:24px;
+	font-size:22px;
 	padding-top:35px;
 	color:var(--temarengi);
 	clear:both;
@@ -974,7 +1042,6 @@ body
 .profil-yorum-div
 {
 	width:100%;
-	min-height: 200px;
 	position: relative;
 	float:left;
 	padding-top:25px;
@@ -1001,7 +1068,8 @@ body
 	font-weight: lighter;
 	white-space: pre-wrap;
 	padding-left: 5px;
-	font-size:16px;
+	padding-right: 5px;	
+	font-size:14px;
 	color:black;
 	text-align:left;
 	word-wrap: break-word;
@@ -1050,7 +1118,6 @@ body
 	width:100%;
 	min-height: 130px;
 	margin-left:10px;
-	margin-top:20px;
 	float:right;
 	border-style: solid;
 	border-width: 1px;
@@ -1061,9 +1128,9 @@ body
 .pp
 {
 	width: 120px;
-	height: auto;
+	height: 120px;
 	object-fit:cover;
-	object-position: 50% 50%;
+	object-position: 50%,50%;
 	float:left;
 	border-style:solid;
 	border-width:2px;
@@ -1073,6 +1140,7 @@ body
 }
 .profil-user-kapsayici
 {
+	width: 100%;
 	float:left;
 	height: 100%;
 	position: relative;
@@ -1087,7 +1155,7 @@ body
 .profil-user-bilgisi-altbasliklar
 {
 	font-family:var(--temayazitipi);
-	font-size:16px;
+	font-size:14px;
 	color:var(--baslikrenkleri);
 	padding-left:20px;
 }
@@ -1106,7 +1174,7 @@ body
 .profil-hakkinda
 {
 	width:100%;
-	min-height: 200px;
+	min-height: 100px;
 	padding-top:10px;
 	margin-top:30px;
 	clear:both;
@@ -1135,6 +1203,97 @@ body
 	font-family:var(--temayazitipi);
 	font-weight: lighter; 
 }
+
+#profil-alan-kapsayicisi
+{
+	width:100%;
+	min-height: 200px;
+	padding-top:10px;
+	margin-top:30px;
+	clear:both;
+	float:left;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.profil-alan-kapsayicisi-icerik-kapsayicisi
+{
+}
+.profil-alan-kapsayicisi-icerik-baslik
+{
+	font-size:22px;
+	font-weight: bold;
+	font-family: var(--temayazitipi);
+	padding-left:10px;
+}
+.profil-alan-kapsayicisi-icerik-baslik a
+{
+	text-decoration: none;
+	color:black;
+}
+.profil-alan-kapsayicisi-icerik
+{
+	min-height: 100px;
+	padding-top:20px;
+	font-size:14px;
+	font-family: var(--temayazitipi);
+	padding-left:10px;
+	padding-right: 10px;
+	white-space: pre-line;
+	word-wrap: break-word;
+}
+.profil-alan-kapsayicisi-userkimlik
+{
+	width:100%;
+	height: 30px;
+	padding-bottom: 40px;
+	margin-top:10px;
+}
+.profil-alan-kapsayicisi-userkimlik-kimlik
+{
+	float: right;
+	padding-right: 10px;
+	font-size:14px;
+	font-family: var(--temayazitipi);
+	color:var(--temarengi);
+}
+.profil-alan-kapsayicisi-userkimlik-kimlik a
+{
+	text-decoration: none;
+	color:var(--temarengi);
+}
+#profil-profil-yorumlari-kapsayicisi
+{
+	width:100%;
+	min-height: 200px;
+	padding-top:10px;
+	margin-top:30px;
+	clear:both;
+	float:left;
+	border-style: solid;
+	border-width: 1px;
+	border-color:#9b9b9b;
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+#profil-profil-yorumlari-baslik
+{
+	font-size:20px;
+	font-family: var(--temayazitipi);
+	color:var(--temarengi);
+	padding-left:5px;
+	padding-top:5px;
+	font-weight: lighter;
+}
+#profil-alan-kapsayicisi-basliq
+{
+	padding-left:10px;
+	color : var(--temarengi);
+	padding-bottom:25px;
+	font-size:24px;
+	font-family: var(--temayazitipi);
+	font-weight: bold;
+}
 /* ------------------------------------------- profil-content.php bitis ------------------------------------------- */
 
 /* ------------------------------------------- profilim-content.php baslangic ------------------------------------------- */
@@ -1143,7 +1302,8 @@ body
 	width:100%;
 	min-height: 300px;
 	padding-top:10px;
-	margin-top:30px;
+	margin-top:40px;
+	margin-bottom:40px;
 	clear:both;
 	float:left;
 	border-style: solid;
@@ -1185,57 +1345,67 @@ body
 }
 #profilim-ozellestir-ppdegistir-butonkapsayici-buton
 {
-	width:60px;
+	width:90px;
 	height:35px;
 	margin-bottom:10px;
 	float:right;
 	display:inline-block;
 	margin-top:10px;
+	border:none;
+	background-color: var(--temarengi);
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	color:#FFFFFF;
 }
-/* ------------------------------------------- profilim-content.php bitis ------------------------------------------- */
-
-/* ------------------------------------------- REKLAMLAR ------------------------------------------- */
-#reklam-1
+#profilim-ozellestir-ppdegistir-butonkapsayici-buton:hover
 {
+	background-color: var(--temarengihover);
 }
-#reklam-1 img
+#profilim-sifre-degistir-kapsayici
 {
-	width: 100%;
-	padding-top:10px;
-}
-#reklam-2
-{	
-}
-#reklam-2 img
-{
-	display:block;
+	width:90%;
+	height:200px;
 	margin:0 auto;
-	height: 160px;
-	padding-bottom: 20px;
+	margin-top:15px;
+	margin-bottom:25px;
 }
-#reklam-3
-{
-}
-#reklam-3 img
+#profilim-sifre-degistir-baslik
 {
 	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	color:var(--baslikrenkleri);
+	font-family: var(--temayazitipi);
+	font-weight: bold;
+	font-size:18px;
+	text-align: center;
+	background-color: lightgrey;
 }
-#reklam-4
-{
-}
-#reklam-4 img
-{
-	width:100%;
-	padding-top:20px;
-}
-#reklam-5
-{
-}
-#reklam-5 img
+.profilim-sifre-degistir-input-alanlari
 {
 	display: block;
 	margin:0 auto;
-	height: 160px;
 	margin-top:20px;
+	border-style: solid;
+	border-width: 1px;
+	width: 200px;
+	height: 35px;
 }
-/* ------------------------------------------- REKLAMLAR ------------------------------------------- */
+#profilim-sifre-degistir-buton
+{
+	display: block;
+	width: 200px;
+	height: 35px;
+	margin:0 auto;
+	margin-top:20px;
+	border:none;
+	background-color: var(--temarengi);
+	font-family: var(--temayazitipi);
+	font-size:16px;
+	color:#FFFFFF;
+}
+#profilim-sifre-degistir-buton:hover
+{
+	background-color: var(--temarengihover);
+}
+/* ------------------------------------------- profilim-content.php bitis ------------------------------------------- */
