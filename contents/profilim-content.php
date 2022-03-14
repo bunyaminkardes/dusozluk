@@ -18,12 +18,14 @@ $fotoKaldir = NULL;
 if(!isset($_SESSION['girisyapankullanici'])) // giriş yapmamış kullanıcılar profilim sayfasına giremeyecek.
 {
 	echo "<script type='text/javascript'> document.location = '404.php'; </script>";
+	exit();
 }
 else
 {
 	if($kullanici['kullaniciadi'] != $profilKimeAit ) // giriş yapmış olanlar da ancak kendi profiline girebilecek.
 	{
 		echo "<script type='text/javascript'> document.location = '404.php'; </script>";
+		exit();
 	}
 	else if ($kullanici['kullaniciadi'] == $profilKimeAit)
 	{
