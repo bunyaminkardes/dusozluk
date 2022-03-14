@@ -1,59 +1,89 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Konu aç</title>
-	</head>
-	<body>
-		<div id="konuac">
-			<form method="POST" action="">
-				<h3 id="konuac-baslik">- konu aç -</h3>
-				<input id="konuac-konubasligi" type="textbox" name="konu_baslikk" autofocus placeholder="konu başlığı (maksimum 60 karakter)" maxlength="60" required>
-				<textarea id="konuac-konuicerigi" name="konu_icerikk" placeholder="konu içeriği (maksimum 6000 karakter)" maxlength="6000" required></textarea>
-				<select id="konuac-konuturu" name="konu_turu">
-					<option value="Secilmemis">Lütfen Konu türünü seçiniz.</option>
-  					<option value="Siyaset">Siyaset</option>
-  					<option value="Ekonomi">Ekonomi</option>
-  					<option value="Yasam">Yaşam</option>
-  					<option value="Spor">Spor</option>
-  					<option value="Muzik">Müzik</option>
-  					<option value="Universite">Üniversite</option>
-  					<option value="Anime">Anime</option>
-  					<option value="Genel">Genel</option>
-				</select>
-				<input id="konuac-buton" type="submit" value="konu aç">
-				<br/><br/><br/><br/><br/><br/>
-				<?php
+<?php
 
-				$kbaslik=$_POST['konu_baslikk'];
-				$kicerik=$_POST['konu_icerikk'];
-				$user=$_SESSION['girisyapankullanici'];
-				$konu_turu = $_POST['konu_turu'];
+$konuBasligi = $_POST['konuBasligi'];
+$konuIcerigi = $_POST['konuIcerigi'];
+$konuTuru = $_POST['konuTuru'];
+$kullanici = $_SESSION['girisyapankullanici'];
+date_default_timezone_set('Europe/Istanbul');
+$tarih = date("d-m-Y H:i");
+$token = token_uret();
+$postEdilenToken = $_POST['postEdilenToken'];
 
-				date_default_timezone_set('Europe/Istanbul');
-				$tarih = date("d-m-Y H:i");
+?>
+<div id="konuac">
+	<form method="POST" action="" autocomplete="off">
+		<h3 id="konuac-baslik">Konu Aç</h3>
+		<input id="konuac-konubasligi" type="textbox" name="konuBasligi" autofocus placeholder=" Lütfen konu başlığını giriniz. " maxlength="60" required>
+		<textarea id="konuac-konuicerigi" name="konuIcerigi" placeholder=" Lütfen konu içeriğini giriniz. " maxlength="6000" required></textarea>
+		<select id="konuac-konuturu" name="konuTuru">
+			<option value="Secilmemis">Lütfen Konu türünü seçiniz.</option>
+			<option value="itiraf">İtiraf</option>
+			<option value="Astroloji">Astroloji</option>
+			<option value="Yasam">Yaşam</option>
+			<option value="Spor">Spor</option>
+			<option value="Muzik">Müzik</option>
+			<option value="Universite">Üniversite</option>
+			<option value="Anime">Anime</option>
+			<option value="Genel">Genel</option>
+		</select>
+		<input type="hidden" name="KONU_AC_TOKEN" value="<?php echo $token; ?>">
+		<input id="konuac-buton" type="submit" name="KONU_AC_SUBMIT" value="konu aç">
+	</form>
+</div>
 
-				if (isset($_POST['konu_baslikk']) && isset($_POST['konu_icerikk']) && isset($_POST['konu_turu']) ) // konu başlığı ve konu içeriği post edilmişse konu açılacak demektir, veritabanına insert edelim.
+<?php
+
+
+if(isset($_POST['KONU_AC_SUBMIT'])) //ilk olarak konu aç butonuna tıklanmış mı diye kontrol edelim. tıklama işlemi yapılmadıysa boşuna işlem yapılmasın.
+{
+	if(hash_equals($token,$postEdilenToken==false))
+	{
+		echo "<h3 id='hatamesaj'>HATA</h3>";
+	}
+	else
+	{
+		if(isset($konuBasligi) && isset($konuIcerigi) && isset($konuTuru)) //ikinci olarak konu başlığı, konu içeriği ve konu türü değişkenleri tanımlı mı diye bakalım.
+		{
+			if($konuTuru=="Secilmemis") //konu türü seçilmediyse uyarı verdirelim.
+			{
+				echo "<h3 id='hatamesaj'>Lütfen konu türü seçiniz.</h3>";
+			}
+			else if(ctype_space($konuBasligi)==true || ctype_space($konuIcerigi)==true) //konu başlığı veya konu içeriği sadece boşluklardan oluşamasın.
+			{
+				echo "<h3 id='hatamesaj'>Konu başlığı veya konu içeriği boş girilemez.</h3>";
+			}
+			else if(preg_replace("/[^0-9a-zA-Z ]/", "", $konuBasligi)==false) //konu başlığı sadece harf ve numaralardan mı oluşuyor diye kontrol edelim. bu işlemi ctype_alnum() fonksiyonu ile de yapabilirdik ama o zaman türkçe karakter sorunu ortaya çıkardı.
+			{
+				echo "<h3 id='hatamesaj'>Lütfen konu ismi seçerken sadece harf veya numara kullanmaya dikkat edin.</h3>";
+			}
+			else // herhangi bir sıkıntı yoksa konu açma işlemine başlayalım.
+			{
+				try //halihazırda var olan bir konu insert edilmeye çalışılırsa diye insert işlemini try catch blokları içerisine alarak yaptıralım.
 				{
-					try // halihazırda var olan bir konu insert edilmeye çalışırsa diye patlamamak için try-catch ile yapalım bu işlemi.
+					$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,konu_turu,user,tarih) VALUES (:konuBasligi,:konuIcerigi,:konuTuru,:kullanici,:tarih)");
+					$sqlkomut->bindParam(':konuBasligi',$konuBasligi,PDO::PARAM_STR);
+					$sqlkomut->bindParam(':konuIcerigi',$konuIcerigi,PDO::PARAM_STR);
+					$sqlkomut->bindParam(':konuTuru',$konuTuru,PDO::PARAM_STR);
+					$sqlkomut->bindParam(':kullanici',$kullanici,PDO::PARAM_STR);
+					$sqlkomut->bindParam(':tarih',$tarih,PDO::PARAM_STR);
+					$sqlkomut->execute();					
+					if($sqlkomut->rowCount()>0)
 					{
-						$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,user,tarih,konu_turu) VALUES (:kbaslik,:kicerik,:user,:tarih,:konu_turu)");
-						$sqlkomut->bindParam(':kbaslik',$kbaslik,PDO::PARAM_STR);
-						$sqlkomut->bindParam(':kicerik',$kicerik,PDO::PARAM_STR);
-						$sqlkomut->bindParam(':user',$user,PDO::PARAM_STR);
-						$sqlkomut->bindParam(':tarih',$tarih,PDO::PARAM_STR);
-						$sqlkomut->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
-						$sqlkomut->execute();
 						echo "Yeni konu başarıyla oluşturuldu.";
 						echo "<script> setTimeout(function() {window.location.href='index.php';}, 1500);</script>";
-					} 
-					catch (Exception $e) 
-					{
-						echo "Hata, büyük ihtimalle bu isimde zaten bir konu bulunuyor.";
 					}
 				}
-				?>
-			</form>
-		</div>
-	</body>
-</html>
+				catch(Exception $e)
+				{
+					echo "<h3 id='hatamesaj'>Hata, böyle bir konu zaten bulunuyor.</h3>";
+				}
+			}
+		}
+		else
+		{
+			echo "<h3 id='hatamesaj'>Lütfen gerekli yerleri eksiksiz doldurun.</h3>";
+		}
+	}
+}
 
+?>

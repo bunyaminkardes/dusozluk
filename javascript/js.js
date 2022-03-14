@@ -1,3 +1,15 @@
+var ipucuDiv = document.getElementById("ipucu");
+var yukleniyor = document.getElementById("yukleniyor");
+var aramaKutusu = document.getElementById("ara");
+var mobilKategoriButonu = document.getElementById("kategoriacbutonu");
+var masaustuKategoriButonu = document.getElementById("yanbar-kategori-butonu");
+var mobilKategori = document.getElementById("mobilkategori"); 
+var yanbarKategori = document.getElementById("yanbar-kategori");
+var ajaxlivesearch = document.getElementById("ajaxlivesearch");
+var bildirimZili = document.getElementById("bildirimZiliKapsayiciButon");
+var bildirimZiliAcilirMenu = document.getElementById("bildirimZiliAcilirMenu");
+
+
 function ipucugoster(str)
 {
     if(str.length == 0)
@@ -19,12 +31,43 @@ function ipucugoster(str)
         xmlhttpnesnesi.send();
     }
 }
-var input = document.getElementById("ara");
-document.addEventListener('DOMContentLoaded', function () 
+
+if(bildirimZili!=null)
 {
-    input.addEventListener("input", function() 
+    bildirimZili.onclick = function ()
+    {
+        if(bildirimZiliAcilirMenu.style.display !== "none")
+        {
+            bildirimZiliAcilirMenu.style.display = "none";
+        }
+        else
+        {
+            bildirimZiliAcilirMenu.style.display = "block";
+        }
+    };
+}
+
+
+function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) // hangi kategori seçildiyse diğerlerini göstermesin.
+{
+    document.getElementById($goster).style.display="block";
+    document.getElementById($gizle1).style.display="none";
+    document.getElementById($gizle2).style.display="none";
+    document.getElementById($gizle3).style.display="none";
+    document.getElementById($gizle4).style.display="none";
+    document.getElementById($gizle5).style.display="none";
+    document.getElementById($gizle6).style.display="none";
+    document.getElementById($gizle7).style.display="none";
+    document.getElementById($gizle8).style.display="none";
+    document.getElementById($gizle9).style.display="none";
+    document.getElementById("yanbar-kategori").style.display="none";
+};
+
+document.addEventListener('DOMContentLoaded', function () // arama kutusu boş olduğunda ekranda hala arama önerileri kutusu çıkmasını engellemek için.
+{
+    aramaKutusu.addEventListener("input", function() 
     { 
-        if (input.value==="")
+        if (aramaKutusu.value==="")
         {
             document.getElementById("ajaxlivesearch").style.display="none";
             document.getElementById("mobilkategori").style.display="none";
@@ -34,56 +77,31 @@ document.addEventListener('DOMContentLoaded', function ()
             document.getElementById("ajaxlivesearch").style.display="block";
             document.getElementById("mobilkategori").style.display="none";
         }
-    }
-    );
-}
-);
-const hedefdiv = document.getElementById("mobilkategori");
-const buton = document.getElementById("kategoriacbutonu");
-buton.onclick = function () 
+    });
+});
+
+masaustuKategoriButonu.addEventListener("click",function()
 {
-    if (hedefdiv.style.display !== "none") 
+    if (yanbarKategori.style.display !== "none") 
     {
-        hedefdiv.style.display = "none";
+        yanbarKategori.style.display = "none";
     } 
     else 
     {
-        hedefdiv.style.display = "block";
+        yanbarKategori.style.display = "block";
     }
-};
+    //console.log("masaüstünde kategoriler butonuna basıldı.");
+});
 
-const hedefdiv2 = document.getElementById("yanbar-kategori");
-const buton2 = document.getElementById("yanbar-kategori-butonu");
-buton2.onclick = function () 
+mobilKategoriButonu.addEventListener("click",function()
 {
-    if (hedefdiv2.style.display !== "none") 
+    if (mobilKategori.style.display !== "none") 
     {
-        hedefdiv2.style.display = "none";
+        mobilKategori.style.display = "none";
     } 
-    else
+    else 
     {
-        hedefdiv2.style.display = "block";
+        mobilKategori.style.display = "block";
     }
-};
-function kategorigostergizle($gosterilecekolan,$gizlenecekolan1,$gizlenecekolan2,$gizlenecekolan3,$gizlenecekolan4,$gizlenecekolan5,$gizlenecekolan6,$gizlenecekolan7,$gizlenecekolan8,$gizlenecekolan9)
-{
-    document.getElementById($gosterilecekolan).style.display="block";
-    document.getElementById($gizlenecekolan1).style.display="none";
-    document.getElementById($gizlenecekolan2).style.display="none";
-    document.getElementById($gizlenecekolan3).style.display="none";
-    document.getElementById($gizlenecekolan4).style.display="none";
-    document.getElementById($gizlenecekolan5).style.display="none";
-    document.getElementById($gizlenecekolan6).style.display="none";
-    document.getElementById($gizlenecekolan7).style.display="none";
-    document.getElementById($gizlenecekolan8).style.display="none";
-    document.getElementById($gizlenecekolan9).style.display="none";
-    document.getElementById("yanbar-kategori").style.display="none";
-}
-function goster()
-{
-    document.getElementById("mobilkategori").style.display="block";
-}
-function kategori_goster()
-{
-    document.getElementById("yanbar-kategori").style.display="block";
-}
+    //console.log("maobilde kategoriler butonuna basıldı.");
+});
