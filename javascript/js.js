@@ -1,5 +1,5 @@
 var ipucuDiv = document.getElementById("ipucu");
-var yukleniyor = document.getElementById("yukleniyor");
+var yukleniyor = document.getElementById("yukleniyorgif");
 var aramaKutusu = document.getElementById("ara");
 var mobilKategoriButonu = document.getElementById("kategoriacbutonu");
 var masaustuKategoriButonu = document.getElementById("yanbar-kategori-butonu");
@@ -9,12 +9,14 @@ var ajaxlivesearch = document.getElementById("ajaxlivesearch");
 var bildirimZili = document.getElementById("bildirimZiliKapsayiciButon");
 var bildirimZiliAcilirMenu = document.getElementById("bildirimZiliAcilirMenu");
 
+console.log(yukleniyor);
 
 function ipucugoster(str)
 {
     if(str.length == 0)
     {
         document.getElementById("ipucu").innerHTML="";
+        yukleniyor.style.display="none";
         return;
     }
     else
@@ -22,9 +24,11 @@ function ipucugoster(str)
         var xmlhttpnesnesi = new XMLHttpRequest();
         xmlhttpnesnesi.onreadystatechange=function()
         {
+            yukleniyor.style.display="block";
             if(this.readyState == 4 && this.status == 200)
             {
                 document.getElementById("ipucu").innerHTML=this.responseText;
+                yukleniyor.style.display="none";
             }
         };
         xmlhttpnesnesi.open("GET","livesearch.php?q="+str,true);
@@ -46,7 +50,6 @@ if(bildirimZili!=null)
         }
     };
 }
-
 
 function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) // hangi kategori seçildiyse diğerlerini göstermesin.
 {
