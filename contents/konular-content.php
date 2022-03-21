@@ -469,9 +469,9 @@
     {
         ?>
         <div id="main-mesajekle-div">
-            <h3 id="main-mesajekle-baslik">-Mesaj Ekle-</h3>
+            <h3 id="main-mesajekle-baslik">Yorum Yap</h3>
             <form id="main-mesajekle-form" method="POST">
-                <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder=" Mesaj göndermek için burayı kullanabilirsiniz. " required></textarea>
+                <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder=" Yorum yapmak için burayı kullanabilirsiniz. " required></textarea>
                 <input id="main-mesajekle-buton" type="submit" value="Gönder">
                 <?php
                 if(isset($mesaj) && isset($konuid))
@@ -494,11 +494,11 @@
     }
     else if(!isset($_SESSION['girisyapankullanici']))
     {
-        echo "<h3 id='hatamesaj'>Konulara mesaj yazabilmeniz için giriş yapmanız gerek."."<br>"."Giriş yapmak için "."<a href='giris-yap'>tıklayınız.</a></h3>";
+        echo "<h3 id='hatamesaj'>Yorum yapmak için giriş yapmanız gerek."."<br>"."Giriş yapmak için "."<a href='giris-yap'>tıklayınız.</a></h3>";
     }
     else if(isset($_SESSION['girisyapankullanici']) && $kullanici['bandurumu']==1)
     {
-        echo "<h3 id='hatamesaj'>Yasaklı bir kullanıcı olduğunuz için konulara mesaj yazamazsınız.</h3>";
+        echo "<h3 id='hatamesaj'>Yasaklı bir kullanıcı olduğunuz için konulara yorum yapamazsınız.</h3>";
     }
 ?>
 

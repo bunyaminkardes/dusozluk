@@ -81,8 +81,9 @@ if(isset($_POST['GIRIS_SUBMIT'])) // giriş yap butonuna tıklandıysa kontrolle
 
 					$islem = $_SESSION['girisyapankullanici']." "."adlı kullanıcı"." "."giriş yaptı.";
 					$ipadresi = $_SERVER['REMOTE_ADDR'];
-					$girislogsorgusu = $baglanti->prepare("INSERT INTO girisloglari(islem,ipadresi,tarih) VALUES(:islem,:ipadresi,:tarih)");
+					$girislogsorgusu = $baglanti->prepare("INSERT INTO girisloglari(islem,fail,ipadresi,tarih) VALUES(:islem,:fail,:ipadresi,:tarih)");
 					$girislogsorgusu->bindParam(":islem",$islem,PDO::PARAM_STR);
+					$girislogsorgusu->bindParam(":fail",$kulladi,PDO::PARAM_STR);
 					$girislogsorgusu->bindParam(":ipadresi",$ipadresi,PDO::PARAM_STR);
 					$girislogsorgusu->bindParam(":tarih",$tarih,PDO::PARAM_STR);
 					$girislogsorgusu->execute();

@@ -143,9 +143,12 @@
                   <div class="header-aramakutusu">
                         <input id="ara" onkeyup="ipucugoster(this.value)" class="header-aramakutusu2" type="text" placeholder=" konu veya kullanıcı ara">
                         <input class="header-aramabutonu" type="button" disabled>
+
                      <div id="ajaxlivesearch">
                         <p>
-                           <div id="ipucu"></div>
+                           <img id='yukleniyorgif' src='resimler/yukleniyor.gif' width='35' height='35' style="display:none;">
+                           <div id="ipucu">                              
+                           </div>
                         </p>
                      </div>
                   </div>

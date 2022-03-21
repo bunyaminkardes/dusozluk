@@ -141,6 +141,6 @@
 	}
 	else
 	{
-		echo "profili görüntülemeye çalışırken hata ile karşılaşıldı.";
+		echo "profili görüntülemeye çalışırken hata ile karşılaşıldı."."<br>"."->bu profil silinmiş olabilir.";
 	}
 ?>

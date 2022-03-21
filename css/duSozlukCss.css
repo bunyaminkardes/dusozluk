@@ -19,10 +19,6 @@
 	--baslikrenkleri :#282A35;
 	--konumesajrenkleri :#282A35;
 }
-html
-{
-	
-}
 body
 {
 	background-color: var(--arkaplanrenk);
@@ -128,7 +124,6 @@ body
 	border-width: 0.5px;
 	border-top-right-radius: 0px;
 	border-bottom-right-radius: 0px;
-	display: inline-block;
 	float: left;
 }
 .header-aramabutonu
@@ -143,7 +138,6 @@ body
 	background-color: var(--temarengi);
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 9px;
-	float: left;
 }
 .header-girisvekayitol
 {
@@ -287,7 +281,6 @@ body
 {
 	text-decoration: none;
 	color:var(--temarengi);
-	display: inline-block;
 	float: right;
 	width: 10%;
 	text-align: center;
@@ -992,40 +985,64 @@ body
 /* ------------------------------------------- adminpanel.php.php baslangic ------------------------------------------- */
 
 
-.adminpanel-basliklar
+#adminpaneli-baslik
 {
-	text-align: center;
+    line-height: 50px;
+    padding-left:5px;
+    font-size:16px;
+    color:#FFF;
+    font-family: var(--temayazitipi);
 }
-.adminpanel-buton
+#adminpaneli-girisyapankullanici-baslik
 {
-	border:none;
-	background-color: white;
+    display: block;
+    padding-top:5px;
+    padding-bottom:25px;
 }
-.adminpanel-buton a
+#adminpaneli-kullanici-islemleri-baslik
 {
-	text-decoration: none;
-	color:red;
-	font-weight: 500;
+    font-size:16px;
+    color:black;
+    padding-bottom:10px;
 }
-.adminpanel-buton a:hover
+#adminpaneli-kullanici-islemleri-input
 {
-	color:var(--temarengi);
+    width: 100%;
+    height: 30px;
+    display: block;
 }
-.adminpanel-buton2
+#adminpaneli-kullanici-islemleri-buton
 {
-	border:none;
-	background-color: white;
+    width:100px;
+    height: 30px;
+    margin-top:10px;
+    margin-bottom:20px;
+    color:#FFFFFF;
+    font-family: var(--temayazitipi);
+    border:none;
+    background-color: var(--temarengi);
+    display: block;
+    float:right;
 }
-.adminpanel-buton2 a
+.adminpaneli-kullanicisorgusu-basliklar
 {
-	text-decoration: none;
-	color:blue;
-	padding-left:10px;
-	font-weight: 500;
+    font-size:14px;
+    font-family: var(--temayazitipi);
 }
-.adminpanel-buton2 a:hover
+.adminpaneli-kullanicisorgusu-islemler-kapsayici
 {
-	color:var(--temarengi);
+}
+.adminpaneli-kullanicisorgusu-islemler-baslik
+{
+    font-size:16px;
+    color:black;
+    padding-bottom:10px;
+}
+.adminpaneli-profilloglari
+{
+	font-size: 13px;
+	font-family: var(--temayazitipi);
+	padding-top: 10px;
 }
 
 /* ------------------------------------------- adminpanel.php.php bitis ------------------------------------------- */
@@ -1349,7 +1366,6 @@ body
 	height:35px;
 	margin-bottom:10px;
 	float:right;
-	display:inline-block;
 	margin-top:10px;
 	border:none;
 	background-color: var(--temarengi);
