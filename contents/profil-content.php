@@ -27,7 +27,7 @@
 
 	if(isset($_GET['kullanici']) && isset($_SESSION['girisyapankullanici'])) // profil görüntülenmelerini veritabanına kaydetme işlemi.
 	{
-		if($_GET['kullanici']!=strtolower($kullanici['kullaniciadi'])) // kendi profilini görüntüleyenler loglanmasın.
+		if(strtolower($_GET['kullanici'])!=strtolower($kullanici['kullaniciadi'])) // kendi profilini görüntüleyenler loglanmasın.
 		{
 			$logsorgusu->execute();
 		}
