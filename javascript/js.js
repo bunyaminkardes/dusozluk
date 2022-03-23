@@ -9,13 +9,26 @@ var ajaxlivesearch = document.getElementById("ajaxlivesearch");
 var bildirimZili = document.getElementById("bildirimZiliKapsayiciButon");
 var bildirimZiliAcilirMenu = document.getElementById("bildirimZiliAcilirMenu");
 
-console.log(yukleniyor);
+function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) //hangi kategori secildiyse digerlerini gostermesin.
+{
+    document.getElementById($goster).style.display="block";
+    document.getElementById($gizle1).style.display="none";
+    document.getElementById($gizle2).style.display="none";
+    document.getElementById($gizle3).style.display="none";
+    document.getElementById($gizle4).style.display="none";
+    document.getElementById($gizle5).style.display="none";
+    document.getElementById($gizle6).style.display="none";
+    document.getElementById($gizle7).style.display="none";
+    document.getElementById($gizle8).style.display="none";
+    document.getElementById($gizle9).style.display="none";
+    document.getElementById("yanbar-kategori").style.display="none";
+};
 
 function ipucugoster(str)
 {
     if(str.length == 0)
     {
-        document.getElementById("ipucu").innerHTML="";
+        ipucuDiv.innerHTML="";
         yukleniyor.style.display="none";
         return;
     }
@@ -27,7 +40,7 @@ function ipucugoster(str)
             yukleniyor.style.display="block";
             if(this.readyState == 4 && this.status == 200)
             {
-                document.getElementById("ipucu").innerHTML=this.responseText;
+                ipucuDiv.innerHTML=this.responseText;
                 yukleniyor.style.display="none";
             }
         };
@@ -49,36 +62,50 @@ if(bildirimZili!=null)
             bildirimZiliAcilirMenu.style.display = "block";
         }
     };
+    bildirimZili.onblur = function()
+    {
+        setTimeout(function()
+        {
+            bildirimZiliAcilirMenu.style.display='none';
+        },100);
+    }
 }
 
-function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) // hangi kategori seçildiyse diğerlerini göstermesin.
+aramaKutusu.onblur = function()
 {
-    document.getElementById($goster).style.display="block";
-    document.getElementById($gizle1).style.display="none";
-    document.getElementById($gizle2).style.display="none";
-    document.getElementById($gizle3).style.display="none";
-    document.getElementById($gizle4).style.display="none";
-    document.getElementById($gizle5).style.display="none";
-    document.getElementById($gizle6).style.display="none";
-    document.getElementById($gizle7).style.display="none";
-    document.getElementById($gizle8).style.display="none";
-    document.getElementById($gizle9).style.display="none";
-    document.getElementById("yanbar-kategori").style.display="none";
-};
+    setTimeout(function()
+    {
+        ajaxlivesearch.style.display='none';
+    },100);
+}
 
-document.addEventListener('DOMContentLoaded', function () // arama kutusu boş olduğunda ekranda hala arama önerileri kutusu çıkmasını engellemek için.
+mobilKategoriButonu.onblur = function()
+{
+    setTimeout(function()
+    {
+        mobilKategori.style.display='none';
+    },100);
+}
+
+masaustuKategoriButonu.onblur = function()
+{
+    setTimeout(function()
+    {
+        yanbarKategori.style.display='none';
+    },100);
+}
+
+document.addEventListener('DOMContentLoaded', function () //arama kutusu bos oldugunda ekranda hala arama onerilerinin cikmasini engellemek icin.
 {
     aramaKutusu.addEventListener("input", function() 
     { 
         if (aramaKutusu.value==="")
         {
-            document.getElementById("ajaxlivesearch").style.display="none";
-            document.getElementById("mobilkategori").style.display="none";
+            ajaxlivesearch.style.display='none';
         }
         else
         {
-            document.getElementById("ajaxlivesearch").style.display="block";
-            document.getElementById("mobilkategori").style.display="none";
+            ajaxlivesearch.style.display='block';
         }
     });
 });
@@ -93,7 +120,6 @@ masaustuKategoriButonu.addEventListener("click",function()
     {
         yanbarKategori.style.display = "block";
     }
-    //console.log("masaüstünde kategoriler butonuna basıldı.");
 });
 
 mobilKategoriButonu.addEventListener("click",function()
@@ -106,5 +132,4 @@ mobilKategoriButonu.addEventListener("click",function()
     {
         mobilKategori.style.display = "block";
     }
-    //console.log("maobilde kategoriler butonuna basıldı.");
 });

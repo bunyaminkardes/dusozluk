@@ -47,14 +47,6 @@ function seo_link($s) // bu fonksiyon parametre olarak gelen linki seo dostu lin
 	return $s;
 }
 
-function ters_seo_link($s) // bu fonksiyon ters seo link işlemi yapar.
-{
-	$degistirilecek = '-';
-	$sunadegistir = " ";
-	$s = str_replace($degistirilecek, $sunadegistir, $s);
-	return $s;
-}
-
 function token_uret() // CSRF saldırılarını önlemek için token üretme fonksiyonu.
 {
 	if(empty($_SESSION['token']))
