@@ -193,7 +193,7 @@
                                     foreach($bildirimSorgusu as $row)
                                     {
                                        ?>
-                                       <a href="konular.php?konu=<?php echo $row['konu']; ?>&id=<?php echo $row['konuid']; ?>&bildirimNo=<?php echo $row['id']; ?>"><?php echo $row['bildirim']; ?></a>
+                                       <a href="konular.php?konu=<?php echo seo_link($row['konu']); ?>&id=<?php echo $row['konuid']; ?>&bildirimNo=<?php echo $row['id']; ?>"><?php echo $row['bildirim']; ?></a>
                                        <?php
                                     }
                                  }
@@ -590,6 +590,26 @@
             <div class="col-12 col-sm-12 col-lg-2"> 
                <div class="sagbar">
                   <div class="sagbar-div">
+                     <h3 class="sagbar-yazilar-baslik">Moderatörler</h3>
+                     <?php
+                        $rutbe = 'moderator';
+                        $moderatorSorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE rutbe = :rutbe");
+                        $moderatorSorgusu->bindParam(":rutbe",$rutbe,PDO::PARAM_STR);
+                        $moderatorSorgusu->execute();
+                        if($moderatorSorgusu->rowCount()>0)
+                        {
+                           foreach($moderatorSorgusu as $row)
+                           {
+                              ?><a href="profil/<?php echo seo_link($row['kullaniciadi']);?>" class="sagbar-yazilar"><?php echo $row['kullaniciadi']; ?></a><?php
+                           }
+                        }
+                        else
+                        {
+                           echo 'hiç moderatör yok.';
+                        }
+                     ?>
+                  </div>
+                  <div class="sagbar-div">
                      <h3 class="sagbar-yazilar-baslik">Son Üyeler</h3>
                         <?php
                         if ($sagbarSorgusu->rowCount()>0)
@@ -618,8 +638,6 @@
                         }
                         ?>
                   </div>
-               </div>
-
                   <div class="sagbar-div">
                                 <h3 class="sagbar-yazilar-baslik">İstatistikler</h3>
                                <a class="sagbar-yazilar">Toplam konu sayısı :
@@ -645,7 +663,6 @@
                                </a>
                   </div>
                </div>
-               
             </div> 
             <!---------------------------------------------- SAGBAR BITIS ----------------------------------------------->
          </div>

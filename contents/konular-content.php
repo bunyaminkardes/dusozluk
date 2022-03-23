@@ -30,10 +30,18 @@
     $konuListelemeSorgusu->fetch(PDO::FETCH_ASSOC);
     $konuListelemeSorgusu->execute();
 
+    $hangiKonudayizSorgusu = $baglanti->prepare("SELECT * FROM konular WHERE id = :id");
+    $hangiKonudayizSorgusu->bindParam(":id",$konu_id,PDO::PARAM_INT);
+    $hangiKonudayizSorgusu->execute();
+    foreach($hangiKonudayizSorgusu as $row)
+    {
+        $hangiKonudayiz = $row['konu_baslik'];
+    }
+    
     $mesajEklemeSorgusu = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
     $mesajEklemeSorgusu->bindParam(':konuid',$konu_id,PDO::PARAM_STR);
     $mesajEklemeSorgusu->bindParam(':mesaj',$mesaj,PDO::PARAM_STR);
-    $mesajEklemeSorgusu->bindParam(':konuisim',$konuisim,PDO::PARAM_STR);
+    $mesajEklemeSorgusu->bindParam(':konuisim',$hangiKonudayiz,PDO::PARAM_STR);
     $mesajEklemeSorgusu->bindParam(':userrr',$girisyapankullanici,PDO::PARAM_STR);
     $mesajEklemeSorgusu->bindParam(':tarihbilgisi',$islemTarihi,PDO::PARAM_STR);
 
@@ -141,7 +149,7 @@
     foreach($bildirimSorgusu1 as $row)
     {
         $konuSahibi = $row['user'];
-        $bildirim = $row['id']." "."numaralı konunuza gelen yeni mesajlar var.";
+        $bildirim = $row['konu_baslik']." "."adlı konunuza gelen yeni mesajlar var.";
         $hangiKonu = $row['konu_baslik'];
     }
 
