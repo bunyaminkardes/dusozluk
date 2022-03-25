@@ -92,12 +92,12 @@ $girisKayitlariSorgusu->execute();
                                 }
                                 else
                                 {
-                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="<?php echo $row['pp']; ?>"></h3><?php
+                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="<?php echo $row['pp']; ?>" alt='Profil resmi yüklenirken hata oluştu.'></h3><?php
                                 }
                                 ?><h3 class="adminpaneli-kullanicisorgusu-basliklar">Kullanıcı adı : <?php echo $row['kullaniciadi']; ?></h3><?php
-                                if($row['rutbe']=="admin" && $kullanici['rutbe']=="modarator")
+                                if($row['rutbe']=="admin" && $kullanici['rutbe']=="moderator")
                                 {
-                                    echo "rütbesi sizden daha yüksek bir kullanıcıyı görüntülemektesiniz. sadece kısıtlı bilgiler gösterilmektedir.";
+                                    echo "<br>"."<h3 class='adminpaneli-kullanicisorgusu-basliklar'>Rütbesi sizden daha yüksek bir kullanıcıyı görüntülemektesiniz. sadece kısıtlı bilgiler gösterilmektedir.</h3>";
                                 }
                                 else
                                 {
@@ -127,7 +127,7 @@ $girisKayitlariSorgusu->execute();
                         if(isset($_POST['kullaniciadi']) && $kullaniciSorgusu->rowCount()>0)
                         {
                             ?><h3 class="adminpaneli-kullanicisorgusu-islemler-baslik">Buradan işlem yapabilirsiniz:</h3><?php
-                            if($kullanici['rutbe']=='moderator' && $row['rutbe']=='uye')
+                            if($kullanici['rutbe']=='moderator' && $row['rutbe']=='uye') //moderatörler üyelere karşı banlama ve ban kaldırma işlemi yapabilsin.
                             {
                                 if($row['bandurumu']==0)
                                 {
@@ -138,7 +138,11 @@ $girisKayitlariSorgusu->execute();
                                     ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&ban=0">Banını kaldır</a></h3><?php
                                 }
                             }
-                            else if($kullanici['rutbe']=='admin' && $row['rutbe']=='uye' || $row['rutbe']=='moderator')
+                            else if($kullanici['rutbe']=='moderator' && $row['rutbe']=='moderator') //moderatörler, diğer moderatörlere karşı işlem yapamasın.
+                            {
+                                echo "<h3 class='adminpaneli-kullanicisorgusu-basliklar'>Hedef kullanıcının rütbesi dolayısıyla işlem yapamazsınız.</h3>";
+                            }
+                            else if($kullanici['rutbe']=='admin' && $row['rutbe']=='uye' || $row['rutbe']=='moderator') //adminler üyelere veya moderatörlere karşı tam yetkiye sahip olsun.
                             {
                                 if($row['bandurumu']==0)
                                 {
@@ -157,6 +161,10 @@ $girisKayitlariSorgusu->execute();
                                     ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><a href="adminpanel.php?id=<?php echo $row['id']; ?>&kullaniciadi=<?php echo $row['kullaniciadi']; ?>&moderator=0">Moderatörlüğünü al</a></h3><?php
                                 }
                             }
+                            else
+                            {
+                                echo "<h3 class='adminpaneli-kullanicisorgusu-basliklar'>Hedef kullanıcının rütbesi dolayısıyla işlem yapamazsınız.</h3>";
+                            }
                         }
                     }
                     ?>
@@ -171,11 +179,18 @@ $girisKayitlariSorgusu->execute();
                     if($kullaniciSorgusu->rowCount()>0)
                     {
                         echo "<h3 id='adminpaneli-kullanici-islemleri-baslik'>Bu kullanıcı hangi profillere bakmış:</h3>";
-                        foreach($profilLogSorgusu as $row)
+                        if($profilLogSorgusu->rowCount()>0)
                         {
-                            ?>
-                            <h3 class="adminpaneli-profilloglari"><?php echo $row['islem']."<br>"."işlem tarihi : ".$row['tarih']; ?></h3>
-                            <?php
+                            foreach($profilLogSorgusu as $row)
+                            {
+                                ?>
+                                <h3 class="adminpaneli-profilloglari"><?php echo $row['islem']."<br>"."işlem tarihi : ".$row['tarih']; ?></h3>
+                                <?php
+                            }
+                        }
+                        else
+                        {
+                            echo "<h3 class='adminpaneli-kullanicisorgusu-basliklar'>Kayıt bulunamadı.</h3>";
                         }
                     }
                 }
@@ -188,11 +203,18 @@ $girisKayitlariSorgusu->execute();
                     if($kullaniciSorgusu->rowCount()>0)
                     {
                         echo "<h3 id='adminpaneli-kullanici-islemleri-baslik'>Son giriş kayıtları:</h3>";
-                        foreach($girisKayitlariSorgusu as $row)
+                        if($girisKayitlariSorgusu->rowCount()>0)
                         {
-                            ?>
-                            <h3 class="adminpaneli-profilloglari"><?php echo $row['islem']."<br>"."ip adresi : ".$row['ipadresi']."<br>"."işlem tarihi : ".$row['tarih']; ?></h3>
-                            <?php
+                            foreach($girisKayitlariSorgusu as $row)
+                            {
+                                ?>
+                                <h3 class="adminpaneli-profilloglari"><?php echo $row['islem']."<br>"."ip adresi : ".$row['ipadresi']."<br>"."işlem tarihi : ".$row['tarih']; ?></h3>
+                                <?php
+                            }
+                        }
+                        else
+                        {
+                            echo "<h3 class='adminpaneli-kullanicisorgusu-basliklar'>Kayıt bulunamadı.</h3>";
                         }
                     }
                 }
