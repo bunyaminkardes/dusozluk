@@ -42,7 +42,7 @@
                 <h3 id="index-konu-baslik">
                     <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a>
                 </h3>
-                <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+                <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                 <div class="row">
                     <div class="col-12 col-sm-12 col-lg-12">
                         <div id="index-yazar-kimlik">
@@ -79,7 +79,7 @@
                     <h3 id="index-konu-baslik">
                         <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
-                    <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+                    <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
                         <?php
                         if(isset($_SESSION['girisyapankullanici']))
@@ -113,7 +113,7 @@
                     <h3 id="index-konu-baslik">
                         <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
-                    <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+                    <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
                         <?php 
                         if(isset($_SESSION['girisyapankullanici']))
@@ -147,7 +147,7 @@
                     <h3 id="index-konu-baslik">
                         <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
-                    <p id="index-konu-icerik"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+                    <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
                         <?php
                         if(isset($_SESSION['girisyapankullanici']))

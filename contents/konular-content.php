@@ -5,6 +5,7 @@
     $girisyapankullanici=$_SESSION['girisyapankullanici'];
     date_default_timezone_set('Europe/Istanbul');
     $islemTarihi = date("d-m-Y H:i");
+    $kullaniciIP = $_SERVER['REMOTE_ADDR'];
     $mesaj = $_POST['mesajekle'];
     $konuisim = $_GET['konu'];
     $konu_id = $_GET['id'];
@@ -37,6 +38,8 @@
     {
         $hangiKonudayiz = $row['konu_baslik'];
     }
+
+    $konuBakmaLogSorgusu_islem = $kullanici['kullaniciadi']." adlı kullanıcı ".$hangiKonudayiz." adlı konuyu görüntüledi.";
     
     $mesajEklemeSorgusu = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
     $mesajEklemeSorgusu->bindParam(':konuid',$konu_id,PDO::PARAM_STR);
@@ -134,6 +137,12 @@
     $guncellemesorgusu2->bindParam(":dislikesayisi",$dislikesayisi,PDO::PARAM_INT);
     $guncellemesorgusu2->bindParam(":id",$konu_id,PDO::PARAM_INT);
 
+    $konuBakmaLogSorgusu = $baglanti->prepare("INSERT INTO konuloglari(fail,islem,ipadresi,tarih) VALUES(:fail,:islem,:ipadresi,:tarih)");
+    $konuBakmaLogSorgusu->bindParam(":fail",$kullanici['kullaniciadi'],PDO::PARAM_STR);
+    $konuBakmaLogSorgusu->bindParam(":islem",$konuBakmaLogSorgusu_islem,PDO::PARAM_STR);
+    $konuBakmaLogSorgusu->bindParam(":ipadresi",$kullaniciIP,PDO::PARAM_STR);
+    $konuBakmaLogSorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
+
 
 
 
@@ -184,6 +193,10 @@
 <?php
 	if($konuListelemeSorgusu->rowCount()>0)
 	{
+        if(isset($_SESSION['girisyapankullanici']))
+        {
+            $konuBakmaLogSorgusu->execute();
+        }
 		foreach($konuListelemeSorgusu as $row)
 		{
 			?>
@@ -201,7 +214,7 @@
 				<input readonly autofocus class="focus"> <!-- focus -->
                 </h1>
                 <br/>
-                <p id="konular-yazar-mesaj"><?php print_r(htmlentities($row['konu_icerik']));?></p>
+                <p id="konular-yazar-mesaj"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                 <div class="row">
                     <div class="col-12 col-sm-12 col-lg-12">
                         <div class="konular-yazar-like-dislike">
@@ -379,6 +392,11 @@
             <?php
         }
     }
+    else
+    {
+        ?><script type="text/javascript">window.location.href="404.php";</script><?php
+        exit();
+    }
 
 
 
@@ -425,7 +443,7 @@
         {
             ?>
             <div class="konular-kullanicimesajkapsayicisi">
-                <h3 id="konular-kullanicimesaj"><?php echo $row['mesaj'];?></h3>
+                <h3 id="konular-kullanicimesaj"><?php echo htmlspecialchars($row['mesaj']);?></h3>
                 <?php
                 //giriş yapan kullanıcı sadece admin veya moderatörse mesaj sil butonu gözüksün.
                 if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")

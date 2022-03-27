@@ -38,7 +38,7 @@ else
 <div class="profilim-ozellestir-kapsayici">
 	<h2 id="profilim-ozellestir-baslik">Profili Özelleştir</h2>
 	<form method="POST" action="" enctype="multipart/form-data" id="profilim-ozellestir-form">
-		<textarea maxlength="1500" placeholder="Hakkında (maksimum 1500 karakter)" name="hakkinda" id="profilim-ozellestir-textarea"></textarea>
+		<textarea maxlength="1500" placeholder=" Kendinizi dilediğiniz gibi tanıtın..." name="hakkinda" id="profilim-ozellestir-textarea"></textarea>
 		<div id="profilim-ozellestir-ppdegistir">
 			profil resmini değiştir : <input type="file" name="profilfoto"><br><br>
 		</div>
