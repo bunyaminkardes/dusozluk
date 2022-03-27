@@ -69,7 +69,7 @@
 
 			<div class="profil-hakkinda">
 				<h2 id="profil-hakkinda-baslik">Hakkında :</h2>
-				<h2 id="profil-hakkinda-hakkinda"><?php echo $row['hakkinda'];?></h2>
+				<h2 id="profil-hakkinda-hakkinda"><?php echo htmlspecialchars($row['hakkinda']);?></h2>
 			</div>
 
 			<div id="profil-alan-kapsayicisi">
@@ -82,10 +82,10 @@
 						?>
 						<div class="profil-alan-kapsayicisi-icerik-kapsayicisi">
 							<div class="profil-alan-kapsayicisi-icerik-baslik">
-								<a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>"><?php echo $row['konu_baslik']; ?></a>
+								<a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>"><?php echo htmlspecialchars($row['konu_baslik']); ?></a>
 							</div>
 							<div class="profil-alan-kapsayicisi-icerik">
-								<?php echo $row['konu_icerik']; ?>
+								<?php echo htmlspecialchars($row['konu_icerik']); ?>
 							</div>
 							<div class="profil-alan-kapsayicisi-userkimlik">
 								<h3 class="profil-alan-kapsayicisi-userkimlik-kimlik">
@@ -112,10 +112,10 @@
 							?>
 							<div class="profil-alan-kapsayicisi-icerik-kapsayicisi">
 								<div class="profil-alan-kapsayicisi-icerik-baslik">
-									<a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>"><?php echo $row['konu']; ?></a>
+									<a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>"><?php echo htmlspecialchars($row['konu']); ?></a>
 								</div>
 								<div class="profil-alan-kapsayicisi-icerik">
-									<?php echo $row['mesaj']; ?>
+									<?php echo htmlspecialchars($row['mesaj']); ?>
 								</div>
 								<div class="profil-alan-kapsayicisi-userkimlik">
 									<h3 class="profil-alan-kapsayicisi-userkimlik-kimlik"><a href="profil/<?php echo seo_link($row['user']);?>"><?php echo $row['tarih']." "." "."-"." ".$row['user']; ?></a></h3>

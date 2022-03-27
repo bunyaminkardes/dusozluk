@@ -6,6 +6,8 @@ $kullanici = girisyapankullanici();
 date_default_timezone_set('Europe/Istanbul');
 $islemTarihi = date("d-m-Y H:i");
 @$kullaniciadi = $_POST['kullaniciadi'];
+$adminPaneliLogSorgusu_islem = $kullanici['kullaniciadi']." adlı yetkili ".$kullaniciadi." adlı kullanıcının bilgilerine baktı.";
+$kullaniciIP = $_SERVER['REMOTE_ADDR'];
 
 if(!isset($kullanici['kullaniciadi']))
 {
@@ -36,6 +38,12 @@ $profilLogSorgusu->execute();
 $girisKayitlariSorgusu = $baglanti->prepare("SELECT * FROM girisloglari WHERE fail =:fail ORDER BY tarih DESC LIMIT 15");
 $girisKayitlariSorgusu->bindParam(":fail",$_POST['kullaniciadi'],PDO::PARAM_STR);
 $girisKayitlariSorgusu->execute();
+
+$adminPaneliLogSorgusu = $baglanti->prepare("INSERT INTO adminpaneliloglari(fail,islem,ipadresi,tarih) VALUES(:fail,:islem,:ipadresi,:tarih)");
+$adminPaneliLogSorgusu->bindParam(":fail",$kullanici['kullaniciadi'],PDO::PARAM_STR);
+$adminPaneliLogSorgusu->bindParam(":islem",$adminPaneliLogSorgusu_islem,PDO::PARAM_STR);
+$adminPaneliLogSorgusu->bindParam(":ipadresi",$kullaniciIP,PDO::PARAM_STR);
+$adminPaneliLogSorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
 
 ?>
 
@@ -84,6 +92,7 @@ $girisKayitlariSorgusu->execute();
                     {
                         if($kullaniciSorgusu->rowCount()>0)
                         {
+                            $adminPaneliLogSorgusu->execute();
                             foreach($kullaniciSorgusu as $row)
                             {
                                 if($row['pp']==null)

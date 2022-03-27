@@ -111,7 +111,7 @@
       <meta name="google-site-verification" content="lTwKVKo33u5k4etLVokv2haUfI4nzg_OsBj_argQCX0" />
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388530043982968" crossorigin="anonymous"></script>
       <base href="<?php echo $basehref; ?>">
-      <meta charset="UTF-8" />
+      <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       <meta name="author" content="Bunyamin Kardes" /> 
       <meta name="owner" content="Bunyamin Kardes" />
@@ -254,7 +254,7 @@
       <div class="container-fluid"> 
          <div class="row">
             <!---------------------------------------------- YANBAR BASLANGIC ----------------------------------------------->
-            <div class="d-none d-sm-block col-12 col-sm-12  col-lg-3"> <!-- d-none d-sm-block : hide on screens smaller than xs -->
+            <div class="d-none d-sm-block col-12 col-sm-12 col-lg-3" > <!-- d-none d-sm-block : hide on screens smaller than xs -->
                <div class="yanbar">
                   <div class="yanbar-gundem-baslik" >
                      <h3 style="font-family:var(--temayazitipi); font-weight:lighter; font-size:14px; color:#6c6c6c; text-align:left; line-height: 50px; background-color:#eeeeee;" >
