@@ -172,7 +172,7 @@
                         }
                         ?>
                         <li>
-                           <a id="kullanicihosgeldin" href="profilim.php?kullanici=<?php echo @$_SESSION["girisyapankullanici"];?>"><?php echo "hoşgeldin"." ".$_SESSION["girisyapankullanici"];?></a>
+                           <a id="kullanicihosgeldin" href="<?php echo seo_link('kullaniciprofili')."/".$_SESSION['girisyapankullanici']; ?>"><?php echo "hoşgeldin"." ".$_SESSION["girisyapankullanici"];?></a>
                            <button id="bildirimZiliKapsayiciButon">
                               <?php
                                  if($bildirimMiktari>0)
@@ -254,7 +254,7 @@
       <div class="container-fluid"> 
          <div class="row">
             <!---------------------------------------------- YANBAR BASLANGIC ----------------------------------------------->
-            <div class="d-none d-sm-block col-12 col-sm-12 col-lg-3" > <!-- d-none d-sm-block : hide on screens smaller than xs -->
+            <div class="d-none d-sm-block col-12 col-sm-12 col-lg-3"> <!-- d-none d-sm-block : hide on screens smaller than xs -->
                <div class="yanbar">
                   <div class="yanbar-gundem-baslik" >
                      <h3 style="font-family:var(--temayazitipi); font-weight:lighter; font-size:14px; color:#6c6c6c; text-align:left; line-height: 50px; background-color:#eeeeee;" >
@@ -590,6 +590,10 @@
             <div class="col-12 col-sm-12 col-lg-2"> 
                <div class="sagbar">
                   <div class="sagbar-div">
+                     <h3 class="sagbar-yazilar-baslik">Sosyal Medya</h3>
+                     <a href="https://www.instagram.com/sozlukdu/"><img style="display: block; margin:0 auto;" src="resimler/instagram.png" height="60"></a>
+                  </div>
+                  <div class="sagbar-div">
                      <h3 class="sagbar-yazilar-baslik">Moderatörler</h3>
                      <?php
                         $rutbe = 'moderator';
@@ -680,16 +684,16 @@
                         <div class="main-footer">
                            <ul>
                               <li>
-                                 <a href="html/iletisim.html">iletişim</a>
+                                 <a href="iletisim.php">iletişim</a>
                               </li>
                               <li>
-                                 <a href="html/reklam.html">reklam</a>
+                                 <a href="reklam.php">reklam</a>
                               </li>
                               <li>
-                                 <a href="html/gizlilikpolitikamiz.html">gizlilik politikamız</a>
+                                 <a href="gizlilikpolitikamiz.php">gizlilik politikamız</a>
                               </li>
                               <li>
-                                 <a href="html/sss.html">sss</a>
+                                 <a href="sss.php">sss</a>
                               </li>
                            </ul>
                         </div>

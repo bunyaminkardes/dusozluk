@@ -19,7 +19,6 @@
     $likesorgusu3_degistir = "like";
     $likesorgusu6_degistir = "dislike";
     $likesorgusu7_degistir = "dislike";
-    $konuSilme_islem = $kullanici['kullaniciadi']." "."adlı"." ".$kullanici['rutbe']." ".$_GET['konuid']." "."numaralı konuyu sildi.";
 
     $titleSorgusu = $baglanti->prepare("SELECT * FROM konular WHERE id = :id");
     $titleSorgusu->bindParam(':id',$konu_id,PDO::PARAM_INT);
@@ -38,7 +37,7 @@
     {
         $hangiKonudayiz = $row['konu_baslik'];
     }
-
+    $konuSilme_islem = $kullanici['kullaniciadi']." "."adlı"." ".$kullanici['rutbe']." ".$hangiKonudayiz." "."adlı konuyu sildi.";
     $konuBakmaLogSorgusu_islem = $kullanici['kullaniciadi']." adlı kullanıcı ".$hangiKonudayiz." adlı konuyu görüntüledi.";
     
     $mesajEklemeSorgusu = $baglanti->prepare("INSERT INTO mesajlar(id,mesaj,konu,user,tarih) VALUES(:konuid,:mesaj,:konuisim,:userrr,:tarihbilgisi)");
@@ -217,6 +216,10 @@
                 <p id="konular-yazar-mesaj"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                 <div class="row">
                     <div class="col-12 col-sm-12 col-lg-12">
+
+
+
+
                         <div class="konular-yazar-like-dislike">
                                         <?php
                                         $gecerlilikesayisi = $row['likesayisi'];
@@ -234,7 +237,6 @@
                                                         {
                                                             ?>
                                                             <span style="display:inline-block;">
-
                                                                 <a title="beğendiniz" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo false; ?>" style="color:#282A35; background-color: #C1FE8F;"> <img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
                                                                 <a style="color:#282A35" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
                                                             </span>
@@ -367,6 +369,12 @@
                                         }
                                         ?>
                         </div>
+
+
+
+
+
+
                     </div>
                     <div class="col-12 col-sm-12 col-lg-12">
                         <h3 id="konular-yazar-kimlik-kimlik">
