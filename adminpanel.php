@@ -31,11 +31,11 @@ $kullaniciSorgusu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi 
 $kullaniciSorgusu->bindParam(":kullaniciadi",$_POST['kullaniciadi'],PDO::PARAM_STR);
 $kullaniciSorgusu->execute();
 
-$profilLogSorgusu = $baglanti->prepare("SELECT * FROM profilloglari WHERE fail = :fail ORDER BY tarih DESC LIMIT 15");
+$profilLogSorgusu = $baglanti->prepare("SELECT * FROM profilloglari WHERE fail = :fail ORDER BY id DESC LIMIT 15");
 $profilLogSorgusu->bindParam(":fail",$_POST['kullaniciadi'],PDO::PARAM_STR);
 $profilLogSorgusu->execute();
 
-$girisKayitlariSorgusu = $baglanti->prepare("SELECT * FROM girisloglari WHERE fail =:fail ORDER BY tarih DESC LIMIT 15");
+$girisKayitlariSorgusu = $baglanti->prepare("SELECT * FROM girisloglari WHERE fail =:fail ORDER BY id DESC LIMIT 15");
 $girisKayitlariSorgusu->bindParam(":fail",$_POST['kullaniciadi'],PDO::PARAM_STR);
 $girisKayitlariSorgusu->execute();
 
@@ -97,11 +97,11 @@ $adminPaneliLogSorgusu->bindParam(":tarih",$islemTarihi,PDO::PARAM_STR);
                             {
                                 if($row['pp']==null)
                                 {
-                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="resimler/yenikullanicipp.jpg"></h3><?php
+                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="180" src="resimler/yenikullanicipp.jpg"></h3><?php
                                 }
                                 else
                                 {
-                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="120" src="<?php echo $row['pp']; ?>" alt='Profil resmi yüklenirken hata oluştu.'></h3><?php
+                                    ?><h3 class="adminpaneli-kullanicisorgusu-basliklar"><img height="180" src="<?php echo $row['pp']; ?>" alt='Profil resmi yüklenirken hata oluştu.'></h3><?php
                                 }
                                 ?><h3 class="adminpaneli-kullanicisorgusu-basliklar">Kullanıcı adı : <?php echo $row['kullaniciadi']; ?></h3><?php
                                 if($row['rutbe']=="admin" && $kullanici['rutbe']=="moderator")

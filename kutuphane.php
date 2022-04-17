@@ -3,7 +3,7 @@
 
 try
 {
-	$connectionstring = 'mysql:host=localhost;dbname=dusozluk_bunyaminkardes; charset=utf8';
+	$connectionstring = 'mysql:host=localhost; dbname=dusozluk_bunyaminkardes; charset=utf8';
 	$kullaniciadi = 'root';
 	$sifre = "";
 	$baglanti = new PDO($connectionstring,$kullaniciadi,$sifre);
@@ -16,7 +16,7 @@ catch(PDOException $e)
 
 function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait kullanıcı bilgilerini bir dizi olarak return eder.
 {
-	$baglanti = new PDO("mysql:host=localhost;dbname=dusozluk_bunyaminkardes","root","");
+	$baglanti = new PDO("mysql:host=localhost; dbname=dusozluk_bunyaminkardes","root","");
 	$kullaniciadi = @$_SESSION['girisyapankullanici'];
 	$sorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi = :kullaniciadi");
 	$sorgu->bindParam(":kullaniciadi",$kullaniciadi,PDO::PARAM_STR);
@@ -26,7 +26,7 @@ function girisyapankullanici()  // bu fonksiyon giriş yapan kullanıcıya ait k
 }
 function kullanicilar() // bu fonksiyon veritabanındaki tüm kullanıcıları bir dizi olarak return eder.
 {
-	$baglanti = new PDO("mysql:host=localhost;dbname=dusozluk_bunyaminkardes","root","");
+	$baglanti = new PDO("mysql:host=localhost; dbname=dusozluk_bunyaminkardes","root","");
 	$sorgu = $baglanti->prepare("SELECT * FROM uyeler");
 	$sorgu->execute();
 	$row = $sorgu->fetchAll();
@@ -56,5 +56,6 @@ function token_uret() // CSRF saldırılarını önlemek için token üretme fon
 	$token = $_SESSION['token'];
 	return $token;
 }
+
 ?>
  
