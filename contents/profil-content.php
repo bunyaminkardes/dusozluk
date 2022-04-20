@@ -82,7 +82,7 @@
 						?>
 						<div class="profil-alan-kapsayicisi-icerik-kapsayicisi">
 							<div class="profil-alan-kapsayicisi-icerik-baslik">
-								<a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>"><?php echo htmlspecialchars($row['konu_baslik']); ?></a>
+								<a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id']."/".$sayfaiddegeri;?>"><?php echo htmlspecialchars($row['konu_baslik']); ?></a>
 							</div>
 							<div class="profil-alan-kapsayicisi-icerik">
 								<?php echo htmlspecialchars($row['konu_icerik']); ?>
@@ -112,7 +112,7 @@
 							?>
 							<div class="profil-alan-kapsayicisi-icerik-kapsayicisi">
 								<div class="profil-alan-kapsayicisi-icerik-baslik">
-									<a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>"><?php echo htmlspecialchars($row['konu']); ?></a>
+									<a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id']."/".$sayfaiddegeri;?>"><?php echo htmlspecialchars($row['konu']); ?></a>
 								</div>
 								<div class="profil-alan-kapsayicisi-icerik">
 									<?php echo htmlspecialchars($row['mesaj']); ?>

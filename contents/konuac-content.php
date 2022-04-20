@@ -8,6 +8,7 @@ date_default_timezone_set('Europe/Istanbul');
 $tarih = date("d-m-Y H:i");
 $token = token_uret();
 $postEdilenToken = $_POST['postEdilenToken'];
+$unixtimestamp = time();
 
 ?>
 <div id="konuac">
@@ -60,12 +61,13 @@ if(isset($_POST['KONU_AC_SUBMIT'])) //ilk olarak konu aç butonuna tıklanmış 
 			{
 				try //halihazırda var olan bir konu insert edilmeye çalışılırsa diye insert işlemini try catch blokları içerisine alarak yaptıralım.
 				{
-					$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,konu_turu,user,tarih) VALUES (:konuBasligi,:konuIcerigi,:konuTuru,:kullanici,:tarih)");
+					$sqlkomut = $baglanti->prepare("INSERT INTO konular(konu_baslik,konu_icerik,konu_turu,user,tarih,unixtimestamp) VALUES (:konuBasligi,:konuIcerigi,:konuTuru,:kullanici,:tarih,:unixtimestamp)");
 					$sqlkomut->bindParam(':konuBasligi',$konuBasligi,PDO::PARAM_STR);
 					$sqlkomut->bindParam(':konuIcerigi',$konuIcerigi,PDO::PARAM_STR);
 					$sqlkomut->bindParam(':konuTuru',$konuTuru,PDO::PARAM_STR);
 					$sqlkomut->bindParam(':kullanici',$kullanici,PDO::PARAM_STR);
 					$sqlkomut->bindParam(':tarih',$tarih,PDO::PARAM_STR);
+					$sqlkomut->bindParam(":unixtimestamp",$unixtimestamp,PDO::PARAM_INT);
 					$sqlkomut->execute();					
 					if($sqlkomut->rowCount()>0)
 					{

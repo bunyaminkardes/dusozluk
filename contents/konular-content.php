@@ -183,6 +183,29 @@
     
 
 //*****************************************************************************************************************************
+
+# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
+    $id = $_GET['id'];
+    $hangisayfadayim = intval($_GET['id']); //hangi sayfada olduğumuzu bilmemiz gerekecek.
+    $sayfaid=1;
+    $sayfaid = intval($_GET['sayfaid']);
+    if(!$sayfaid)
+    {
+        $sayfaid =1;
+    }
+    $kayitsorgusu = $baglanti->query("SELECT * FROM mesajlar WHERE id = '$hangisayfadayim'");
+    $toplamverisayisi=$kayitsorgusu->rowCount(); // mesajlar tablosunda kaç adet kayıt varmış onu bulacağız. toplam kayıt sayısını da sayfa başına gösterilecek kayıt sayısına böldüğümüzde sayfa sayısını belirleriz.
+    $sayfalimiti = 8; //sayfa başına göstermek istediğimiz kayıt sayısını belirleyelim.
+    $sayfasayisi = ceil($toplamverisayisi/$sayfalimiti);
+    $goster = $sayfaid*$sayfalimiti-$sayfalimiti; //sayfalama mantığının önemli kısımlarından biri burası. şimdi 1.sayfadayız diyelim. 1*10-10 = 0 çıkıyor. sayfa limitimiz de 10 olduğuna göre 0-10 arası kayıtları gösterecek. 2.sayfada olduğumuzda 2*10-10 = 10 çıkıyor. sayfa limitimiz de 10 olduğuna göre 10-20 arası kayıtları gösterecek, anladın mı?
+
+    @$mesaj = $_POST['mesajekle'];
+    $konuid = $_GET['id'];
+
+
+    $sayfalamasorgusu = $baglanti->query("SELECT * FROM mesajlar WHERE id = '$konuid' ORDER BY tarihbilgisi ASC  LIMIT $goster,$sayfalimiti ", PDO::FETCH_ASSOC);
+
+# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
 ?>
 
 
@@ -199,22 +222,24 @@
 		foreach($konuListelemeSorgusu as $row)
 		{
 			?>
+
 			<div id="konu">
                 <h1 id="konular-yazar-baslik"><?php print_r($row['konu_baslik']);?>
-				<?php
-				//giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
-				if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-				{
-					?>
-					<button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/"; echo $row['id'];?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button>
-					<?php
-				}
-				?>
 				<input readonly autofocus class="focus"> <!-- focus -->
                 </h1>
                 <br/>
                 <p id="konular-yazar-mesaj"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                 <div class="row">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        <?php
+                        if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator") //giriş yapan kullanıcı sadece admin veya moderatörse konuyu sil butonu gözüksün.
+                        {
+                            ?>
+                            <button id="konular-konu-sil"><a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri;?>?konuid=<?php echo $row['id'];?>">konuyu sil</a></button>
+                            <?php
+                        }
+                        ?>
+                    </div>
                     <div class="col-12 col-sm-12 col-lg-12">
 
 
@@ -410,64 +435,38 @@
 
 
 
-# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
-    $id = $_GET['id'];
-    $hangisayfadayim = intval($_GET['id']); //hangi sayfada olduğumuzu bilmemiz gerekecek.
-    $sayfaid=1;
-    $sayfaid = intval($_GET['sayfaid']);
-    if(!$sayfaid)
-    {
-        $sayfaid =1;
-    }
-    /*
-    if($sayfaid>1) // çok garip bir bug olduğundan dolayı bu if'i ekledim. sayfa 2 ve sonrasında yazar kimliği ve ghost div duruyordu gereksiz yere.
-    {
-        echo "<script> document.getElementById('konular-yazar-kimlik').style.display='none'; </script>";
-    }
-    */	
-    $kayitsorgusu = $baglanti->query("SELECT * FROM mesajlar WHERE id = '$hangisayfadayim'");
-    $toplamverisayisi=$kayitsorgusu->rowCount(); // mesajlar tablosunda kaç adet kayıt varmış onu bulacağız. toplam kayıt sayısını da sayfa başına gösterilecek kayıt sayısına böldüğümüzde sayfa sayısını belirleriz.
-    $sayfalimiti = 8; //sayfa başına göstermek istediğimiz kayıt sayısını belirleyelim.
-    $sayfasayisi = ceil($toplamverisayisi/$sayfalimiti);
-    //$goster = $hangisayfadayim*$sayfalimiti-$sayfalimiti; //sayfalama mantığının önemli kısımlarından biri burası. şimdi 1.sayfadayız diyelim. 1*10-10 = 0 çıkıyor. sayfa limitimiz de 10 olduğuna göre 0-10 arası kayıtları gösterecek. 2.sayfada olduğumuzda 2*10-10 = 10 çıkıyor. sayfa limitimiz de 10 olduğuna göre 10-20 arası kayıtları gösterecek, anladın mı?
-    $goster = $sayfaid*$sayfalimiti-$sayfalimiti;
-    //echo "toplam veri sayısı :".$toplamverisayisi.","."toplam sayfa sayısı :".$sayfasayisi."sayfaid :".$sayfaid; #debug amaçlı.
-# ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
 
 
 
 
-    @$mesaj = $_POST['mesajekle'];
-    $konuid = $_GET['id'];
-
-
-    $sorgu = $baglanti->query("SELECT * FROM mesajlar WHERE id = '$konuid' ORDER BY tarihbilgisi ASC  LIMIT $goster,$sayfalimiti ", PDO::FETCH_ASSOC);
 
     
 
-    if($sorgu->rowCount()>0)
+    
+
+    if($sayfalamasorgusu->rowCount()>0)
     {
-        foreach($sorgu as $row)
+        foreach($sayfalamasorgusu as $sayfalamasorgusu_row)
         {
             ?>
             <div class="konular-kullanicimesajkapsayicisi">
-                <h3 id="konular-kullanicimesaj"><?php echo htmlspecialchars($row['mesaj']);?></h3>
-                <?php
-                //giriş yapan kullanıcı sadece admin veya moderatörse mesaj sil butonu gözüksün.
-                if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator")
-                {
-                  ?>
-                <button id="konular-mesaj-sil">
-                 <a href="konular/<?php echo seo_link($row['konu'])."/"; echo $row['id'];?>?mesajid=<?php echo $row['mesajid']; ?>">
-                    mesajı sil
-                 </a>
-                </button>
-                <?php
-                }
-                ?>
+                <h3 id="konular-kullanicimesaj"><?php echo htmlspecialchars($sayfalamasorgusu_row['mesaj']);?></h3>
+                
           </div>
           <div class="konular-kullanici-kimlik-kapsayici">
             <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+                    <?php
+                    if($kullanici['rutbe'] == "admin" || $kullanici['rutbe'] == "moderator") //giriş yapan kullanıcı sadece admin veya moderatörse mesaj sil butonu gözüksün.
+                    {
+                        ?>
+                        <button id="konular-mesaj-sil">
+                            <a href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu'])."/".$sayfalamasorgusu_row['id']."/".$sayfaiddegeri;?>?mesajid=<?php echo $sayfalamasorgusu_row['mesajid']; ?>">mesajı sil</a>
+                        </button>
+                        <?php
+                    }
+                    ?>
+                </div>
                 <div class="col-12 col-sm-12 col-lg-12">
                     <div id="konular-kullanici-kimlik">
                         <h3 id="konular-kullanici-kimlik-kimlik">
@@ -475,13 +474,13 @@
                             if(isset($_SESSION['girisyapankullanici']))
                             {
                                 ?>
-                                <a href="profil/<?php echo seo_link($row['user']);?>"><?php echo $row['tarih']." ".$row['user'];?></a>
+                                <a href="profil/<?php echo seo_link($sayfalamasorgusu_row['user']);?>"><?php echo $sayfalamasorgusu_row['tarih']." ".$sayfalamasorgusu_row['user'];?></a>
                                 <?php
                             }
                             else
                             {
                                 ?>
-                                <a href="../giris.php?pq=0"><?php echo $row['tarih']." ".$row['user'];?></a>
+                                <a href="../giris.php?pq=0"><?php echo $sayfalamasorgusu_row['tarih']." ".$sayfalamasorgusu_row['user'];?></a>
                                 <?php
                             }
                             ?>
@@ -490,12 +489,36 @@
                 </div>
             </div>
           </div>
+          
           <div id="konular-kullanici-ghost"></div> 
         <?php
        }
    }
    ?>
 
+   <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
+   <ul class="pagination" id="pagi" style="float:right; padding-top:30px;">
+    <li class="page-item" id="onceki">
+        <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid-1);?>">Önceki</a>
+    </li>
+    <form>
+        <select style="height:100%; margin-left: 5px; margin-right:5px;" onchange="document.location.href=this.value"> <!-- önemli -->
+            <option selected><?php echo $sayfaid."".".sayfa"; ?></option>
+            <?php
+            for ($i=1; $i<=$sayfasayisi; $i++)
+            {
+                ?>
+                <option value="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($i);?>"><?php echo $i;?></option>
+                <?php
+            }
+            ?>
+        </select>
+    </form>
+    <li class="page-item" id="sonraki">
+        <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid+1);?>">Sonraki</a>
+    </li>
+   </ul>
+   <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
 
 
 <?php
@@ -534,31 +557,7 @@
     {
         echo "<h3 id='hatamesaj'>Yasaklı bir kullanıcı olduğunuz için konulara yorum yapamazsınız.</h3>";
     }
-?>
 
-
-<ul class="pagination" id="pagi" style="float:right; padding-top:30px;">
-	<li class="page-item" id="onceki">
-		<a class="page-link" href="konular.php?id=<?php echo $hangisayfadayim; ?>&sayfaid=<?php echo $sayfaid-1; ?>&konu=<?php echo $row['konu']; ?>">Önceki</a>
-	</li>
-	<form>
-		<select style="height:100%; margin-left: 5px; margin-right:5px;" onchange="document.location.href=this.value"> <!-- önemli -->
-			<option selected><?php echo $sayfaid."".".sayfa"; ?></option>
-			<?php
-			for ($i=1; $i<=$sayfasayisi; $i++)
-			{
-				?><option value="konular.php?id=<?php echo $hangisayfadayim; ?>&sayfaid=<?php echo $i;?>&konu=<?php echo $row['konu'];?>"><?php echo $i;?></option><?php
-			}
-			?>
-		</select>
-	</form>
-	<li class="page-item" id="sonraki">
-		<a class="page-link" href="konular.php?id=<?php echo $hangisayfadayim; ?>&sayfaid=<?php echo $sayfaid+1; ?>&konu=<?php echo $row['konu']; ?>">Sonraki</a>
-	</li>
-</ul>
-
-
-<?php
 	if(isset($_GET['konuid'])) // konu id tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
 	{
 		if($konuSilmeSorgusu->execute())
