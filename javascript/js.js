@@ -67,7 +67,7 @@ if(bildirimZili!=null)
         setTimeout(function()
         {
             bildirimZiliAcilirMenu.style.display='none';
-        },100);
+        },200);
     }
 }
 
@@ -76,7 +76,7 @@ aramaKutusu.onblur = function()
     setTimeout(function()
     {
         ajaxlivesearch.style.display='none';
-    },100);
+    },200);
 }
 
 mobilKategoriButonu.onblur = function()
@@ -84,7 +84,7 @@ mobilKategoriButonu.onblur = function()
     setTimeout(function()
     {
         mobilKategori.style.display='none';
-    },100);
+    },200);
 }
 
 masaustuKategoriButonu.onblur = function()
@@ -92,7 +92,7 @@ masaustuKategoriButonu.onblur = function()
     setTimeout(function()
     {
         yanbarKategori.style.display='none';
-    },100);
+    },200);
 }
 
 document.addEventListener('DOMContentLoaded', function () //arama kutusu bos oldugunda ekranda hala arama onerilerinin cikmasini engellemek icin.

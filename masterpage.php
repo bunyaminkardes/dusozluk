@@ -2,11 +2,12 @@
 
    // MASTERPAGE -- LAYOUT SAYFASI.
 
-   //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
+   error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
    
    require_once("kutuphane.php");
 
    $basehrefAnahtar = 0; // localhost için 0, dusozluk için 1.
+   $sayfaiddegeri=1;
    $kullanici = girisyapankullanici();
    $kullaniciadi = @$_SESSION['girisyapankullanici'];
    @$cikisbilgisi=$_GET['cikis']; // çıkış bilgisi default olarak 0, çıkış yap linkine tıklandığında 1 olacak.
@@ -104,6 +105,44 @@
       $bildirimMiktari = $bildirimSorgusu->rowCount();
    }
 
+
+// ******************************************************************************************************************************************************
+   $baslangictarih = strtotime("now");
+   //$bitistarih = strtotime("+1 week");
+   $bitistarih = strtotime("+1 month");
+   $simdikizaman = time();
+
+   $konularicingundemtakibi_select = $baglanti->prepare("SELECT * FROM konularicingundemtakibi");
+   $konularicingundemtakibi_select->execute();
+   if($konularicingundemtakibi_select->rowCount()==0)
+   {
+      $konularicingundemtakibisorgusu = $baglanti->prepare("INSERT INTO konularicingundemtakibi(baslangictarihi,bitistarihi) VALUES(:baslangictarihi,:bitistarihi)");
+      $konularicingundemtakibisorgusu->bindParam(":baslangictarihi",$baslangictarih);
+      $konularicingundemtakibisorgusu->bindParam(":bitistarihi",$bitistarih);
+      $konularicingundemtakibisorgusu->execute();
+   }
+   else
+   {
+      foreach($konularicingundemtakibi_select as $konularicingundemtakibi_select_row)
+      {
+         if($simdikizaman>=$konularicingundemtakibi_select_row['bitistarihi'])
+         {
+            $konularicingundemtakibisorgusu_sil = $baglanti->prepare("DELETE FROM konularicingundemtakibi");
+            $konularicingundemtakibisorgusu_sil->execute();
+
+            $konularicingundemtakibisorgusu = $baglanti->prepare("INSERT INTO konularicingundemtakibi(baslangictarihi,bitistarihi) VALUES(:baslangictarihi,:bitistarihi)");
+            $konularicingundemtakibisorgusu->bindParam(":baslangictarihi",$baslangictarih);
+            $konularicingundemtakibisorgusu->bindParam(":bitistarihi",$bitistarih);
+            $konularicingundemtakibisorgusu->execute();
+         }
+         $baslangictarih_2 = $konularicingundemtakibi_select_row['baslangictarihi'];
+         $bitistarih_2 = $konularicingundemtakibi_select_row['bitistarihi'];
+         $bitisbaslangicfark = $bitistarih_2-$baslangictarih;
+      }
+   }
+
+// ******************************************************************************************************************************************************
+
 ?>
 <!DOCTYPE html>
 <html lang="tr">
@@ -193,7 +232,7 @@
                                     foreach($bildirimSorgusu as $row)
                                     {
                                        ?>
-                                       <a href="konular.php?konu=<?php echo seo_link($row['konu']); ?>&id=<?php echo $row['konuid']; ?>&bildirimNo=<?php echo $row['id']; ?>"><?php echo $row['bildirim']; ?></a>
+                                       <a href="konular/<?php echo seo_link($row['konu']).'/'.$row['konuid'].'/'.$sayfaiddegeri; ?>?bildirimNo=<?php echo $row['id']; ?>"><?php echo $row['bildirim']; ?></a>
                                        <?php
                                     }
                                  }
@@ -276,8 +315,10 @@
                   <div class="yanbar-gundem" id="gundem">
                      <?php
                         $limit =$kategoriKonuLimiti;
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -291,7 +332,7 @@
                                     
                                  </a>
                                  <ul> 
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r($row['konu_baslik']);?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r($row['konu_baslik']);?></a></li>
                                  </ul>
                               </div><?php             
                            }
@@ -314,7 +355,7 @@
                      <div class="yanbar-gundem-konular">
                         <a class="yanbar-gundem-konular-mesajsayaci"><?php echo $row['mesajsayisi']; ?></a>
                         <ul>
-                           <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>"><?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                           <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>"><?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                         </ul>
                      </div>
                      <?php             
@@ -327,9 +368,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="itiraf";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -343,14 +386,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "İtiraf kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -358,9 +401,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Astroloji";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -374,14 +419,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Astroloji kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -389,9 +434,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Yasam";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -405,14 +452,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>"> <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>"> <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Yaşam kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -420,9 +467,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Spor";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -436,14 +485,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Spor kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -451,9 +500,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Muzik";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -467,14 +518,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Müzik kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -482,9 +533,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Universite";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -498,14 +551,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Üniversite kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -513,9 +566,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Anime";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -529,14 +584,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Anime/Manga kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>
@@ -544,9 +599,11 @@
                      <?php
                         $limit =$kategoriKonuLimiti;
                         $konu_turu="Genel";
-                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY mesajsayisi DESC LIMIT :limitt");
+                        $sorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY mesajsayisi DESC LIMIT :limitt");
                         $sorgu->bindParam(':limitt',$limit,PDO::PARAM_INT);
                         $sorgu->bindParam(':konu_turu',$konu_turu,PDO::PARAM_STR);
+                        $sorgu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+                        $sorgu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
                         $sorgu->fetch(PDO::FETCH_ASSOC);
                         $sorgu->execute();
                         #gündemde 15 adet konu, mesaj sayısına göre listelensin.
@@ -560,14 +617,14 @@
                                     
                                  </a>
                                  <ul>
-                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id'];?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
+                                    <li><a href="konular/<?php echo seo_link($row['konu_baslik']).'/'.$row['id']."/".$sayfaiddegeri;?>">  <?php print_r(htmlentities($row['konu_baslik']));?></a></li>
                                  </ul>
                               </div><?php             
                            }
                         }
                         else if($sorgu->rowCount()==0)
                         {
-                           echo "Bu kategoriye ait hiç konu açılmamış.";
+                           echo "Genel kategori gündeminde herhangi bir konu yok.";
                         }
                         ?>
                   </div>

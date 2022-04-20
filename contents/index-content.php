@@ -14,8 +14,10 @@
     $ilkgirisRastgeleSorgusu->bindParam(":limitt",$rastgeleLimit,PDO::PARAM_INT);
     $ilkgirisRastgeleSorgusu->execute();
 
-    $gundemSorgusu = $baglanti->prepare("SELECT * FROM konular ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
+    $gundemSorgusu = $baglanti->prepare("SELECT * FROM konular WHERE unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY likesayisi*0.40 + mesajsayisi*0.20 - dislikesayisi*0.40 DESC LIMIT :limitt");
     $gundemSorgusu->bindParam(':limitt',$gundemLimit,PDO::PARAM_INT);
+    $gundemSorgusu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+    $gundemSorgusu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
     $gundemSorgusu->fetch(PDO::FETCH_ASSOC);
     $gundemSorgusu->execute();
 
@@ -24,9 +26,11 @@
     $enTazeSorgusu->fetch(PDO::FETCH_ASSOC);
     $enTazeSorgusu->execute();
 
-    $kategoriSecmeSorgusu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu ORDER BY tarihal DESC LIMIT :limitt");
+    $kategoriSecmeSorgusu = $baglanti->prepare("SELECT * FROM konular WHERE konu_turu=:konu_turu AND unixtimestamp BETWEEN :baslangictarihi AND :bitistarihi ORDER BY tarihal DESC LIMIT :limitt");
     $kategoriSecmeSorgusu->bindParam(':limitt',$secilenKategoriLimit,PDO::PARAM_INT);
     $kategoriSecmeSorgusu->bindParam(':konu_turu',$kategori,PDO::PARAM_STR);
+    $kategoriSecmeSorgusu->bindParam(":baslangictarihi",$baslangictarih_2,PDO::PARAM_INT);
+    $kategoriSecmeSorgusu->bindParam(":bitistarihi",$bitistarih_2,PDO::PARAM_INT);
     $kategoriSecmeSorgusu->fetch(PDO::FETCH_ASSOC);
     $kategoriSecmeSorgusu->execute();
 ?>
@@ -40,7 +44,7 @@
             ?>
             <div id="index-konu">
                 <h3 id="index-konu-baslik">
-                    <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']); ?></a>
+                    <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>"><?php print_r($row['konu_baslik']); ?></a>
                 </h3>
                 <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                 <div class="row">
@@ -77,7 +81,7 @@
                 ?>
                 <div id="index-konu">
                     <h3 id="index-konu-baslik">
-                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']);?></a>
+                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
                     <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
@@ -111,7 +115,7 @@
                 ?>
                 <div id="index-konu">
                     <h3 id="index-konu-baslik">
-                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>"><?php print_r($row['konu_baslik']);?></a>
+                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
                     <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
@@ -145,7 +149,7 @@
                 ?>
                 <div id="index-konu">
                     <h3 id="index-konu-baslik">
-                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>"><?php print_r($row['konu_baslik']);?></a>
+                        <a href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri;?>"><?php print_r($row['konu_baslik']);?></a>
                     </h3>
                     <p id="index-konu-icerik"><?php print_r(htmlspecialchars($row['konu_icerik']));?></p>
                     <div id="index-yazar-kimlik">
