@@ -1,3 +1,4 @@
+// Degisken tanimlamalari
 var ipucuDiv = document.getElementById("ipucu");
 var yukleniyor = document.getElementById("yukleniyorgif");
 var aramaKutusu = document.getElementById("ara");
@@ -9,22 +10,8 @@ var ajaxlivesearch = document.getElementById("ajaxlivesearch");
 var bildirimZili = document.getElementById("bildirimZiliKapsayiciButon");
 var bildirimZiliAcilirMenu = document.getElementById("bildirimZiliAcilirMenu");
 
-function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) //hangi kategori secildiyse digerlerini gostermesin.
-{
-    document.getElementById($goster).style.display="block";
-    document.getElementById($gizle1).style.display="none";
-    document.getElementById($gizle2).style.display="none";
-    document.getElementById($gizle3).style.display="none";
-    document.getElementById($gizle4).style.display="none";
-    document.getElementById($gizle5).style.display="none";
-    document.getElementById($gizle6).style.display="none";
-    document.getElementById($gizle7).style.display="none";
-    document.getElementById($gizle8).style.display="none";
-    document.getElementById($gizle9).style.display="none";
-    document.getElementById("yanbar-kategori").style.display="none";
-};
 
-function ipucugoster(str)
+function ipucugoster(str) //live search yapabilmek icin ajax fonksiyonu.
 {
     if(str.length == 0)
     {
@@ -49,9 +36,9 @@ function ipucugoster(str)
     }
 }
 
-if(bildirimZili!=null)
+if(bildirimZili!=null) //bildirim zili sadece kullanici giris yaptiginda var olan bir sey, yani kullanici giris yaptiysa bu if blogu calisacak.
 {
-    bildirimZili.onclick = function ()
+    bildirimZili.onclick = function () //bildirim ziline basildiysa bildirimler penceresi gosterilsin.
     {
         if(bildirimZiliAcilirMenu.style.display !== "none")
         {
@@ -62,7 +49,7 @@ if(bildirimZili!=null)
             bildirimZiliAcilirMenu.style.display = "block";
         }
     };
-    bildirimZili.onblur = function()
+    bildirimZili.onblur = function() //bildirim zilinden cikildiginda bildirimler penceresi kapansin.
     {
         setTimeout(function()
         {
@@ -71,7 +58,7 @@ if(bildirimZili!=null)
     }
 }
 
-aramaKutusu.onblur = function()
+aramaKutusu.onblur = function() //arama kutusundan cikildiginda arama onerileri kapansin.
 {
     setTimeout(function()
     {
@@ -79,7 +66,7 @@ aramaKutusu.onblur = function()
     },200);
 }
 
-mobilKategoriButonu.onblur = function()
+mobilKategoriButonu.onblur = function() //mobil kategori butonundan cikildiginda mobil kategori kapansin.
 {
     setTimeout(function()
     {
@@ -87,7 +74,7 @@ mobilKategoriButonu.onblur = function()
     },200);
 }
 
-masaustuKategoriButonu.onblur = function()
+masaustuKategoriButonu.onblur = function() //masaustu kategori butonundan cikildiginda yanbar kategoriden cikilsin.
 {
     setTimeout(function()
     {
@@ -110,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () //arama kutusu bos old
     });
 });
 
-masaustuKategoriButonu.addEventListener("click",function()
+masaustuKategoriButonu.addEventListener("click",function() // masaustu kategori butonuna basildiginda yanbar kategorinin gosterilmesi icin.
 {
     if (yanbarKategori.style.display !== "none") 
     {
@@ -122,7 +109,7 @@ masaustuKategoriButonu.addEventListener("click",function()
     }
 });
 
-mobilKategoriButonu.addEventListener("click",function()
+mobilKategoriButonu.addEventListener("click",function() // mobil kategori butonuna basildiginda mobil kategorinin gosterilmesi icin.
 {
     if (mobilKategori.style.display !== "none") 
     {
@@ -133,3 +120,18 @@ mobilKategoriButonu.addEventListener("click",function()
         mobilKategori.style.display = "block";
     }
 });
+
+function kategorigostergizle($goster,$gizle1,$gizle2,$gizle3,$gizle4,$gizle5,$gizle6,$gizle7,$gizle8,$gizle9) //hangi kategori secildiyse digerlerini gostermesin.
+{
+    document.getElementById($goster).style.display="block";
+    document.getElementById($gizle1).style.display="none";
+    document.getElementById($gizle2).style.display="none";
+    document.getElementById($gizle3).style.display="none";
+    document.getElementById($gizle4).style.display="none";
+    document.getElementById($gizle5).style.display="none";
+    document.getElementById($gizle6).style.display="none";
+    document.getElementById($gizle7).style.display="none";
+    document.getElementById($gizle8).style.display="none";
+    document.getElementById($gizle9).style.display="none";
+    yanbarKategori.style.display="none";
+};
