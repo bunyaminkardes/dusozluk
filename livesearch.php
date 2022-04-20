@@ -1,47 +1,41 @@
 <?php 
 require_once("kutuphane.php");
 error_reporting(0);
-
+$sayfaiddegeri = 1;
 $q = $_REQUEST['q'];
-
 
 $konuSorgu = $baglanti->prepare("SELECT * FROM konular WHERE konu_baslik LIKE '%$q%' ORDER BY rand() DESC LIMIT 6 ");
 $konuSorgu->fetch(PDO::FETCH_ASSOC);
 
-
 $kullaniciSorgu = $baglanti->prepare("SELECT * FROM uyeler WHERE kullaniciadi LIKE '%$q%' ORDER BY rand() LIMIT 6 ");
 $kullaniciSorgu->fetch(PDO::FETCH_ASSOC);
 
-
 $konuSorgu->execute();
 $kullaniciSorgu->execute();
-
-
 
 if($konuSorgu->rowCount()>0)
 {
     foreach($konuSorgu as $row)
     {
         ?>
-        <a style="font-size:13px; text-decoration: none; color:#f2058f; font-weight: bold;  padding-left: 5px;" >Konu : </a>
-        <a style="font-size:13px; text-decoration: none; color:#f2058f; " href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id'];?>"><?php echo htmlspecialchars($row['konu_baslik']);?></a>
+        <a style="font-size:13px; text-decoration: none; color:#f2058f; font-weight: bold; padding-left: 5px;">Konu : </a>
+        <a style="font-size:13px; text-decoration: none; color:#f2058f;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri;?>"><?php echo htmlspecialchars($row['konu_baslik']);?></a>
         <br/>
         <?php
     }
 }
-
 
 if($kullaniciSorgu->rowCount()>0)
 {
     foreach($kullaniciSorgu as $row)
     {
         ?>
-        <a style="font-size:13px; text-decoration: none; color:#282A35; font-weight: bold;  padding-left: 5px;" >Kullanıcı : </a>
+        <a style="font-size:13px; text-decoration: none; color:#282A35; font-weight: bold; padding-left: 5px;">Kullanıcı : </a>
         <?php 
         if(isset($_SESSION['girisyapankullanici']))
         {
             ?>
-            <a style="font-size:13px; text-decoration: none; color:#282A35; " href="profil/<?php echo seo_link($row['kullaniciadi']);?>"><?php echo htmlspecialchars($row['kullaniciadi']);?></a>
+            <a style="font-size:13px; text-decoration: none; color:#282A35;" href="profil/<?php echo seo_link($row['kullaniciadi']);?>"><?php echo htmlspecialchars($row['kullaniciadi']);?></a>
             <?php
         }
         else
@@ -58,5 +52,5 @@ if($kullaniciSorgu->rowCount()>0)
 
 if($konuSorgu->rowCount()==0 && $kullaniciSorgu->rowCount()==0) // konu veya kullanıcı tablolarında aranan kelimeye uygun kayıt yoksa
 {
-    echo "<span style='padding-left:5px;'>Sonuç Bulunamadı.</span>";
+    echo "<span style='padding-left:5px;'> Sonuç Bulunamadı.</span>";
 }
