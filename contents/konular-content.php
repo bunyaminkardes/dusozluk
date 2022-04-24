@@ -208,10 +208,6 @@
 # ********************************************************* SAYFALAMA(PAGINATION) ISLEMLERI ********************************************************* #
 ?>
 
-
-
-
-
 <?php
 	if($konuListelemeSorgusu->rowCount()>0)
 	{
@@ -241,10 +237,6 @@
                         ?>
                     </div>
                     <div class="col-12 col-sm-12 col-lg-12">
-
-
-
-
                         <div class="konular-yazar-like-dislike">
                                         <?php
                                         $gecerlilikesayisi = $row['likesayisi'];
@@ -262,8 +254,8 @@
                                                         {
                                                             ?>
                                                             <span style="display:inline-block;">
-                                                                <a title="beğendiniz" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo false; ?>" style="color:#282A35; background-color: #C1FE8F;"> <img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
-                                                                <a style="color:#282A35" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
+                                                                <a title="beğendiniz" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?like=<?php echo false; ?>" style="color:#282A35; background-color: #C1FE8F;"> <img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
+                                                                <a style="color:#282A35" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?dislike=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
                                                             </span>
                                                             <?php
                                                         }
@@ -271,8 +263,8 @@
                                                         {
                                                             ?>
                                                             <span style="display:inline-block;">
-                                                                <a style="color:#282A35" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
-                                                                <a title="beğenmediniz" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo false; ?>" style="color:#282A35; background-color: #FFCAC8;"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
+                                                                <a style="color:#282A35" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?like=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
+                                                                <a title="beğenmediniz" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?dislike=<?php echo false; ?>" style="color:#282A35; background-color: #FFCAC8;"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
                                                             </span>
                                                             <?php
                                                         }
@@ -284,8 +276,8 @@
                                         {
                                             ?>
                                             <span style="display:inline-block;">
-                                                <a style="color:#282A35;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?like=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
-                                                <a style="color:#282A35;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']; ?>?dislike=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
+                                                <a style="color:#282A35;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?like=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/like.png"> : <?php echo $row['likesayisi']; ?></a>
+                                                <a style="color:#282A35;" href="konular/<?php echo seo_link($row['konu_baslik'])."/".$row['id']."/".$sayfaiddegeri; ?>?dislike=<?php echo true; ?>"><img style="width:20px; height: 100%;" src="resimler/dislike.png"> : <?php echo $row['dislikesayisi']; ?></a>
                                             </span>
                                             <?php
                                         }
@@ -394,12 +386,6 @@
                                         }
                                         ?>
                         </div>
-
-
-
-
-
-
                     </div>
                     <div class="col-12 col-sm-12 col-lg-12">
                         <h3 id="konular-yazar-kimlik-kimlik">
@@ -427,22 +413,11 @@
     }
     else
     {
-        ?><script type="text/javascript">window.location.href="404.php";</script><?php
+        ?>
+        <script type="text/javascript">window.location.href="404.php";</script>
+        <?php
         exit();
     }
-
-
-
-
-
-
-
-
-
-
-    
-
-    
 
     if($sayfalamasorgusu->rowCount()>0)
     {
@@ -451,7 +426,6 @@
             ?>
             <div class="konular-kullanicimesajkapsayicisi">
                 <h3 id="konular-kullanicimesaj"><?php echo htmlspecialchars($sayfalamasorgusu_row['mesaj']);?></h3>
-                
           </div>
           <div class="konular-kullanici-kimlik-kapsayici">
             <div class="row">
@@ -489,75 +463,83 @@
                 </div>
             </div>
           </div>
-          
           <div id="konular-kullanici-ghost"></div> 
         <?php
        }
    }
    ?>
 
-   <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
-   <ul class="pagination" id="pagi" style="float:right; padding-top:30px;">
-    <li class="page-item" id="onceki">
-        <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid-1);?>">Önceki</a>
-    </li>
-    <form>
-        <select style="height:100%; margin-left: 5px; margin-right:5px;" onchange="document.location.href=this.value"> <!-- önemli -->
-            <option selected><?php echo $sayfaid."".".sayfa"; ?></option>
-            <?php
-            for ($i=1; $i<=$sayfasayisi; $i++)
-            {
-                ?>
-                <option value="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($i);?>"><?php echo $i;?></option>
-                <?php
-            }
-            ?>
-        </select>
-    </form>
-    <li class="page-item" id="sonraki">
-        <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid+1);?>">Sonraki</a>
-    </li>
-   </ul>
-   <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
+   <div style="width:100%; float:left;">
+       <div class="row" >
+           <div class="col-12 col-sm-12 col-lg-12">
+               <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
+               <ul class="pagination" id="pagi" style="float:right;">
+                <li class="page-item" id="onceki">
+                    <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid-1);?>">Önceki</a>
+                </li>
+                <form>
+                    <select style="height:100%; margin-left: 5px; margin-right:5px;" onchange="document.location.href=this.value"> <!-- önemli -->
+                        <option selected><?php echo $sayfaid."".".sayfa"; ?></option>
+                        <?php
+                        for ($i=1; $i<=$sayfasayisi; $i++)
+                        {
+                            ?>
+                            <option value="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($i);?>"><?php echo $i;?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </form>
+                <li class="page-item" id="sonraki">
+                    <a class="page-link" href="konular/<?php echo seo_link($sayfalamasorgusu_row['konu']).'/'.$hangisayfadayim.'/'.($sayfaid+1);?>">Sonraki</a>
+                </li>
+               </ul>
+               <!--------------------------------------- SAYFALAMA (PAGINATION) --------------------------------------->
+           </div>
+           <div class="col-12 col-sm-12 col-lg-12">
+               <?php
+               if(isset($_SESSION['girisyapankullanici']) && $kullanici['bandurumu']==0)  // eğer giriş yapan kullanıcı banlı değilse sadece konulara mesaj ekleme kısmı gözüksün.
+               {
+                   ?>
+                   <div id="main-mesajekle-div">
+                       <h3 id="main-mesajekle-baslik">Yorum Yap</h3>
+                       <form id="main-mesajekle-form" method="POST">
+                           <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder=" Yorum yapmak için burayı kullanabilirsiniz. " required></textarea>
+                           <input id="main-mesajekle-buton" type="submit" value="Gönder">
+                           <?php
+                           if(isset($mesaj) && isset($konuid))
+                           {
+                               $mesajEklemeSorgusu->execute();
+                               $mesajEklemeSorgusuPart2->execute(); //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
+                               if($kullanici['kullaniciadi'] != $konuSahibi) // kullanıcı kendi konusuna mesaj yazdığında kendi bildirim kutusuna bildirim düşmesin.
+                               {
+                                   $mesajBildirimSorgusu->execute();
+                               }
+                               if($mesajEklemeSorgusu->rowCount()>0 && $mesajEklemeSorgusuPart2->rowCount()>0)
+                               {
+                                 echo "<script> window.location.href = window.location.href; </script>";
+                               }
+                           }
+                           ?>
+                       </form>
+                   </div>
+                   <?php
+               }
+               else if(!isset($_SESSION['girisyapankullanici']))
+               {
+                   echo "<h3 id='hatamesaj'>Yorum yapmak için giriş yapmanız gerek."."<br>"."Giriş yapmak için "."<a href='giris-yap'>tıklayınız.</a></h3>";
+               }
+               else if(isset($_SESSION['girisyapankullanici']) && $kullanici['bandurumu']==1)
+               {
+                   echo "<h3 id='hatamesaj'>Yasaklı bir kullanıcı olduğunuz için konulara yorum yapamazsınız.</h3>";
+               }
+               ?>        
+           </div>
+       </div>
+   </div>
 
 
 <?php
-    if(isset($_SESSION['girisyapankullanici']) && $kullanici['bandurumu']==0)  // eğer giriş yapan kullanıcı banlı değilse sadece konulara mesaj ekleme kısmı gözüksün.
-    {
-        ?>
-        <div id="main-mesajekle-div">
-            <h3 id="main-mesajekle-baslik">Yorum Yap</h3>
-            <form id="main-mesajekle-form" method="POST">
-                <textarea name="mesajekle" id="main-mesajekle" maxlength="1500" placeholder=" Yorum yapmak için burayı kullanabilirsiniz. " required></textarea>
-                <input id="main-mesajekle-buton" type="submit" value="Gönder">
-                <?php
-                if(isset($mesaj) && isset($konuid))
-                {
-                    $mesajEklemeSorgusu->execute();
-                    $mesajEklemeSorgusuPart2->execute(); //mesaj eklendiği zaman ayrıca bir güncelleme sorgusu çalıştıracağız. konuya ait mesaj sayısını +1 arttıracağız. bu sayıyı da konuların gündeme düşmesi için kullanacağız.
-                    if($kullanici['kullaniciadi'] != $konuSahibi) // kullanıcı kendi konusuna mesaj yazdığında kendi bildirim kutusuna bildirim düşmesin.
-                    {
-                        $mesajBildirimSorgusu->execute();
-                    }
-                    if($mesajEklemeSorgusu->rowCount()>0 && $mesajEklemeSorgusuPart2->rowCount()>0)
-                    {
-                      echo "<script> window.location.href = window.location.href; </script>";
-                    }
-                }
-                ?>
-            </form>
-        </div>
-        <?php
-    }
-    else if(!isset($_SESSION['girisyapankullanici']))
-    {
-        echo "<h3 id='hatamesaj'>Yorum yapmak için giriş yapmanız gerek."."<br>"."Giriş yapmak için "."<a href='giris-yap'>tıklayınız.</a></h3>";
-    }
-    else if(isset($_SESSION['girisyapankullanici']) && $kullanici['bandurumu']==1)
-    {
-        echo "<h3 id='hatamesaj'>Yasaklı bir kullanıcı olduğunuz için konulara yorum yapamazsınız.</h3>";
-    }
-
 	if(isset($_GET['konuid'])) // konu id tanımlanmışsa silinme işlemi olacak demektir. bu durumda silme işlemi yapılsın ve anasayfaya yönlendirilsin.
 	{
 		if($konuSilmeSorgusu->execute())

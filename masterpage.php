@@ -148,7 +148,7 @@
 <html lang="tr">
    <head>
       <meta name="google-site-verification" content="lTwKVKo33u5k4etLVokv2haUfI4nzg_OsBj_argQCX0" />
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388530043982968" crossorigin="anonymous"></script>
+      <!--<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3388530043982968" crossorigin="anonymous"></script>-->
       <base href="<?php echo $basehref; ?>">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
