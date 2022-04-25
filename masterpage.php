@@ -2,7 +2,7 @@
 
    // MASTERPAGE -- LAYOUT SAYFASI.
 
-   error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
+   //error_reporting(0); /* error reporting hataları göstermeyi engeller, test yaparken pasif hale getir. */
    
    require_once("kutuphane.php");
 
@@ -661,7 +661,16 @@
                         {
                            foreach($moderatorSorgusu as $row)
                            {
-                              ?><a href="profil/<?php echo seo_link($row['kullaniciadi']);?>" class="sagbar-yazilar"><?php echo $row['kullaniciadi']; ?></a><?php
+                              if(isset($_SESSION['girisyapankullanici']))
+                              {
+                                 ?><a href="profil/<?php echo seo_link($row['kullaniciadi']);?>" class="sagbar-yazilar"><?php echo $row['kullaniciadi']; ?></a><?php
+                              }
+                              else
+                              {
+                                 ?>
+                                 <a href="giris.php?pq=0" class="sagbar-yazilar"><?php echo htmlentities($row['kullaniciadi']);?></a>
+                                 <?php
+                              }
                            }
                         }
                         else
