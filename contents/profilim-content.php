@@ -45,7 +45,7 @@ else
 		<div id="profilim-ozellestir-ppdegistir-butonkapsayici">
 			<input type="hidden" name="PROFILIM_TOKEN" value="<?php echo $token; ?>">
 			<input id="profilim-ozellestir-ppdegistir-butonkapsayici-buton" type="submit" name="PROFILI_OZELLESTIR_SUBMIT" value="değiştir">
-			profil resmini kaldır : <input type="submit" style='height:35px;' name="FOTO_KALDIR_SUBMIT" value=" Kaldırmak için tıkla "><br><br>
+			profil resmini kaldır : <input type="submit" name="FOTO_KALDIR_SUBMIT" value=" Kaldırmak için tıkla "><br><br>
 		</div>
 		<div id="profilim-sifre-degistir-kapsayici">
 			<h3 id="profilim-sifre-degistir-baslik">Şifreyi Değiştir :</h3>

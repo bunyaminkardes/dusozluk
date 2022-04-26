@@ -1,8 +1,8 @@
 <?php
 require_once("phpmailer/class.phpmailer.php");
-define('MAILHOST','');
-define('MAILUSERNAME','');
-define('MAILPASSWORD','');
+define('MAILHOST','mail.dusozluk.com');
+define('MAILUSERNAME','iletisim.dusozluk.com');
+define('MAILPASSWORD','0102redpenciL');
 $hedefMail = $_POST['mailadresi'];
 ?>
 

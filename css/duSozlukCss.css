@@ -1460,3 +1460,52 @@ body
 	background-color: var(--temarengihover);
 }
 /* ------------------------------------------- profilim-content.php bitis ------------------------------------------- */
+
+/* ------------------------------------------- sifreyisfirla-content.php baslangic ------------------------------------------- */
+
+
+#sifreyisifirla-baslik
+{
+	font-family: var(--temayazitipi);
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+}
+#sifreyisifirla-kapsayici
+{
+	width: 350px;
+	display: block;
+	margin: 0 auto;
+	margin-top: 20px;
+}
+#sifreyisifirla-mail
+{
+	width: 100%;
+	background-color: #add8e6;
+	border-style: solid;
+	border-width: 1px;
+}
+#sifreyisifirla-buton
+{
+	display: block;
+	margin: 0 auto;
+	border: none;
+	background-color: var(--temarengi);
+	color:#FFFFFF;
+	margin-top: 15px;
+	width: 70px;
+	height: 35px;
+	margin-bottom: 15px;
+}
+#sifreyisifirla-buton:hover
+{
+	background-color: var(--temarengihover);
+}
+#sifreyisifirla-response
+{
+	font-family: var(--temayazitipi);
+	font-size: 14px;
+	color:#FF0000;
+}
+
+/* ------------------------------------------- sifreyisfirla-content.php bitis ------------------------------------------- */
