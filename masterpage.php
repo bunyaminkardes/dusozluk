@@ -76,7 +76,7 @@
    }
    if($basehrefAnahtar == 0)
    {
-      $basehref = "http://localhost";
+      $basehref = "http://localhost/dusozluk/";
    }
    else if($basehrefAnahtar == 1)
    {
