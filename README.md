@@ -1,3 +1,3 @@
-# duSozluk
+# DUSÖZLÜK
 
 H
