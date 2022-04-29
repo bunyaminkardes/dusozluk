@@ -1,3 +1,3 @@
 # DUSÖZLÜK
 
-H
+dusozluk.com
